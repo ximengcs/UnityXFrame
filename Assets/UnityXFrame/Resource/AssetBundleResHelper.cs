@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 using XFrame.Modules;
 using System.Collections.Generic;
 
@@ -7,134 +9,87 @@ namespace UnityXFrame.Core
 {
     public partial class AssetBundleResHelper : IResourceHelper
     {
+        private string m_AssetsPath;
         private AssetBundle m_Main;
         private AssetBundleManifest m_MainManifest;
-        private FileNode<FileLoadInfo> m_BundleTree;
         private Dictionary<string, BundleInfo> m_Bundles;
+        private Dictionary<string, AssetBundle> m_BundlesMap;
+        private FileLoadInfo m_FileMap;
 
-        public AssetBundleResHelper()
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="resPath">资源根路径，一般为persistDataPath, assetsStreaming</param>
+        public void Init(string resPath)
         {
-            m_BundleTree = new FileNode<FileLoadInfo>("Assets");
+            m_AssetsPath = resPath;
             m_Bundles = new Dictionary<string, BundleInfo>();
+            m_BundlesMap = new Dictionary<string, AssetBundle>();
+            m_Main = AssetBundle.LoadFromFile(Path.Combine(m_AssetsPath, MAIN_FILE));
+            m_MainManifest = m_Main.LoadAsset<AssetBundleManifest>(nameof(AssetBundleManifest));
+
+            string infoStr = File.ReadAllText(Path.Combine(m_AssetsPath, RES2AB_FILE));
+            m_FileMap = JsonConvert.DeserializeObject<FileLoadInfo>(infoStr);
         }
 
-        public XTask Init()
+        /// <summary>
+        /// 加载资源
+        /// </summary>
+        /// <param name="resPath">资源路径, 注意从Assets目录开始，如:Assets/Data/Test.png</param>
+        /// <param name="type">资源类型，注意加载图像资源时尽量传入Sprite或者Texture的类型</param>
+        /// <returns>加载到的资源，如果资源路径不正确将返回空</returns>
+        public object Load(string resPath, Type type)
         {
-            Dictionary<string, string[]> dependencies = new Dictionary<string, string[]>();
-            XTask task = new XTask();
-            XTask loadTask = TaskModule.Inst.GetOrNew(nameof(loadTask));
-
-            task.Add(() =>
-                {
-                    m_Main = AssetBundle.LoadFromFile(Path.Combine(Application.persistentDataPath, "bundles"));
-                    m_MainManifest = m_Main.LoadAsset<AssetBundleManifest>(nameof(AssetBundleManifest));
-                    return true;
-                })
-                .Add(() =>
-                {
-                    if (!loadTask.IsStart)
-                    {
-                        foreach (string abName in m_MainManifest.GetAllAssetBundles())
-                        {
-                            string abFile = Path.Combine(Application.persistentDataPath, abName);
-                            AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(abFile);
-                            request.completed += (op) =>
-                            {
-                                AssetBundle ab = request.assetBundle;
-                                BundleInfo info = new BundleInfo(abFile);
-                                info.Bundle = ab;
-                                m_Bundles.Add(abName, info);
-                                dependencies.Add(abFile, m_MainManifest.GetAllDependencies(abName));
-                            };
-                            loadTask.Add(() => request.isDone);
-                        }
-                        loadTask.Start();
-                    }
-
-                    return loadTask.IsComplete;
-                })
-                .Add(() =>
-                {
-                    foreach (BundleInfo info in m_Bundles.Values)
-                    {
-                        string[] dependsNames = dependencies[info.Name];
-                        BundleInfo[] dependAb = new BundleInfo[dependsNames.Length];
-                        for (int i = 0; i < dependsNames.Length; i++)
-                        {
-                            dependAb[i] = m_Bundles[dependsNames[i]];
-                        }
-                        info.Dependencies = dependAb;
-
-                        foreach (string resName in info.Bundle.GetAllAssetNames())
-                        {
-                            FileLoadInfo fileInfo = new FileLoadInfo(resName, info);
-                            m_BundleTree.Add(fileInfo.NameWithoutExt, fileInfo);
-                        }
-                    }
-                    m_Main.Unload(true);
-                    return true;
-                })
-                .Start();
-
-            return task;
-        }
-
-        public void LoadAsync(string dirName, string fileName, System.Action<Object> complete)
-        {
-            string path = InnerCheckFileName(dirName, fileName);
-            if (m_BundleTree.TryGetFile(path, out FileLoadInfo loadInfo))
+            resPath = InnerCheckFileName(resPath);
+            if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
             {
-                BundleInfo bundle = loadInfo.Bundle;
-                bundle.LoadAsync(loadInfo.Name, complete);
-            }
-            else
-                complete(default);
-        }
-
-        public object Load(string dirName, string fileName)
-        {
-            string path = InnerCheckFileName(dirName, fileName);
-            if (m_BundleTree.TryGetFile(path, out FileLoadInfo loadInfo))
-            {
-                BundleInfo bundle = loadInfo.Bundle;
-                return bundle.Load(loadInfo.Name);
+                BundleInfo info = InnerLoadBundle(abName);
+                return info.Load(resPath, type);
             }
             else
                 return default;
         }
 
-        public object Load(params string[] namePart)
+        public T Load<T>(string resPath)
         {
-            return Load(Path.Combine(namePart), string.Empty);
-        }
-
-        public void LoadAsync<T>(string dirName, string fileName, System.Action<T> complete) where T : Object
-        {
-            string path = InnerCheckFileName(dirName, fileName);
-            if (m_BundleTree.TryGetFile(path, out FileLoadInfo loadInfo))
+            resPath = InnerCheckFileName(resPath);
+            if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
             {
-                BundleInfo bundle = loadInfo.Bundle;
-                bundle.LoadAsync(loadInfo.Name, complete);
-            }
-            else
-                complete(default);
-        }
-
-        public T Load<T>(string dirName, string fileName)
-        {
-            string path = InnerCheckFileName(dirName, fileName);
-            if (m_BundleTree.TryGetFile(path, out FileLoadInfo loadInfo))
-            {
-                BundleInfo bundle = loadInfo.Bundle;
-                return (T)(object)bundle.Load(loadInfo.Name);
+                BundleInfo info = InnerLoadBundle(abName);
+                return (T)(object)info.Load(resPath, typeof(T));
             }
             else
                 return default;
         }
 
-        public T Load<T>(params string[] namePart)
+        public ResLoadTask LoadAsync(string resPath, Type type)
         {
-            return (T)(object)Load(Path.Combine(namePart), string.Empty);
+            resPath = InnerCheckFileName(resPath);
+            if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
+            {
+                BundleInfo info = InnerLoadBundle(abName);
+                ResLoadTask task = TaskModule.Inst.New<ResLoadTask>();
+                task.Add(new ResHandler(info.LoadAsync(resPath, type)));
+                task.Start();
+                return task;
+            }
+            else
+                return default;
+        }
+
+        public ResLoadTask<T> LoadAsync<T>(string resPath)
+        {
+            resPath = InnerCheckFileName(resPath);
+            if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
+            {
+                BundleInfo info = InnerLoadBundle(abName);
+                ResLoadTask<T> task = TaskModule.Inst.New<ResLoadTask<T>>();
+                task.Add(new ResHandler(info.LoadAsync(resPath, typeof(T))));
+                task.Start();
+                return task;
+            }
+            else
+                return default;
         }
 
         public void Unload(string package)
@@ -148,20 +103,40 @@ namespace UnityXFrame.Core
             AssetBundle.UnloadAllAssetBundles(true);
         }
 
-        private string InnerCheckFileName(string dirName, string fileName)
+        #region Inner Implement
+        private BundleInfo InnerLoadBundle(string abName)
         {
-            dirName = dirName.Replace('_', '\\');
-            dirName = dirName.Replace('/', '\\');
-            string path = Path.Combine(m_BundleTree.Name, dirName, fileName).ToLower();
-            return Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
+            if (m_Bundles.TryGetValue(abName, out BundleInfo info))
+            {
+                return info;
+            }
+            else
+            {
+                string path = Path.Combine(m_AssetsPath, abName);
+                AssetBundle ab = AssetBundle.LoadFromFile(path);
+                info = new BundleInfo(abName);
+
+                string[] dpNames = m_MainManifest.GetAllDependencies(abName);
+                BundleInfo[] dps = new BundleInfo[dpNames.Length];
+                for (int i = 0; i < dpNames.Length; i++)
+                {
+                    string dpName = dpNames[i];
+                    dps[i] = InnerLoadBundle(dpName);
+                }
+
+                info.Bundle = ab;
+                info.Dependencies = dps;
+                m_Bundles[abName] = info;
+                return info;
+            }
         }
 
-        public void LoadAllAsync(System.Action complete)
+        private string InnerCheckFileName(string path)
         {
-            AsyncOperateSet opSet = new AsyncOperateSet();
-            opSet.OnComplete(complete);
-            foreach (BundleInfo info in m_Bundles.Values)
-                opSet.Add(info.Bundle.LoadAllAssetsAsync());
+            path = path.Replace('_', '/');
+            path = path.Replace('\\', '/');
+            return path.ToLower();
         }
+        #endregion
     }
 }

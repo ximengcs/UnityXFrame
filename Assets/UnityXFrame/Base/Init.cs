@@ -13,7 +13,7 @@ public class Init : MonoBehaviour
         LogModule.Inst.Register<UnityXFrame.Core.Logger>();
         SerializeModule.Inst.Register<JsonSerializeHelper>();
         ArchiveModule.Inst.SetPath(Application.persistentDataPath);
-        ResModule.Inst.Register<EditorAssetsHelper>();
+        ResModule.Inst.SetHelper<AssetBundleResHelper>();
     }
 
     void Start()

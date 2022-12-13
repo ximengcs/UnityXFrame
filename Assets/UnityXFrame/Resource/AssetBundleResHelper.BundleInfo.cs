@@ -16,40 +16,16 @@ namespace UnityXFrame.Core
                 Name = name;
             }
 
-            public Object Load(string res)
+            public Object Load(string resPath, System.Type type)
             {
                 InnerCheckState();
-                return Bundle.LoadAsset(res);
+                return Bundle.LoadAsset(resPath, type);
             }
 
-            public void LoadAsync(string res, System.Action<Object> complete)
+            public AssetBundleRequest LoadAsync(string res, System.Type type)
             {
                 InnerCheckState();
-
-                AssetBundleRequest request = Bundle.LoadAssetAsync<Object>(res);
-                request.completed += (op) =>
-                {
-                    AssetBundleRequest abOp = op as AssetBundleRequest;
-                    complete(abOp.asset);
-                };
-            }
-
-            public T Load<T>(string res) where T : Object
-            {
-                InnerCheckState();
-                return Bundle.LoadAsset<T>(res);
-            }
-
-            public void LoadAsync<T>(string res, System.Action<T> complete) where T : Object
-            {
-                InnerCheckState();
-
-                AssetBundleRequest request = Bundle.LoadAssetAsync<T>(res);
-                request.completed += (op) =>
-                {
-                    AssetBundleRequest abOp = op as AssetBundleRequest;
-                    complete((T)abOp.asset);
-                };
+                return Bundle.LoadAssetAsync(res, type);
             }
 
             public void Unload()
