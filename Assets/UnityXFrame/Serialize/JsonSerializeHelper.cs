@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using XFrame.Modules.Serialize;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Serialize
 {
     public class JsonSerializeHelper : IJsonSerializeHelper
     {

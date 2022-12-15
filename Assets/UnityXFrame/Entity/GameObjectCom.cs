@@ -7,6 +7,8 @@ namespace UnityXFrame.Core.Entities
     {
         private GameObject m_Inst;
 
+        public Transform Tf => m_Inst.transform;
+
         protected override void OnInit(EntityData data)
         {
             m_Inst = new GameObject();

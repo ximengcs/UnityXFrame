@@ -20,6 +20,7 @@ namespace UnityXFrame.Core
         private void Start()
         {
             Entry.Register<NativeResModule>();
+            Entry.Register<SceneUIModule>();
             Entry.Register<Debuger>(m_Data.DebuggerSkin);
             Entry.Start();
         }
