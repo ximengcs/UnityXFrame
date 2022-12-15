@@ -20,6 +20,8 @@ namespace UnityXFrame.Editor
 
         private void OnEnable()
         {
+            if (Application.isPlaying)
+                return;
             new PoolModule().OnInit(default);
             new TypeModule().OnInit(default);
             m_Editors = new XLinkList<IDataEditor>();
@@ -45,6 +47,8 @@ namespace UnityXFrame.Editor
 
         public override void OnInspectorGUI()
         {
+            if (Application.isPlaying)
+                return;
             XLinkNode<IDataEditor> node = m_Editors.First;
             while (node != null)
             {
@@ -57,6 +61,9 @@ namespace UnityXFrame.Editor
 
         private void OnDestroy()
         {
+            if (Application.isPlaying)
+                return;
+
             XLinkNode<IDataEditor> node = m_Editors.First;
             while (node != null)
             {

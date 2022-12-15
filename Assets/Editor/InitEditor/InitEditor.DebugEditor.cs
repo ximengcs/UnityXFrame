@@ -37,6 +37,8 @@ namespace UnityXFrame.Editor
 
                 if (string.IsNullOrEmpty(m_Data.Logger) && m_LogHelperTypeNames.Length > 0)
                     InnerSelect(0);
+
+                m_DebuggerSkin = m_Data.DebuggerSkin;
             }
 
             public void OnUpdate()
@@ -97,7 +99,8 @@ namespace UnityXFrame.Editor
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("DebuggerSkin");
                 m_DebuggerSkin = (GUISkin)EditorGUILayout.ObjectField(m_DebuggerSkin, typeof(GUISkin), false);
-                if (m_DebuggerSkin != m_Data.DebuggerSkin)
+
+                if (m_DebuggerSkin != null && m_DebuggerSkin != m_Data.DebuggerSkin)
                 {
                     m_Data.DebuggerSkin = m_DebuggerSkin;
                     EditorUtility.SetDirty(m_Data);
