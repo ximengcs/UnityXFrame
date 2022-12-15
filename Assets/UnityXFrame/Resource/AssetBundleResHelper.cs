@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
 using System.Collections.Generic;
+using XFrame.Modules.Diagnotics;
 
 namespace UnityXFrame.Core.Resource
 {
@@ -23,14 +24,22 @@ namespace UnityXFrame.Core.Resource
         /// <param name="rootPath">资源根路径，一般为persistDataPath, assetsStreaming</param>
         public void OnInit(string rootPath)
         {
-            m_AssetsPath = rootPath;
-            m_Bundles = new Dictionary<string, BundleInfo>();
-            m_BundlesMap = new Dictionary<string, AssetBundle>();
-            m_Main = AssetBundle.LoadFromFile(Path.Combine(m_AssetsPath, MAIN_FILE));
-            m_MainManifest = m_Main.LoadAsset<AssetBundleManifest>(nameof(AssetBundleManifest));
+            m_AssetsPath = Path.Combine(Application.persistentDataPath, ROOT_DIR);
+            string mainFilePath = Path.Combine(m_AssetsPath, MAIN_FILE);
+            if (File.Exists(mainFilePath))
+            {
+                m_Bundles = new Dictionary<string, BundleInfo>();
+                m_BundlesMap = new Dictionary<string, AssetBundle>();
+                m_Main = AssetBundle.LoadFromFile(mainFilePath);
+                m_MainManifest = m_Main.LoadAsset<AssetBundleManifest>(nameof(AssetBundleManifest));
 
-            string infoStr = File.ReadAllText(Path.Combine(m_AssetsPath, RES2AB_FILE));
-            m_FileMap = JsonConvert.DeserializeObject<FileLoadInfo>(infoStr);
+                string infoStr = File.ReadAllText(Path.Combine(m_AssetsPath, RES2AB_FILE));
+                m_FileMap = JsonConvert.DeserializeObject<FileLoadInfo>(infoStr);
+            }
+            else
+            {
+                Log.Error("Resource", "Res is null.");
+            }
         }
 
         /// <summary>

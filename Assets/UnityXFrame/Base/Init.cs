@@ -1,35 +1,46 @@
-using XFrame.Core;
+using System.IO;
 using UnityEngine;
-using XFrame.Modules.Archives;
-using XFrame.Modules.Diagnotics;
-using XFrame.Modules.Download;
-using XFrame.Modules.Resource;
-using XFrame.Modules.Serialize;
+using XFrame.Core;
+using XFrame.Modules.Local;
+using XFrame.Modules.Config;
+using UnityXFrame.Core.Resource;
 
 namespace UnityXFrame.Core
 {
     public class Init : MonoBehaviour
     {
-        public GUISkin DebugSkin;
+        [SerializeField] public InitData m_Data;
 
-        void Awake()
+        private void Awake()
         {
+            XConfig.Lang = m_Data.Language;
+            XConfig.DefaultRes = m_Data.ResMode;
+            XConfig.DefaultLogger = m_Data.Logger;
+            XConfig.ArchivePath = Constant.ArchivePath;
+            XConfig.DefaultJsonSerializer = m_Data.JsonSerializer;
+            if (m_Data.LocalizeFile != null)
+                XConfig.LocalizeFile = m_Data.LocalizeFile.text;
+
             Entry.Init();
-
         }
 
-        void Start()
+        private void Start()
         {
+            Entry.Register<Debuger>(m_Data.DebuggerSkin);
             Entry.Start();
-            Debuger.SetModule(Entry.Register<Debuger.Module>(DebugSkin));
         }
 
-        void Update()
+        private void Update()
         {
             Entry.Update(Time.deltaTime);
         }
 
-        void OnDestroy()
+        private void OnGUI()
+        {
+            Debuger.Inst.OnGUI();
+        }
+
+        private void OnDestroy()
         {
             Entry.ShutDown();
         }
