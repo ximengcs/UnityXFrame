@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37a743fcddf8e14faf2e7720a6b1b04, type: 3}
   m_Name: InitData
   m_EditorClassIdentifier: 
-  Language: 0
+  Language: 10
   Logger: UnityXFrame.Core.Diagnotics.Logger
   ResMode: UnityXFrame.Core.Resource.AssetBundleResHelper
   ArchivePath: C:/Users/XM/AppData/LocalLow/DefaultCompany/UnityXFrame\archive
@@ -20,9 +20,9 @@ MonoBehaviour:
   LocalizeFile: {fileID: 0}
   DebuggerSkin: {fileID: 11400000, guid: ffe8f91b25724e54f837080896d8454f, type: 2}
   LogMark:
-  - Key: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    Value: 0
-  - Key: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    Value: 0
+  - Key: XFrame
+    Color: {r: 0.8396226, g: 0, b: 0.6908252, a: 0}
+    Value: 1
+  - Key: Resource
+    Color: {r: 0.16981132, g: 0.22814068, b: 0.6792453, a: 0}
+    Value: 1

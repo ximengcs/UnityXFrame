@@ -4,6 +4,8 @@ using XFrame.Core;
 using XFrame.Modules.Local;
 using XFrame.Modules.Config;
 using UnityXFrame.Core.Resource;
+using UnityXFrame.Core.Diagnotics;
+using XFrame.Modules.Diagnotics;
 
 namespace UnityXFrame.Core
 {
@@ -13,15 +15,9 @@ namespace UnityXFrame.Core
 
         private void Awake()
         {
-            XConfig.Lang = m_Data.Language;
-            XConfig.DefaultRes = m_Data.ResMode;
-            XConfig.DefaultLogger = m_Data.Logger;
-            XConfig.ArchivePath = Constant.ArchivePath;
-            XConfig.DefaultJsonSerializer = m_Data.JsonSerializer;
-            if (m_Data.LocalizeFile != null)
-                XConfig.LocalizeFile = m_Data.LocalizeFile.text;
-
+            InnerConfigData();
             Entry.Init();
+            InnerConfigFrame();
         }
 
         private void Start()
@@ -43,6 +39,27 @@ namespace UnityXFrame.Core
         private void OnDestroy()
         {
             Entry.ShutDown();
+        }
+
+        private void InnerConfigData()
+        {
+            XConfig.Lang = m_Data.Language;
+            XConfig.DefaultRes = m_Data.ResMode;
+            XConfig.DefaultLogger = m_Data.Logger;
+            XConfig.ArchivePath = Constant.ArchivePath;
+            XConfig.DefaultJsonSerializer = m_Data.JsonSerializer;
+            if (m_Data.LocalizeFile != null)
+                XConfig.LocalizeFile = m_Data.LocalizeFile.text;
+        }
+
+        private void InnerConfigFrame()
+        {
+            Diagnotics.Logger logger = LogModule.Inst.GetLogger<Diagnotics.Logger>();
+            foreach (DebugColor colorData in m_Data.LogMark)
+            {
+                if (colorData.Value)
+                    logger.Register(colorData.Key, colorData.Color);
+            }
         }
     }
 }

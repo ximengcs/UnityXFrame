@@ -14,11 +14,11 @@ namespace UnityXFrame.Core
         public string JsonSerializer;
         public TextAsset LocalizeFile;
         public GUISkin DebuggerSkin;
-        public List<InitDataDic> LogMark;
+        public List<DebugColor> LogMark;
     }
 
     [Serializable]
-    public class InitDataDic
+    public class DebugColor
     {
         public string Key;
         public Color Color;

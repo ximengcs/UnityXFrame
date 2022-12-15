@@ -10,14 +10,6 @@ namespace UnityXFrame.Core.Procedure
         protected override void OnEnter()
         {
             base.OnEnter();
-
-            ResModule.Inst.LoadAsync<Sprite>("Assets/Data/Sprites/test.png")
-                .OnComplete((sprite) =>
-                {
-                    GameObject obj = new GameObject();
-                    SpriteRenderer render = obj.AddComponent<SpriteRenderer>();
-                    render.sprite = sprite;
-                });
         }
     }
 }

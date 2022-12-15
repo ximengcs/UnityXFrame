@@ -57,7 +57,7 @@ namespace UnityXFrame.Editor
                 EditorGUILayout.LabelField("Colors", GUI.skin.customStyles[312]);
                 bool all = true;
                 bool dirty = false;
-                foreach (InitDataDic data in m_Data.LogMark)
+                foreach (DebugColor data in m_Data.LogMark)
                 {
                     if (!data.Value)
                     {
@@ -76,7 +76,7 @@ namespace UnityXFrame.Editor
                 List<int> willDel = new List<int>();
                 for (int i = 0; i < m_Data.LogMark.Count; i++)
                 {
-                    InitDataDic logMark = m_Data.LogMark[i];
+                    DebugColor logMark = m_Data.LogMark[i];
                     if (dirty) logMark.Value = all;
                     EditorGUILayout.BeginHorizontal();
                     logMark.Key = EditorGUILayout.TextField(logMark.Key);
@@ -88,7 +88,7 @@ namespace UnityXFrame.Editor
                 }
                 if (GUILayout.Button("+"))
                 {
-                    InitDataDic data = new InitDataDic();
+                    DebugColor data = new DebugColor();
                     m_Data.LogMark.Add(data);
                 }
 
