@@ -1,7 +1,7 @@
 ﻿using UnityEngine.Networking;
-using XFrame.Modules;
+using XFrame.Modules.Download;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Download
 {
     public class DownloadHelper : IDownloadHelper
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Resource
 {
     public partial class AssetBundleResHelper
     {

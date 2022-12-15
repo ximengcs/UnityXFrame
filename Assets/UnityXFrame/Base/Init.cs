@@ -1,35 +1,37 @@
-using UnityEngine;
-using UnityXFrame.Core;
 using XFrame.Core;
-using XFrame.Modules;
+using UnityEngine;
+using XFrame.Modules.Archives;
+using XFrame.Modules.Diagnotics;
+using XFrame.Modules.Download;
+using XFrame.Modules.Resource;
+using XFrame.Modules.Serialize;
 
-public class Init : MonoBehaviour
+namespace UnityXFrame.Core
 {
-    public GUISkin DebugSkin;
-
-    void Awake()
+    public class Init : MonoBehaviour
     {
-        Entry.Init();
-        LogModule.Inst.Register<UnityXFrame.Core.Logger>();
-        SerializeModule.Inst.Register<JsonSerializeHelper>();
-        ArchiveModule.Inst.SetPath(Application.persistentDataPath);
-        ResModule.Inst.SetHelper<AssetBundleResHelper>();
-    }
+        public GUISkin DebugSkin;
 
-    void Start()
-    {
-        Entry.Start();
-        Debuger.SetModule(Entry.Register<Debuger.Module>(DebugSkin));
-        DownloadModule.Inst.Register<DownloadHelper>();
-    }
+        void Awake()
+        {
+            Entry.Init();
 
-    void Update()
-    {
-        Entry.Update(Time.deltaTime);
-    }
+        }
 
-    void OnDestroy()
-    {
-        Entry.ShutDown();
+        void Start()
+        {
+            Entry.Start();
+            Debuger.SetModule(Entry.Register<Debuger.Module>(DebugSkin));
+        }
+
+        void Update()
+        {
+            Entry.Update(Time.deltaTime);
+        }
+
+        void OnDestroy()
+        {
+            Entry.ShutDown();
+        }
     }
 }

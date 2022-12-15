@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
-using XFrame.Modules;
+using XFrame.Modules.Resource;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Resource
 {
     public partial class AssetBundleResHelper
     {
@@ -17,6 +16,8 @@ namespace UnityXFrame.Core
             public bool IsDone => m_Request.isDone;
 
             public Type HandleType => m_HandleType;
+
+            public float Pro => m_Request.progress;
 
             public ResHandler(AssetBundleRequest request)
             {

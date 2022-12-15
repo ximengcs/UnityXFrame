@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using XFrame.Modules;
+using XFrame.Modules.Serialize;
 
 namespace UnityXFrame.Core
 {

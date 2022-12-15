@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using XFrame.Core;
-using XFrame.Modules;
+using XFrame.Modules.Procedure;
 
-namespace Assets.Scripts
+namespace UnityXFrame.Core.Procedure
 {
     public class MainProcedure : ProcedureBase
     {
@@ -10,15 +9,6 @@ namespace Assets.Scripts
         {
             base.OnEnter();
 
-            ResModule.Inst.SetResPath(Application.persistentDataPath);
-            //Sprite test = ResModule.Inst.Load<Sprite>("Assets/Data/Sprites/test.png");
-            
-            ResModule.Inst.LoadAsync<Sprite>("Assets/Data/Sprites/test.png")
-                .OnComplete((res) =>
-                {
-                    GameObject obj = new GameObject();
-                    obj.AddComponent<SpriteRenderer>().sprite = res;
-                });
         }
     }
 }

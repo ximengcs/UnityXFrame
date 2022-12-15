@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using XFrame.Modules;
+using XFrame.Modules.Entities;
 
-namespace Assets.Scripts
+namespace UnityXFrame.Core.Entities
 {
     public class GameObjectCom : Com
     {
@@ -18,6 +18,11 @@ namespace Assets.Scripts
         }
 
         protected override void OnDestroy()
+        {
+
+        }
+
+        protected override void OnDelete()
         {
 
         }

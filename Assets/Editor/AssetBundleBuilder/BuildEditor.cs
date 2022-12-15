@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using UnityXFrame.Core;
-using XFrame.Modules;
+using Newtonsoft.Json;
+using XFrame.Modules.Archives;
+using UnityXFrame.Core.Resource;
 
 namespace UnityXFrame.Editor
 {

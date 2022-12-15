@@ -2,10 +2,11 @@
 using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
-using XFrame.Modules;
+using XFrame.Modules.Tasks;
+using XFrame.Modules.Resource;
 using System.Collections.Generic;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Resource
 {
     public partial class AssetBundleResHelper : IResourceHelper
     {
@@ -19,10 +20,10 @@ namespace UnityXFrame.Core
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="resPath">资源根路径，一般为persistDataPath, assetsStreaming</param>
-        public void Init(string resPath)
+        /// <param name="rootPath">资源根路径，一般为persistDataPath, assetsStreaming</param>
+        public void OnInit(string rootPath)
         {
-            m_AssetsPath = resPath;
+            m_AssetsPath = rootPath;
             m_Bundles = new Dictionary<string, BundleInfo>();
             m_BundlesMap = new Dictionary<string, AssetBundle>();
             m_Main = AssetBundle.LoadFromFile(Path.Combine(m_AssetsPath, MAIN_FILE));
@@ -68,7 +69,7 @@ namespace UnityXFrame.Core
             if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
             {
                 BundleInfo info = InnerLoadBundle(abName);
-                ResLoadTask task = TaskModule.Inst.New<ResLoadTask>();
+                ResLoadTask task = TaskModule.Inst.GetOrNew<ResLoadTask>();
                 task.Add(new ResHandler(info.LoadAsync(resPath, type)));
                 task.Start();
                 return task;
@@ -83,7 +84,7 @@ namespace UnityXFrame.Core
             if (m_FileMap.FileToABMap.TryGetValue(resPath, out string abName))
             {
                 BundleInfo info = InnerLoadBundle(abName);
-                ResLoadTask<T> task = TaskModule.Inst.New<ResLoadTask<T>>();
+                ResLoadTask<T> task = TaskModule.Inst.GetOrNew<ResLoadTask<T>>();
                 task.Add(new ResHandler(info.LoadAsync(resPath, typeof(T))));
                 task.Start();
                 return task;

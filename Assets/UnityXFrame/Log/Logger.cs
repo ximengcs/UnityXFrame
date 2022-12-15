@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
-    public partial class Logger : XFrame.Modules.ILogger
+    public partial class Logger : XFrame.Modules.Diagnotics.ILogger
     {
         private bool m_MustRegister;
         private Formater m_Formater;

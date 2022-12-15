@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System;
-using UnityEngine.EventSystems;
+﻿using System;
 using UnityEngine;
 using XFrame.Core;
-using XFrame.Modules;
 using System.Reflection;
+using XFrame.Modules.Times;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace UnityXFrame.Core
 {
@@ -103,17 +103,22 @@ namespace UnityXFrame.Core
                 m_Windows = null;
             }
 
-            public void OnDestroy(IPool from)
+            public void OnDestroy()
             {
 
             }
 
-            public void OnCreate(IPool from)
+            public void OnDestroyFrom()
             {
 
             }
 
-            public void OnRelease(IPool from)
+            public void OnCreate()
+            {
+
+            }
+
+            public void OnRelease()
             {
 
             }

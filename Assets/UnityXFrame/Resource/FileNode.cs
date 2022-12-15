@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using XFrame.Utility;
+﻿using XFrame.Utility;
+using System.Collections.Generic;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Resource
 {
     internal class FileNode<T> where T : class
     {
