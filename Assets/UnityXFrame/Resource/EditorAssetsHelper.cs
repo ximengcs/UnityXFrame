@@ -1,66 +1,97 @@
-﻿//#if UNITY_EDITOR
-//using System;
-//using System.IO;
-//using UnityEditor;
-//using XFrame.Modules;
+﻿#if UNITY_EDITOR
+using System;
+using UnityEditor;
+using XFrame.Modules.Tasks;
+using XFrame.Modules.Resource;
 
-//namespace UnityXFrame.Core
-//{
-//    public class EditorAssetsHelper : IResourceHelper
-//    {
-//        private FileNode<object> m_ResCache;
+namespace UnityXFrame.Core.Resource
+{
+    public partial class EditorAssetsHelper : IResourceHelper
+    {
+        private FileNode<object> m_ResCache;
 
-//        public XTask Init()
-//        {
-//            m_ResCache = new FileNode<object>(string.Empty);
-//            return XTask.Empty;
-//        }
+        public void OnInit(string rootPath)
+        {
+            m_ResCache = new FileNode<object>(string.Empty);
+        }
 
-//        public object Load(string dirName, string fileName)
-//        {
-//            throw new System.NotSupportedException();
-//        }
+        public T Load<T>(string resPath)
+        {
+            if (m_ResCache.TryGetFile(resPath, out object res))
+            {
+                return (T)res;
+            }
+            else
+            {
+                Type type = typeof(T);
+                T resInst = (T)(object)AssetDatabase.LoadAssetAtPath(resPath, type);
+                m_ResCache.Add(resPath, resInst);
+                return resInst;
+            }
+        }
 
-//        public object Load(params string[] namePart)
-//        {
-//            throw new System.NotSupportedException();
-//        }
+        public object Load(string resPath, Type type)
+        {
+            if (m_ResCache.TryGetFile(resPath, out object res))
+            {
+                return res;
+            }
+            else
+            {
+                object resInst = AssetDatabase.LoadAssetAtPath(resPath, type);
+                m_ResCache.Add(resPath, resInst);
+                return resInst;
+            }
+        }
 
-//        public T Load<T>(string dirName, string fileName)
-//        {
-//            string file = Path.Combine("assets", dirName, fileName);
-//            if (m_ResCache.TryGetFile(file, out object res))
-//            {
-//                return (T)res;
-//            }
-//            else
-//            {
-//                Type type = typeof(T);
-//                T resInst = (T)(object)AssetDatabase.LoadAssetAtPath(file, type);
-//                m_ResCache.Add(file, resInst);
-//                return resInst;
-//            }
-//        }
+        public ResLoadTask<T> LoadAsync<T>(string resPath)
+        {
+            ResLoadTask<T> loadTask = TaskModule.Inst.GetOrNew<ResLoadTask<T>>();
+            if (m_ResCache.TryGetFile(resPath, out object res))
+            {
+                loadTask.Add(new ResHandler(res));
+                loadTask.Start();
+            }
+            else
+            {
+                Type type = typeof(T);
+                T resInst = (T)(object)AssetDatabase.LoadAssetAtPath(resPath, type);
+                m_ResCache.Add(resPath, resInst);
+                loadTask.Add(new ResHandler(resInst));
+                loadTask.Start();
+            }
 
-//        public T Load<T>(params string[] namePart)
-//        {
-//            return (T)Load(Path.Combine(namePart));
-//        }
+            return loadTask;
+        }
 
-//        public void LoadAllAsync(System.Action complete)
-//        {
-//            complete();
-//        }
+        public ResLoadTask LoadAsync(string resPath, Type type)
+        {
+            ResLoadTask loadTask = TaskModule.Inst.GetOrNew<ResLoadTask>();
+            if (m_ResCache.TryGetFile(resPath, out object res))
+            {
+                loadTask.Add(new ResHandler(res));
+                loadTask.Start();
+            }
+            else
+            {
+                object resInst = AssetDatabase.LoadAssetAtPath(resPath, type);
+                m_ResCache.Add(resPath, resInst);
+                loadTask.Add(new ResHandler(resInst));
+                loadTask.Start();
+            }
 
-//        public void Unload(string package)
-//        {
-//            m_ResCache.Remove(package);
-//        }
+            return loadTask;
+        }
 
-//        public void UnloadAll()
-//        {
-//            m_ResCache.Clear();
-//        }
-//    }
-//}
-//#endif
+        public void Unload(string package)
+        {
+            m_ResCache.Remove(package);
+        }
+
+        public void UnloadAll()
+        {
+            m_ResCache.Clear();
+        }
+    }
+}
+#endif

@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using XFrame.Modules.Diagnotics;
-using XFrame.Modules.Procedure;
-using XFrame.Modules.Resource;
+﻿using XFrame.Modules.Procedure;
 
 namespace UnityXFrame.Core.Procedure
 {

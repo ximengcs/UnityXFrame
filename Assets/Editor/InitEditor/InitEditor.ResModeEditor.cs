@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEditor;
-using UnityEngine;
 using UnityXFrame.Core;
-using XFrame.Modules.Resource;
 using XFrame.Modules.XType;
+using XFrame.Modules.Resource;
+using XFrame.Modules.Diagnotics;
+using UnityEngine;
 
 namespace UnityXFrame.Editor
 {
@@ -26,9 +27,8 @@ namespace UnityXFrame.Editor
                 m_ResHelperTypeNames = new string[m_Types.Length];
                 for (int i = 0; i < m_Types.Length; i++)
                 {
-                    string name = m_Types[i].Name;
-                    m_ResHelperTypeNames[i] = name;
-                    if (name == m_Data.ResMode)
+                    m_ResHelperTypeNames[i] = m_Types[i].Name;
+                    if (m_Types[i].FullName == m_Data.ResMode)
                         m_ResHelperTypeIndex = i;
                 }
 

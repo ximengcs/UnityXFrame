@@ -1,11 +1,8 @@
-using System.IO;
 using UnityEngine;
 using XFrame.Core;
-using XFrame.Modules.Local;
 using XFrame.Modules.Config;
-using UnityXFrame.Core.Resource;
-using UnityXFrame.Core.Diagnotics;
 using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core.Resource;
 
 namespace UnityXFrame.Core
 {
@@ -22,6 +19,7 @@ namespace UnityXFrame.Core
 
         private void Start()
         {
+            Entry.Register<NativeResModule>();
             Entry.Register<Debuger>(m_Data.DebuggerSkin);
             Entry.Start();
         }
