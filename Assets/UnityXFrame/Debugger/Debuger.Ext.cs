@@ -1,5 +1,5 @@
 ﻿
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     public partial class Debuger
     {

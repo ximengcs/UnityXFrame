@@ -1,7 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor.AI;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     [DebugWindow]
     public class EditorTool : IDebugWindow

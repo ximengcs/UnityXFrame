@@ -13,5 +13,6 @@ namespace UnityXFrame.Core
         public static int UNIT_PIXEL = 100;
         public static int SCENEUI_SORT_LAYER = 0;
         public static string SCENEUI_RES_PATH = "Data/SceneUI";
+        public static string UI_RES_PATH = "Data/UI";
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     public static class DebugGUI
     {

@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 using XFrame.Core;
+using System.Reflection;
 using XFrame.Modules.Times;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using System.Reflection;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     public partial class Debuger : SingletonModule<Debuger>
     {
@@ -56,7 +56,7 @@ namespace UnityXFrame.Core
         }
 
         #region Life Fun
-        public override void OnInit(object data)
+        protected override void OnInit(object data)
         {
             base.OnInit(data);
             Skin = data as GUISkin;
@@ -88,7 +88,7 @@ namespace UnityXFrame.Core
                 InternalSelectMenu(m_Windows[0]);
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             base.OnDestroy();
             foreach (WindowInfo info in m_Windows)

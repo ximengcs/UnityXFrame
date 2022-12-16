@@ -2,7 +2,7 @@
 using XFrame.Modules.Entities;
 using System.Collections.Generic;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     public abstract class SceneUI : ISceneUI
     {

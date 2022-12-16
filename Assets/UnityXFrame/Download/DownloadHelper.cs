@@ -10,13 +10,17 @@ namespace UnityXFrame.Core.Download
         public bool IsDone { get; private set; }
         public DownloadResult Result { get; private set; }
 
-        public void Request(string url)
+        bool IDownloadHelper.IsDone => throw new System.NotImplementedException();
+
+        DownloadResult IDownloadHelper.Result => throw new System.NotImplementedException();
+
+        void IDownloadHelper.Request(string url)
         {
             m_Request = UnityWebRequest.Get(url);
             m_Request.SendWebRequest();
         }
 
-        public void Update()
+        void IDownloadHelper.Update()
         {
             if (m_Request == null)
                 return;
@@ -32,7 +36,7 @@ namespace UnityXFrame.Core.Download
             m_Request = null;
         }
 
-        public void Dispose()
+        void IDownloadHelper.Dispose()
         {
             m_Request.Dispose();
             m_Request = null;

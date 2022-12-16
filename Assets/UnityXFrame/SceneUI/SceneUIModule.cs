@@ -9,7 +9,7 @@ using XFrame.Modules.Entities;
 using XFrame.Modules.Resource;
 using UnityXFrame.Core.Entities;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     /// <summary>
     /// SceneUI模块
@@ -97,7 +97,7 @@ namespace UnityXFrame.Core
         #endregion
 
         #region Life Fun
-        public override void OnInit(object data)
+        protected override void OnInit(object data)
         {
             base.OnInit(data);
             m_Actives = new List<ISceneUI>();
@@ -105,7 +105,7 @@ namespace UnityXFrame.Core
             m_OnlyOneOpens = new List<ISceneUI>();
         }
 
-        public override void OnUpdate(float escapeTime)
+        protected override void OnUpdate(float escapeTime)
         {
             base.OnUpdate(escapeTime);
 
@@ -116,7 +116,7 @@ namespace UnityXFrame.Core
                 inst.OnUpdate();
         }
 
-        public override void OnDestroy()
+        protected override void OnDestroy()
         {
             if (m_Actives.Count <= 0)
                 return;

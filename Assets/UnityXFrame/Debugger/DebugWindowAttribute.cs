@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class DebugWindowAttribute : Attribute

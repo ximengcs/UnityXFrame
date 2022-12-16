@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     [DebugWindow(true)]
     public class LogScaner : IDebugWindow

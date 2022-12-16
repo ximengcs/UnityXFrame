@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using XFrame.Modules.Entities;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     /// <summary>
     /// SceneUI接口

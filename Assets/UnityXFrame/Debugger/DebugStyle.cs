@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     public class DebugStyle
     {

@@ -15,7 +15,7 @@ namespace UnityXFrame.Core.Resource
         /// 初始化生命周期
         /// </summary>
         /// <param name="data">初始化数据</param>
-        public override void OnInit(object data)
+        protected override void OnInit(object data)
         {
             base.OnInit(data);
             m_ResHelper = new ResourcesHelper();

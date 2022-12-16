@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     /// <summary>
     /// 非交互的场景UI

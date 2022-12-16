@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     public class SceneUILayer : Attribute
     {

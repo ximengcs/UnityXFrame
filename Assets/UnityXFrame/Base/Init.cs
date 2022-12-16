@@ -3,6 +3,8 @@ using XFrame.Core;
 using XFrame.Modules.Config;
 using XFrame.Modules.Diagnotics;
 using UnityXFrame.Core.Resource;
+using UnityXFrame.Core.Diagnotics;
+using UnityXFrame.Core.SceneUIs;
 
 namespace UnityXFrame.Core
 {

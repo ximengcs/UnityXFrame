@@ -22,8 +22,8 @@ namespace UnityXFrame.Editor
         {
             if (Application.isPlaying)
                 return;
-            new PoolModule().OnInit(default);
-            new TypeModule().OnInit(default);
+            //new PoolModule().OnInit(default);
+            //new TypeModule().OnInit(default);
             m_Editors = new XLinkList<IDataEditor>();
             m_EditorType = TypeModule.Inst.GetOrNew<IDataEditor>();
             m_Data = AssetDatabase.LoadAssetAtPath<InitData>(InitDataPath);
@@ -72,8 +72,8 @@ namespace UnityXFrame.Editor
             }
 
             EditorUtility.SetDirty(m_Data);
-            TypeModule.Inst.OnDestroy();
-            PoolModule.Inst.OnDestroy();
+            //TypeModule.Inst.OnDestroy();
+            //PoolModule.Inst.OnDestroy();
             m_EditorType = null;
             m_Editors = null;
             m_Data = null;

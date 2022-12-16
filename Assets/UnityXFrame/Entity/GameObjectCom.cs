@@ -28,5 +28,20 @@ namespace UnityXFrame.Core.Entities
         {
 
         }
+
+        protected override void OnCreate()
+        {
+
+        }
+
+        protected override void OnRelease()
+        {
+
+        }
+
+        protected override void OnDestroyForever()
+        {
+
+        }
     }
 }

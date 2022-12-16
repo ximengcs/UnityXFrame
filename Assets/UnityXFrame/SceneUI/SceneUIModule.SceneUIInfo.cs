@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.SceneUIs
 {
     public partial class SceneUIModule
     {

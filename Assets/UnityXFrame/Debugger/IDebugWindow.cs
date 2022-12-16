@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityXFrame.Core
+namespace UnityXFrame.Core.Diagnotics
 {
     /// <summary>
     /// 调试窗口接口
