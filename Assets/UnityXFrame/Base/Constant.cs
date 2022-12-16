@@ -14,5 +14,7 @@ namespace UnityXFrame.Core
         public static int SCENEUI_SORT_LAYER = 0;
         public static string SCENEUI_RES_PATH = "Data/SceneUI";
         public static string UI_RES_PATH = "Data/UI";
+
+        public const string MAIN_GROUPUI = "Main";
     }
 }

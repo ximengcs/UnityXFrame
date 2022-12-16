@@ -1,51 +1,79 @@
 ﻿
+using UnityEngine;
+
 namespace UnityXFrame.Core.UIs
 {
-    public class UIGroup : IUIGroup
+    internal class UIGroup : IUIGroup
     {
+        private int m_Layer;
+        private GameObject m_Root;
+
+        public string Name { get; }
+
         public float Alpha { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public int Layer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        float IUIGroup.Alpha { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        int IUIGroup.Layer { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int Layer
+        {
+            get { return m_Layer; }
+            set
+            {
+                value = Mathf.Min(value, UIModule.Inst.GroupCount);
+                value = Mathf.Max(value, 0);
+                m_Layer = value;
+                UIModule.Inst.SetGroupLayer(this, value);
+            }
+        }
+
+        public bool IsOpen => true;
+
+        public UIGroup(GameObject root, string name, int layer)
+        {
+            m_Root = root;
+            Name = name;
+        }
 
         public void Close()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void Open()
         {
-            throw new System.NotImplementedException();
+
         }
 
         void IUIGroup.Close()
         {
-            throw new System.NotImplementedException();
+
         }
 
-        void IUIGroup.CloseUI(IUI ui)
+        void IUIGroup.OnCloseUI(IUI ui)
         {
-            throw new System.NotImplementedException();
-        }
 
-        void IUIGroup.OnClose()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        void IUIGroup.OnOpen()
-        {
-            throw new System.NotImplementedException();
         }
 
         void IUIGroup.Open()
         {
-            throw new System.NotImplementedException();
+
         }
 
-        void IUIGroup.OpenUI(IUI ui)
+        void IUIGroup.OnOpenUI(IUI ui)
         {
-            throw new System.NotImplementedException();
+
+        }
+
+        void IUIGroup.OnInit()
+        {
+
+        }
+
+        void IUIGroup.OnUpdate()
+        {
+            
+        }
+
+        void IUIGroup.OnDestroy()
+        {
+
         }
     }
 }

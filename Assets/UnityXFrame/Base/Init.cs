@@ -2,6 +2,7 @@ using UnityEngine;
 using XFrame.Core;
 using XFrame.Modules.Config;
 using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core.UIs;
 using UnityXFrame.Core.Resource;
 using UnityXFrame.Core.Diagnotics;
 using UnityXFrame.Core.SceneUIs;
@@ -23,6 +24,7 @@ namespace UnityXFrame.Core
         {
             Entry.Register<NativeResModule>();
             Entry.Register<SceneUIModule>();
+            Entry.Register<UIModule>();
             Entry.Register<Debuger>(m_Data.DebuggerSkin);
             Entry.Start();
         }
