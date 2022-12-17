@@ -3,11 +3,11 @@ using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using XFrame.Collections;
+using XFrame.Modules.XType;
 using XFrame.Modules.Resource;
-using UnityXFrame.Core.Resource;
 using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core.Resource;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace UnityXFrame.Core.UIs
 {
@@ -15,17 +15,17 @@ namespace UnityXFrame.Core.UIs
     {
         private Canvas m_Canvas;
         private Transform m_Root;
+        private TypeModule.System m_TypeSystem;
         private Dictionary<Type, IUI> m_UIMap;
         private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;
-
-        public int GroupCount => m_GroupList.Count;
 
         #region Life Fun
         protected override void OnInit(object data)
         {
             base.OnInit(data);
 
+            m_TypeSystem = TypeModule.Inst.GetOrNew<IUI>();
             InnerCheckCanvas(data);
             if (m_Canvas != null)
             {
@@ -68,13 +68,13 @@ namespace UnityXFrame.Core.UIs
         #region Interface
         public IUIGroup MainGroup
         {
-            get { return InnerGetOrNewGroup(Constant.MAIN_GROUPUI, GroupCount); }
+            get { return InnerGetOrNewGroup(Constant.MAIN_GROUPUI, m_GroupList.Count - 1); }
         }
 
         #region Open UI
-        public IUI Open(Type type, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, object data = default, bool useNavtive = false)
         {
-            return Open(Constant.MAIN_GROUPUI, type, data, useNavtive);
+            return Open(uiType, Constant.MAIN_GROUPUI, data, useNavtive);
         }
 
         public T Open<T>(object data = default, bool useNavtive = false) where T : IUI
@@ -82,20 +82,37 @@ namespace UnityXFrame.Core.UIs
             return (T)Open(typeof(T), data, useNavtive);
         }
 
+        public IUI Open(string uiName, object data = default, bool useNavtive = false)
+        {
+            Type uiType = m_TypeSystem.GetByName(uiName);
+            return Open(uiType, data, useNavtive);
+        }
+
         public T Open<T>(string groupName, object data = default, bool useNavtive = false) where T : IUI
         {
-            return (T)Open(groupName, typeof(T), data, useNavtive);
+            return (T)Open(typeof(T), groupName, data, useNavtive);
         }
 
-        public IUI Open(string groupName, Type type, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, string groupName, object data = default, bool useNavtive = false)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
-            return InnerOpenUI(group, type, data, useNavtive);
+            return InnerOpenUI(group, uiType, data, useNavtive);
         }
 
-        public IUI Open(IUIGroup group, Type type, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, IUIGroup group, object data = default, bool useNavtive = false)
         {
-            return InnerOpenUI(group, type, data, useNavtive);
+            return InnerOpenUI(group, uiType, data, useNavtive);
+        }
+
+        public IUI Open(IUI ui, string groupName, object data = default, bool useNavtive = false)
+        {
+            IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
+            return InnerOpenUI(ui, group, data, useNavtive);
+        }
+
+        public IUI Open(IUI ui, IUIGroup group, object data = default, bool useNavtive = false)
+        {
+            return InnerOpenUI(ui, group, data, useNavtive);
         }
 
         public T Open<T>(IUIGroup group, object data = default, bool useNavtive = false)
@@ -114,6 +131,12 @@ namespace UnityXFrame.Core.UIs
         {
             InnerCloseUI(uiType);
         }
+
+        public void Close(string uiName)
+        {
+            Type uiType = m_TypeSystem.GetByName(uiName);
+            InnerCloseUI(uiType);
+        }
         #endregion
 
         public void AddFactory<UIType, T>() where UIType : IUI where T : IUIFactory
@@ -124,7 +147,23 @@ namespace UnityXFrame.Core.UIs
             m_Factorys[uiType] = (T)Activator.CreateInstance(typeof(T));
         }
 
-        public IUIGroup GetOrNew(string groupName, int layer = -1)
+        public IUI Get(Type uiType)
+        {
+            return InnerGetUI(uiType);
+        }
+
+        public T Get<T>() where T : IUI
+        {
+            return (T)InnerGetUI(typeof(T));
+        }
+
+        public IUI Get(string uiName)
+        {
+            Type uiType = m_TypeSystem.GetByName(uiName);
+            return InnerGetUI(uiType);
+        }
+
+        public IUIGroup GetOrNewGroup(string groupName, int layer = -1)
         {
             if (layer == -1)
                 layer = m_GroupList.Count;
@@ -164,11 +203,8 @@ namespace UnityXFrame.Core.UIs
                     Log.Error(nameof(UIModule), $"UI res {uiPath} dont exist.");
                     return default;
                 }
-                Stopwatch sw = Stopwatch.StartNew();
-                sw.Start();
+
                 GameObject inst = GameObject.Instantiate(prefab);
-                sw.Stop();
-                Log.Debug(sw.ElapsedMilliseconds);
                 inst.name = uiType.Name;
                 IUIFactory factory = InnerGetUIFactory(uiType);
 
@@ -177,12 +213,17 @@ namespace UnityXFrame.Core.UIs
                 m_UIMap[uiType] = ui;
             }
 
+            return InnerOpenUI(ui, group, data, useNavtive);
+        }
+
+        private IUI InnerOpenUI(IUI ui, IUIGroup group, object data, bool useNavtive)
+        {
             IUIGroup oldGroup = ui.Group;
             if (oldGroup != group)
             {
                 oldGroup?.RemoveUI(ui);
-                ui.OnGroupChange(group);
                 group.AddUI(ui);
+                ui.OnGroupChange(group);
             }
             ui.Open(data);
             group.Open();
@@ -195,6 +236,14 @@ namespace UnityXFrame.Core.UIs
                 m_Canvas = (Canvas)canvas;
             if (m_Canvas == null)
                 m_Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        }
+
+        private IUI InnerGetUI(Type uiType)
+        {
+            if (m_UIMap.TryGetValue(uiType, out IUI ui))
+                return ui;
+            else
+                return default;
         }
 
         private IUIGroup InnerGetOrNewGroup(string groupName, int layer)
@@ -217,6 +266,8 @@ namespace UnityXFrame.Core.UIs
 
         internal void SetUIGroupLayer(IUIGroup group, int layer)
         {
+            layer = Mathf.Min(layer, m_GroupList.Count - 1);
+            layer = Mathf.Max(layer, 0);
             SetLayer(m_Root, group, layer);
         }
         #endregion

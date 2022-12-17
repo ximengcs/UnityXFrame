@@ -24,8 +24,6 @@ namespace UnityXFrame.Core.UIs
             get { return m_Layer; }
             set
             {
-                value = Mathf.Min(value, UIModule.Inst.GroupCount);
-                value = Mathf.Max(value, 0);
                 m_Layer = value;
                 UIModule.Inst.SetUIGroupLayer(this, value);
             }
@@ -105,22 +103,34 @@ namespace UnityXFrame.Core.UIs
         {
             ui.Root.SetParent(m_Root, false);
             m_UIs.AddFirst(ui);
+            ((UI)ui).InnerSetLayer(m_UIs.Count - 1, false);
         }
 
         void IUIGroup.RemoveUI(IUI ui)
         {
             ui.Root.SetParent(null);
+
+            bool reach = false;
             XLinkNode<IUI> node = m_UIs.First;
             while (node != null)
             {
-                if (node.Value == ui)
+                IUI other = node.Value;
+                if (reach)
+                    ((UI)other).InnerSetLayer(other.Layer - 1, false);
+
+                if (other == ui)
+                {
                     node.Delete();
+                    reach = true;
+                }
                 node = node.Next;
             }
         }
 
         void IUIGroup.SetUILayer(IUI ui, int layer)
         {
+            layer = Mathf.Min(layer, m_UIs.Count - 1);
+            layer = Mathf.Max(layer, 0);
             UIModule.SetLayer(m_Root, ui, layer);
         }
     }

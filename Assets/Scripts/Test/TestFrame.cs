@@ -1,13 +1,14 @@
-﻿using System.Diagnostics;
+﻿using UnityXFrame.Core.UIs;
 using UnityXFrame.Core.Diagnotics;
-using UnityXFrame.Core.UIs;
-using XFrame.Modules.Diagnotics;
 
 namespace Game.Test
 {
     [DebugWindow]
     public class TestFrame : IDebugWindow
     {
+        private int m_UI = 1;
+        private int m_Layer;
+
         public void Dispose()
         {
 
@@ -20,16 +21,14 @@ namespace Game.Test
 
         public void OnDraw()
         {
-            if (DebugGUI.Button("Open UI 1"))
-            {
-                UIModule.Inst.Open<TestUI1>(default, true);
-            }
-            if (DebugGUI.Button("Close UI 1"))
-                UIModule.Inst.Close<TestUI1>();
-            if (DebugGUI.Button("Open UI 2"))
-                UIModule.Inst.Open<TestUI2>(default, true);
-            if (DebugGUI.Button("Close UI 2"))
-                UIModule.Inst.Close<TestUI2>();
+            m_UI = DebugGUI.IntField(m_UI);
+            m_Layer = DebugGUI.IntField(m_Layer);
+            if (DebugGUI.Button("Open UI"))
+                UIModule.Inst.Open($"TestUI{m_UI}", default, true);
+            if (DebugGUI.Button("Close UI"))
+                UIModule.Inst.Close($"TestUI{m_UI}");
+            if (DebugGUI.Button("Set Layer"))
+                UIModule.Inst.Get($"TestUI{m_UI}").Layer = m_Layer;
         }
     }
 }

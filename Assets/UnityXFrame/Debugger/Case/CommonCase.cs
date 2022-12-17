@@ -24,17 +24,17 @@ namespace UnityXFrame.Core.Diagnotics
             m_Name = DebugGUI.TextField(m_Name);
             if (DebugGUI.Button("Init"))
             {
-                UIModule.Inst.GetOrNew(m_Name);
+                UIModule.Inst.GetOrNewGroup(m_Name);
             }
 
             if (DebugGUI.Button("Init2"))
             {
-                UIModule.Inst.GetOrNew(m_Name, m_Layer);
+                UIModule.Inst.GetOrNewGroup(m_Name, m_Layer);
             }
 
             if (DebugGUI.Button("Set Layer"))
             {
-                UIModule.Inst.GetOrNew(m_Name).Layer = m_Layer;
+                UIModule.Inst.GetOrNewGroup(m_Name).Layer = m_Layer;
             }
         }
     }

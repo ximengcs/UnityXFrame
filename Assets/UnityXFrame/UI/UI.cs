@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using XFrame.Modules.Diagnotics;
 
@@ -11,11 +12,15 @@ namespace UnityXFrame.Core.UIs
     {
         protected bool m_IsOpen;
         protected int Layer;
-        protected UIGroup m_Group;
+        protected IUIGroup m_Group;
         protected GameObject m_Root;
         protected Transform m_Transform;
 
-        int IUI.Layer { get; set; }
+        int IUI.Layer
+        {
+            get { return Layer; }
+            set { InnerSetLayer(value, true); }
+        }
 
         bool IUI.IsOpen => m_IsOpen;
 
@@ -90,6 +95,13 @@ namespace UnityXFrame.Core.UIs
         {
             m_Root.gameObject.SetActive(false);
             OnClose();
+        }
+
+        internal void InnerSetLayer(int layer, bool refresh)
+        {
+            Layer = layer;
+            if (refresh)
+                m_Group?.SetUILayer(this, Layer);
         }
 
         protected virtual void OnInit() { }

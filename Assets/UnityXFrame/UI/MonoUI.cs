@@ -7,11 +7,19 @@ namespace UnityXFrame.Core.UIs
     {
         protected bool m_IsOpen;
         protected int Layer;
-        protected UIGroup m_Group;
+        protected IUIGroup m_Group;
         protected GameObject m_Root;
         protected Transform m_Transform;
 
-        int IUI.Layer { get; set; }
+        int IUI.Layer
+        {
+            get { return Layer; }
+            set
+            {
+                Layer = value;
+                m_Group?.SetUILayer(this, Layer);
+            }
+        }
 
         bool IUI.IsOpen => m_IsOpen;
 

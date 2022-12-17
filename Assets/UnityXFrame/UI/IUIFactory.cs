@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityXFrame.Core.UIs;
 
 namespace UnityXFrame.Core.UIs
 {
