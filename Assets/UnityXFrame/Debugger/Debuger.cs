@@ -141,22 +141,29 @@ namespace UnityXFrame.Core.Diagnotics
             foreach (Type t in typeSys)
             {
                 DebugWindowAttribute atr = t.GetCustomAttribute<DebugWindowAttribute>();
+
+                WindowInfo info = new WindowInfo();
                 if (atr != null)
                 {
-                    IDebugWindow window = Activator.CreateInstance(t) as IDebugWindow;
-                    WindowInfo info = new WindowInfo();
-                    if (string.IsNullOrEmpty(atr.Name))
-                        info.Name = t.Name.Replace("Case", string.Empty);
-                    else
-                        info.Name = atr.Name;
+                    info.Name = atr.Name;
                     info.AlwaysRun = atr.AlwaysRun;
                     info.Order = atr.Order;
-                    info.Window = window;
-                    m_Windows.Add(info);
-
-                    if (info.AlwaysRun)
-                        window.OnAwake();
                 }
+                else
+                {
+                    info.Name = default;
+                    info.AlwaysRun = default;
+                    info.Order = default;
+                }
+                if (string.IsNullOrEmpty(info.Name))
+                    info.Name = t.Name.Replace("Case", string.Empty);
+
+                IDebugWindow window = Activator.CreateInstance(t) as IDebugWindow;
+                info.Window = window;
+                m_Windows.Add(info);
+
+                if (info.AlwaysRun)
+                    window.OnAwake();
             }
         }
 

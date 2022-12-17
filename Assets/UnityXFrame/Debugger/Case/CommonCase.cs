@@ -2,7 +2,6 @@
 
 namespace UnityXFrame.Core.Diagnotics
 {
-    [DebugWindow]
     public class CommonCase : IDebugWindow
     {
         private int m_Layer;

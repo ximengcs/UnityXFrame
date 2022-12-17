@@ -19,7 +19,7 @@ namespace UnityXFrame.Core.UIs
         float Alpha { get; set; }
 
         /// <summary>
-        /// UI组层级
+        /// UI组层级, 层级大的在层级小的上层显示
         /// </summary>
         int Layer { get; set; }
 

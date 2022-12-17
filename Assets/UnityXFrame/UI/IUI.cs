@@ -18,7 +18,7 @@ namespace UnityXFrame.Core.UIs
         bool IsOpen { get; }
 
         /// <summary>
-        /// UI层级
+        /// UI层级, 层级大的在层级小的上层显示
         /// </summary>
         int Layer { get; set; }
 

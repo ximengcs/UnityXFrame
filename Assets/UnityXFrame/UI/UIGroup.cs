@@ -41,6 +41,8 @@ namespace UnityXFrame.Core.UIs
             RectTransform rectTf = m_Root as RectTransform;
             rectTf.anchorMin = Vector3.zero;
             rectTf.anchorMax = Vector3.one;
+            rectTf.offsetMin = Vector2.zero;
+            rectTf.offsetMax = Vector2.zero;
             rectTf.anchoredPosition3D = Vector3.zero;
         }
 
@@ -108,7 +110,7 @@ namespace UnityXFrame.Core.UIs
 
         void IUIGroup.RemoveUI(IUI ui)
         {
-            ui.Root.SetParent(null);
+            ui.Root.SetParent(null, false);
 
             bool reach = false;
             XLinkNode<IUI> node = m_UIs.First;

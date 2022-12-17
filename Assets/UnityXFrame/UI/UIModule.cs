@@ -11,6 +11,9 @@ using System.Collections.Generic;
 
 namespace UnityXFrame.Core.UIs
 {
+    /// <summary>
+    /// UI模块
+    /// </summary>
     public partial class UIModule : SingletonModule<UIModule>
     {
         private Canvas m_Canvas;
@@ -66,55 +69,141 @@ namespace UnityXFrame.Core.UIs
         #endregion
 
         #region Interface
+        /// <summary>
+        /// 主UI组
+        /// </summary>
         public IUIGroup MainGroup
         {
-            get { return InnerGetOrNewGroup(Constant.MAIN_GROUPUI, m_GroupList.Count - 1); }
+            get { return InnerGetOrNewGroup(Constant.MAIN_GROUPUI, m_GroupList.Count); }
         }
 
         #region Open UI
+        /// <summary>
+        /// 打开UI，默认会在主UI组中打开
+        /// </summary>
+        /// <param name="uiType">UI类型</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(Type uiType, object data = default, bool useNavtive = false)
         {
             return Open(uiType, Constant.MAIN_GROUPUI, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，默认会在主UI组中打开
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public T Open<T>(object data = default, bool useNavtive = false) where T : IUI
         {
             return (T)Open(typeof(T), data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，默认会在主UI组中打开
+        /// </summary>
+        /// <param name="uiName">UI名</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(string uiName, object data = default, bool useNavtive = false)
         {
             Type uiType = m_TypeSystem.GetByName(uiName);
             return Open(uiType, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <param name="uiName">UI名</param>
+        /// <param name="groupName">UI组名</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
+        public IUI Open(string uiName, string groupName, object data = default, bool useNavtive = false)
+        {
+            Type uiType = m_TypeSystem.GetByName(uiName);
+            return Open(uiType, groupName, data, useNavtive);
+        }
+
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="groupName">UI组名</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public T Open<T>(string groupName, object data = default, bool useNavtive = false) where T : IUI
         {
             return (T)Open(typeof(T), groupName, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <param name="uiType">UI类型</param>
+        /// <param name="groupName">UI组名</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(Type uiType, string groupName, object data = default, bool useNavtive = false)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
             return InnerOpenUI(group, uiType, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <param name="uiType">UI类型</param>
+        /// <param name="group">UI组</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(Type uiType, IUIGroup group, object data = default, bool useNavtive = false)
         {
             return InnerOpenUI(group, uiType, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <param name="ui">UI实例</param>
+        /// <param name="groupName">UI组名</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(IUI ui, string groupName, object data = default, bool useNavtive = false)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
             return InnerOpenUI(ui, group, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <param name="ui">UI实例</param>
+        /// <param name="group">UI组</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public IUI Open(IUI ui, IUIGroup group, object data = default, bool useNavtive = false)
         {
             return InnerOpenUI(ui, group, data, useNavtive);
         }
 
+        /// <summary>
+        /// 打开UI，在给定UI组中打开
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="group">UI组</param>
+        /// <param name="data">UI数据</param>
+        /// <param name="useNavtive">是否为本地UI</param>
+        /// <returns>UI实例</returns>
         public T Open<T>(IUIGroup group, object data = default, bool useNavtive = false)
         {
             return (T)InnerOpenUI(group, typeof(T), data, useNavtive);
@@ -139,14 +228,7 @@ namespace UnityXFrame.Core.UIs
         }
         #endregion
 
-        public void AddFactory<UIType, T>() where UIType : IUI where T : IUIFactory
-        {
-            Type uiType = typeof(UIType);
-            if (m_Factorys.ContainsKey(uiType))
-                return;
-            m_Factorys[uiType] = (T)Activator.CreateInstance(typeof(T));
-        }
-
+        #region Get UI
         public IUI Get(Type uiType)
         {
             return InnerGetUI(uiType);
@@ -162,7 +244,27 @@ namespace UnityXFrame.Core.UIs
             Type uiType = m_TypeSystem.GetByName(uiName);
             return InnerGetUI(uiType);
         }
+        #endregion
 
+        /// <summary>
+        /// 添加UI创建工厂
+        /// </summary>
+        /// <typeparam name="UIType">UI类型</typeparam>
+        /// <typeparam name="T">工厂类型</typeparam>
+        public void AddFactory<UIType, T>() where UIType : IUI where T : IUIFactory
+        {
+            Type uiType = typeof(UIType);
+            if (m_Factorys.ContainsKey(uiType))
+                return;
+            m_Factorys[uiType] = (T)Activator.CreateInstance(typeof(T));
+        }
+
+        /// <summary>
+        /// 获取(不存在时创建)UI组
+        /// </summary>
+        /// <param name="groupName">UI组名称</param>
+        /// <param name="layer">UI组层级, 层级大的在层级小的上层显示</param>
+        /// <returns>获取到的UI组</returns>
         public IUIGroup GetOrNewGroup(string groupName, int layer = -1)
         {
             if (layer == -1)
@@ -257,7 +359,7 @@ namespace UnityXFrame.Core.UIs
             }
 
             GameObject groupRoot = new GameObject(groupName, typeof(RectTransform), typeof(CanvasGroup));
-            groupRoot.transform.SetParent(m_Root);
+            groupRoot.transform.SetParent(m_Root, false);
             IUIGroup group = new UIGroup(groupRoot, groupName, layer);
             group.OnInit();
             m_GroupList.AddLast(group);
@@ -266,7 +368,7 @@ namespace UnityXFrame.Core.UIs
 
         internal void SetUIGroupLayer(IUIGroup group, int layer)
         {
-            layer = Mathf.Min(layer, m_GroupList.Count - 1);
+            layer = Mathf.Min(layer, m_GroupList.Count);
             layer = Mathf.Max(layer, 0);
             SetLayer(m_Root, group, layer);
         }
