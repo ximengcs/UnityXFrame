@@ -19,7 +19,7 @@ namespace UnityXFrame.Core.UIs
         int IUI.Layer
         {
             get { return Layer; }
-            set { InnerSetLayer(value, true); }
+            set { ((IUI)this).SetLayer(value, true); }
         }
 
         bool IUI.IsOpen => m_IsOpen;
@@ -97,7 +97,7 @@ namespace UnityXFrame.Core.UIs
             OnClose();
         }
 
-        internal void InnerSetLayer(int layer, bool refresh)
+        void IUI.SetLayer(int layer, bool refresh)
         {
             Layer = layer;
             if (refresh)

@@ -71,6 +71,11 @@ namespace UnityXFrame.Core.UIs
         /// UI销毁生命周期
         /// </summary>
         protected internal void OnDestroy();
+
+        /// <summary>
+        /// 设置层级，可选择是否刷新
+        /// </summary>
+        protected internal void SetLayer(int layer, bool refresh);
         #endregion
     }
 }

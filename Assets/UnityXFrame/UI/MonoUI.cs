@@ -96,6 +96,13 @@ namespace UnityXFrame.Core.UIs
             OnClose();
         }
 
+        void IUI.SetLayer(int layer, bool refresh)
+        {
+            Layer = layer;
+            if (refresh)
+                m_Group?.SetUILayer(this, Layer);
+        }
+
         protected virtual void OnInit() { }
         protected virtual void OnUpdate() { }
         protected virtual void OnOpen(object data) { }

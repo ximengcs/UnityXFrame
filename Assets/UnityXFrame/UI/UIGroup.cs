@@ -105,7 +105,7 @@ namespace UnityXFrame.Core.UIs
         {
             ui.Root.SetParent(m_Root, false);
             m_UIs.AddFirst(ui);
-            ((UI)ui).InnerSetLayer(m_UIs.Count - 1, false);
+            ui.SetLayer(m_UIs.Count - 1, false);
         }
 
         void IUIGroup.RemoveUI(IUI ui)
@@ -118,7 +118,7 @@ namespace UnityXFrame.Core.UIs
             {
                 IUI other = node.Value;
                 if (reach)
-                    ((UI)other).InnerSetLayer(other.Layer - 1, false);
+                    ui.SetLayer(other.Layer - 1, false);
 
                 if (other == ui)
                 {
