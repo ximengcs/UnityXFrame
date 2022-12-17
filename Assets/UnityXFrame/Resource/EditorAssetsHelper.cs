@@ -10,7 +10,7 @@ namespace UnityXFrame.Core.Resource
     {
         private FileNode<object> m_ResCache;
 
-        public void OnInit(string rootPath)
+        void IResourceHelper.OnInit(string rootPath)
         {
             m_ResCache = new FileNode<object>(string.Empty);
         }

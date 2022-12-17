@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityXFrame.Core;
 using XFrame.Collections;
 using XFrame.Modules.XType;
+using XFrame.Modules.Pools;
 using UnityEditor.SceneManagement;
 
 namespace UnityXFrame.Editor
@@ -14,6 +15,7 @@ namespace UnityXFrame.Editor
     {
         public const string InitDataPath = "Assets/UnityXFrame/InitData.asset";
 
+        private XCore m_FrameCore;
         private InitData m_Data;
         private TypeModule.System m_EditorType;
         private XLinkList<IDataEditor> m_Editors;
@@ -22,7 +24,7 @@ namespace UnityXFrame.Editor
         {
             if (Application.isPlaying)
                 return;
-            Entry.Init();
+            m_FrameCore = XCore.Create(typeof(TypeModule), typeof(PoolModule));
             m_Editors = new XLinkList<IDataEditor>();
             m_EditorType = TypeModule.Inst.GetOrNew<IDataEditor>();
             m_Data = AssetDatabase.LoadAssetAtPath<InitData>(InitDataPath);
@@ -71,7 +73,7 @@ namespace UnityXFrame.Editor
             }
 
             EditorUtility.SetDirty(m_Data);
-            Entry.ShutDown();
+            m_FrameCore.Destroy();
             m_EditorType = null;
             m_Editors = null;
             m_Data = null;

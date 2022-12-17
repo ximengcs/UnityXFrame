@@ -24,11 +24,6 @@ namespace UnityXFrame.Core.Entities
 
         }
 
-        protected override void OnDelete()
-        {
-
-        }
-
         protected override void OnCreate()
         {
 

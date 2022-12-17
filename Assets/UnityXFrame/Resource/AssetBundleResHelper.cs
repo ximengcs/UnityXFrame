@@ -22,7 +22,7 @@ namespace UnityXFrame.Core.Resource
         /// 初始化
         /// </summary>
         /// <param name="rootPath">资源根路径，一般为persistDataPath, assetsStreaming</param>
-        public void OnInit(string rootPath)
+        void IResourceHelper.OnInit(string rootPath)
         {
             m_AssetsPath = Path.Combine(Application.persistentDataPath, ROOT_DIR);
             string mainFilePath = Path.Combine(m_AssetsPath, MAIN_FILE);

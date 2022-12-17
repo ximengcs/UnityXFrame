@@ -54,7 +54,7 @@ namespace UnityXFrame.Editor
 
                 #region All Color Select
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Colors", GUI.skin.customStyles[312]);
+                EditorGUILayout.LabelField("Colors", GUI.skin.customStyles[40]);
                 bool all = true;
                 bool dirty = false;
                 foreach (DebugColor data in m_Data.LogMark)
