@@ -1,18 +1,76 @@
-﻿
+﻿using UnityEngine;
+
 namespace UnityXFrame.Core.UIs
 {
-    public interface IUI
+    /// <summary>
+    /// UI
+    /// </summary>
+    public interface IUI : IUIElement
     {
+        /// <summary>
+        /// 根节点
+        /// </summary>
+        Transform Root { get; }
+
+        /// <summary>
+        /// 是否处于打开的状态
+        /// </summary>
         bool IsOpen { get; }
+
+        /// <summary>
+        /// UI层级
+        /// </summary>
         int Layer { get; set; }
-        protected internal void OnOpen();
-        protected internal void OnClose();
-        protected internal void OnInit();
-        protected internal void OnGroupChange(IUIGroup newGroup);
-        protected internal void OnReset(object data);
-        protected internal void OnUpdate();
-        protected internal void OnDestroy();
-        void Open();
+
+        /// <summary>
+        /// 打开UI
+        /// </summary>
+        /// <param name="data">数据</param>
+        void Open(object data);
+
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
         void Close();
+
+        /// <summary>
+        /// UI所在组
+        /// </summary>
+        IUIGroup Group { get; }
+
+        #region Life Fun
+        /// <summary>
+        /// 打开生命周期，每次UI打开时被调用
+        /// </summary>
+        /// <param name="data">数据</param>
+        protected internal void OnOpen(object data);
+
+        /// <summary>
+        /// 关闭生命周期，每次UI关闭时被调用
+        /// </summary>
+        protected internal void OnClose();
+
+        /// <summary>
+        /// 初始化生命周期
+        /// </summary>
+        /// <param name="inst">UI实体</param>
+        protected internal void OnInit(GameObject inst);
+
+        /// <summary>
+        /// UI组改变生命周期
+        /// </summary>
+        /// <param name="newGroup"></param>
+        protected internal void OnGroupChange(IUIGroup newGroup);
+
+        /// <summary>
+        /// UI更新生命周期
+        /// </summary>
+        protected internal void OnUpdate();
+
+        /// <summary>
+        /// UI销毁生命周期
+        /// </summary>
+        protected internal void OnDestroy();
+        #endregion
     }
 }

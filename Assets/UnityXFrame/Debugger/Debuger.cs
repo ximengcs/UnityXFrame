@@ -5,6 +5,7 @@ using System.Reflection;
 using XFrame.Modules.Times;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using XFrame.Modules.XType;
 
 namespace UnityXFrame.Core.Diagnotics
 {
@@ -136,13 +137,11 @@ namespace UnityXFrame.Core.Diagnotics
 
         private void InternalLoadInst()
         {
-            Assembly assembly = Assembly.GetAssembly(typeof(Debuger));
-            Type[] types = assembly.GetTypes();
-            Type windowInterface = typeof(IDebugWindow);
-            foreach (Type t in types)
+            TypeModule.System typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
+            foreach (Type t in typeSys)
             {
                 DebugWindowAttribute atr = t.GetCustomAttribute<DebugWindowAttribute>();
-                if (atr != null && windowInterface.IsAssignableFrom(t))
+                if (atr != null)
                 {
                     IDebugWindow window = Activator.CreateInstance(t) as IDebugWindow;
                     WindowInfo info = new WindowInfo();

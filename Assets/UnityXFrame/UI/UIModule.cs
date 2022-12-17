@@ -1,20 +1,25 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using XFrame.Collections;
-using System.Collections.Generic;
+using XFrame.Modules.Resource;
+using UnityXFrame.Core.Resource;
 using XFrame.Modules.Diagnotics;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace UnityXFrame.Core.UIs
 {
-    public class UIModule : SingletonModule<UIModule>
+    public partial class UIModule : SingletonModule<UIModule>
     {
         private Canvas m_Canvas;
         private Transform m_Root;
         private Dictionary<Type, IUI> m_UIMap;
+        private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;
 
-        internal int GroupCount => m_GroupList.Count;
+        public int GroupCount => m_GroupList.Count;
 
         #region Life Fun
         protected override void OnInit(object data)
@@ -27,6 +32,9 @@ namespace UnityXFrame.Core.UIs
                 m_Root = m_Canvas.transform;
                 m_UIMap = new Dictionary<Type, IUI>();
                 m_GroupList = new XLinkList<IUIGroup>();
+                m_Factorys = new Dictionary<Type, IUIFactory>();
+                AddFactory<UI, UI.Factory>();
+                AddFactory<MonoUI, MonoUI.Factory>();
             }
         }
 
@@ -63,31 +71,57 @@ namespace UnityXFrame.Core.UIs
             get { return InnerGetOrNewGroup(Constant.MAIN_GROUPUI, GroupCount); }
         }
 
-        public IUI Open(Type type, object data = default)
+        #region Open UI
+        public IUI Open(Type type, object data = default, bool useNavtive = false)
         {
-            return Open(Constant.MAIN_GROUPUI, type, data);
+            return Open(Constant.MAIN_GROUPUI, type, data, useNavtive);
         }
 
-        public T Open<T>(object data = default) where T : IUI
+        public T Open<T>(object data = default, bool useNavtive = false) where T : IUI
         {
-            return (T)Open(typeof(T), data);
+            return (T)Open(typeof(T), data, useNavtive);
         }
 
-        public IUI Open(string groupName, Type type, object data = default)
+        public T Open<T>(string groupName, object data = default, bool useNavtive = false) where T : IUI
+        {
+            return (T)Open(groupName, typeof(T), data, useNavtive);
+        }
+
+        public IUI Open(string groupName, Type type, object data = default, bool useNavtive = false)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
-            if (!m_UIMap.TryGetValue(type, out IUI ui))
-            {
-                ui = (IUI)Activator.CreateInstance(type);
-                ui.OnInit();
-                ui.OnGroupChange(group);
-                m_UIMap[type] = ui;
-            }
+            return InnerOpenUI(group, type, data, useNavtive);
+        }
 
-            ui.OnReset(data);
-            ui.Open();
-            group.Open();
-            return ui;
+        public IUI Open(IUIGroup group, Type type, object data = default, bool useNavtive = false)
+        {
+            return InnerOpenUI(group, type, data, useNavtive);
+        }
+
+        public T Open<T>(IUIGroup group, object data = default, bool useNavtive = false)
+        {
+            return (T)InnerOpenUI(group, typeof(T), data, useNavtive);
+        }
+        #endregion
+
+        #region Close UI
+        public void Close<T>() where T : IUI
+        {
+            InnerCloseUI(typeof(T));
+        }
+
+        public void Close(Type uiType)
+        {
+            InnerCloseUI(uiType);
+        }
+        #endregion
+
+        public void AddFactory<UIType, T>() where UIType : IUI where T : IUIFactory
+        {
+            Type uiType = typeof(UIType);
+            if (m_Factorys.ContainsKey(uiType))
+                return;
+            m_Factorys[uiType] = (T)Activator.CreateInstance(typeof(T));
         }
 
         public IUIGroup GetOrNew(string groupName, int layer = -1)
@@ -99,6 +133,62 @@ namespace UnityXFrame.Core.UIs
         #endregion
 
         #region Inner Implement
+        private IUIFactory InnerGetUIFactory(Type uiType)
+        {
+            if (m_Factorys.TryGetValue(uiType.BaseType, out IUIFactory factory))
+                return factory;
+            return default;
+        }
+
+        private void InnerCloseUI(Type uiTyp)
+        {
+            if (m_UIMap.TryGetValue(uiTyp, out IUI ui))
+                ui.Close();
+        }
+
+        private IUI InnerOpenUI(IUIGroup group, Type uiType, object data, bool useNavtive)
+        {
+            if (!m_UIMap.TryGetValue(uiType, out IUI ui))
+            {
+                GameObject prefab;
+                string uiPath = Path.Combine(Constant.UI_RES_PATH, uiType.Name);
+
+                if (useNavtive)
+                    prefab = NativeResModule.Inst.Load<GameObject>(uiPath);
+                else
+                    prefab = ResModule.Inst.Load<GameObject>(uiPath);
+
+
+                if (prefab == null)
+                {
+                    Log.Error(nameof(UIModule), $"UI res {uiPath} dont exist.");
+                    return default;
+                }
+                Stopwatch sw = Stopwatch.StartNew();
+                sw.Start();
+                GameObject inst = GameObject.Instantiate(prefab);
+                sw.Stop();
+                Log.Debug(sw.ElapsedMilliseconds);
+                inst.name = uiType.Name;
+                IUIFactory factory = InnerGetUIFactory(uiType);
+
+                ui = factory.Create(inst, uiType);
+                ui.OnInit(inst);
+                m_UIMap[uiType] = ui;
+            }
+
+            IUIGroup oldGroup = ui.Group;
+            if (oldGroup != group)
+            {
+                oldGroup?.RemoveUI(ui);
+                ui.OnGroupChange(group);
+                group.AddUI(ui);
+            }
+            ui.Open(data);
+            group.Open();
+            return ui;
+        }
+
         private void InnerCheckCanvas(object canvas)
         {
             if (canvas != null)
@@ -125,37 +215,9 @@ namespace UnityXFrame.Core.UIs
             return group;
         }
 
-        internal void SetGroupLayer(IUIGroup group, int layer)
+        internal void SetUIGroupLayer(IUIGroup group, int layer)
         {
-            bool find = false;
-            Transform[] list = new Transform[m_Root.childCount];
-
-
-            int curIndex = 0;
-            for (int i = 0; i < list.Length; i++, curIndex++)
-            {
-                Transform child = m_Root.GetChild(i);
-                if (!find && child.name == group.Name)
-                {
-                    find = true;
-                    list[layer] = child;
-                    if (layer != curIndex)
-                        curIndex--;
-                }
-                else
-                {
-                    if (layer == curIndex)
-                        curIndex++;
-                    list[curIndex] = child;
-                }
-            }
-
-            m_Root.DetachChildren();
-            foreach (Transform child in list)
-            {
-                child.SetParent(m_Root);
-                Debug.LogWarning(child.name + " " + child.parent.name);
-            }
+            SetLayer(m_Root, group, layer);
         }
         #endregion
     }

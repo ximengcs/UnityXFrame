@@ -1,6 +1,8 @@
-﻿using XFrame.Modules.Procedure;
+﻿using Game.Test;
+using UnityXFrame.Core.UIs;
+using XFrame.Modules.Procedure;
 
-namespace UnityXFrame.Core.Procedure
+namespace Game.Core.Procedure
 {
     public class MainProcedure : ProcedureBase
     {

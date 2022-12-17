@@ -6,13 +6,8 @@ namespace UnityXFrame.Core.UIs
     /// 当打开UI组时，所有处于打开状态的UI会被打开
     /// 当关闭UI组时，所有UI会被关闭
     /// </summary>
-    public interface IUIGroup
+    public interface IUIGroup : IUIElement
     {
-        /// <summary>
-        /// 标识名
-        /// </summary>
-        string Name { get; }
-
         /// <summary>
         /// 是否处于打开状态
         /// </summary>
@@ -29,16 +24,46 @@ namespace UnityXFrame.Core.UIs
         int Layer { get; set; }
 
         /// <summary>
+        /// 打开UI组
+        /// </summary>
+        void Open();
+
+        /// <summary>
+        /// 关闭UI组
+        /// </summary>
+        void Close();
+
+        #region Life Fun
+        /// <summary>
         /// 组内打开UI生命周期
         /// </summary>
         /// <param name="ui">打开的UI</param>
-        protected internal void OnOpenUI(IUI ui);
+        protected internal void OpenUI(IUI ui, object data);
 
         /// <summary>
         /// 组内关闭UI生命周期
         /// </summary>
         /// <param name="ui"></param>
-        protected internal void OnCloseUI(IUI ui);
+        protected internal void CloseUI(IUI ui);
+
+        /// <summary>
+        /// 添加UI
+        /// </summary>
+        /// <param name="ui">需要添加的UI</param>
+        protected internal void AddUI(IUI ui);
+
+        /// <summary>
+        /// 移除UI
+        /// </summary>
+        /// <param name="ui">需要移除的UI</param>
+        protected internal void RemoveUI(IUI ui);
+
+        /// <summary>
+        /// 设置UI层级
+        /// </summary>
+        /// <param name="ui">需要设置的UI</param>
+        /// <param name="layer">设置的层级</param>
+        protected internal void SetUILayer(IUI ui, int layer);
 
         /// <summary>
         /// 初始化生命周期
@@ -54,15 +79,6 @@ namespace UnityXFrame.Core.UIs
         /// 销毁生命周期
         /// </summary>
         protected internal void OnDestroy();
-
-        /// <summary>
-        /// 打开UI组
-        /// </summary>
-        void Open();
-
-        /// <summary>
-        /// 关闭UI组
-        /// </summary>
-        void Close();
+        #endregion
     }
 }
