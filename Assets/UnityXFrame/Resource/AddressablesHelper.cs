@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace UnityXFrame.Core.Resource
             ResLoadTask<T> loadTask = TaskModule.Inst.GetOrNew<ResLoadTask<T>>();
             AsyncOperationHandle handle = Addressables.LoadAssetAsync<T>(resPath);
             ResHandler handler = new ResHandler(handle);
-            handler.OnComplete((asset) =>
+            loadTask.OnComplete((asset) =>
             {
                 int code = asset.GetHashCode();
                 if (!m_LoadMap.ContainsKey(code))
@@ -53,12 +54,6 @@ namespace UnityXFrame.Core.Resource
             {
                 handler.Release();
                 m_LoadMap.Remove(code);
-            }
-            else
-            {
-                UnityEngine.Object asset = target as UnityEngine.Object;
-                if (asset != null)
-                    UnityEngine.Object.Destroy(asset);
             }
         }
 

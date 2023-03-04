@@ -28,6 +28,11 @@ namespace UnityXFrame.Core.Resource
             {
                 m_Request = Resources.LoadAsync(m_ResPath, m_ResType);
             }
+
+            public void Dispose()
+            {
+
+            }
         }
     }
 }

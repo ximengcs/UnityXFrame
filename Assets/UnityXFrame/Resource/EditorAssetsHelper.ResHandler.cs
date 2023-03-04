@@ -1,5 +1,4 @@
-﻿using System;
-using XFrame.Modules.Resource;
+﻿using XFrame.Modules.Resource;
 
 namespace UnityXFrame.Core.Resource
 {
@@ -19,6 +18,11 @@ namespace UnityXFrame.Core.Resource
             }
 
             public void Start()
+            {
+
+            }
+
+            public void Dispose()
             {
 
             }

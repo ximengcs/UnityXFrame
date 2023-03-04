@@ -1,7 +1,9 @@
-﻿using XFrame.Modules.Resource;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using System;
+﻿using System;
+using XFrame.Modules.Resource;
+using XFrame.Modules.Diagnotics;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine;
 
 namespace UnityXFrame.Core.Resource
 {
@@ -9,10 +11,18 @@ namespace UnityXFrame.Core.Resource
     {
         private class ResHandler : IResHandler
         {
-            private Action<object> m_OnComplete;
             private AsyncOperationHandle m_Handle;
+            private object m_Data;
 
-            public object Data => m_Handle.Result;
+            public object Data
+            {
+                get
+                {
+                    if (m_Data == null)
+                        m_Data = m_Handle.Result;
+                    return m_Data;
+                }
+            }
 
             public bool IsDone => m_Handle.IsDone;
 
@@ -28,20 +38,20 @@ namespace UnityXFrame.Core.Resource
                 InnerStart();
             }
 
+            public void Dispose()
+            {
+
+            }
+
             public void Release()
             {
                 Addressables.Release(m_Handle);
-            }
-
-            public void OnComplete(Action<object> callback)
-            {
-                m_OnComplete = callback;
+                m_Data = null;
             }
 
             private async void InnerStart()
             {
                 await m_Handle.Task;
-                m_OnComplete?.Invoke(m_Handle.Result);
             }
         }
     }

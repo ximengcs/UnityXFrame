@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.AddressableAssets;
-using XFrame.Modules.Procedure;
+﻿using XFrame.Modules.Procedure;
 
 namespace Game.Core.Procedure
 {
