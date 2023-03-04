@@ -2,6 +2,7 @@
 using UnityEngine;
 using XFrame.Modules.Local;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 namespace UnityXFrame.Core
 {
@@ -16,6 +17,7 @@ namespace UnityXFrame.Core
         public TextAsset LocalizeFile;
         public GUISkin DebuggerSkin;
         public List<DebugColor> LogMark;
+        public AudioMixer AudioMixer;
     }
 
     [Serializable]

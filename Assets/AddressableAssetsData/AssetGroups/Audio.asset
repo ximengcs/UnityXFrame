@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: 
+  m_GroupName: Audio
+  m_Data:
+    m_SerializedData: []
+  m_GUID: fc4a3a81f2b74c24191f485881737d16
+  m_SerializeEntries:
+  - m_GUID: a86257dd60b1fdd458d540f424a478c0
+    m_Address: Assets/Data/Audio/TestAudio.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 64564619409a4794a84a09ab13b8e899
+    m_Address: Assets/Data/Audio/TestAudio2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0f21367e0e62d4a44a5723cffa300d4d
+    m_Address: Assets/Data/Audio/a1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4c4b4e15911b8bd4f8dd49f46b29375c
+    m_Address: Assets/Data/Audio/a2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e348537a4efe30646b2e4f444151058c
+    m_Address: Assets/Data/Audio/a3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: f690568f028bded4e920f7df9d96583e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7beb19d2ef28de24f8243c119bb01cb4, type: 2}
+    - {fileID: 11400000, guid: 428298e324a30b7469a473f75b36a4df, type: 2}
