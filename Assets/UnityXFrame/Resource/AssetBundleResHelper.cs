@@ -102,9 +102,9 @@ namespace UnityXFrame.Core.Resource
                 return default;
         }
 
-        public void Unload(string package)
+        public void Unload(object package)
         {
-            if (m_Bundles.TryGetValue(package, out BundleInfo bundleInfo))
+            if (m_Bundles.TryGetValue((string)package, out BundleInfo bundleInfo))
                 bundleInfo.Unload();
         }
 

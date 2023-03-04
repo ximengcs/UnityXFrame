@@ -7,6 +7,7 @@ namespace UnityXFrame.Core
 {
     public class InitData : ScriptableObject
     {
+        public string Entrance;
         public Language Language;
         public string Logger;
         public string ResMode;

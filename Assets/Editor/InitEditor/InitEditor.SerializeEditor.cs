@@ -27,7 +27,7 @@ namespace UnityXFrame.Editor
                 {
                     string name = Types[i].Name;
                     m_HelperTypeNames[i] = name;
-                    if (name == m_Data.ResMode)
+                    if (name == m_Data.JsonSerializer)
                         m_HelperTypeIndex = i;
                 }
 

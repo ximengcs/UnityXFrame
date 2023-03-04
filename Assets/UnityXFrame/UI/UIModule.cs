@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using XFrame.Collections;
+using XFrame.Modules.Pools;
 using XFrame.Modules.XType;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Diagnotics;
@@ -14,6 +15,8 @@ namespace UnityXFrame.Core.UIs
     /// <summary>
     /// UI模块
     /// </summary>
+    [CoreModule]
+    [RequireModule(typeof(PoolModule))]
     public partial class UIModule : SingletonModule<UIModule>
     {
         private Canvas m_Canvas;

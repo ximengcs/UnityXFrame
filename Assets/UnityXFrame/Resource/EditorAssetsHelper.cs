@@ -83,9 +83,9 @@ namespace UnityXFrame.Core.Resource
             return loadTask;
         }
 
-        public void Unload(string package)
+        public void Unload(object package)
         {
-            m_ResCache.Remove(package);
+            m_ResCache.Remove((string)package);
         }
 
         public void UnloadAll()

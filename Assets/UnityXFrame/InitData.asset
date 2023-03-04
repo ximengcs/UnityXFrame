@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37a743fcddf8e14faf2e7720a6b1b04, type: 3}
   m_Name: InitData
   m_EditorClassIdentifier: 
+  Entrance: Game.Core.Procedure.MainProcedure
   Language: 10
   Logger: UnityXFrame.Core.Diagnotics.Logger
   ResMode: UnityXFrame.Core.Resource.EditorAssetsHelper

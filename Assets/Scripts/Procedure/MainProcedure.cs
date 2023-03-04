@@ -1,6 +1,4 @@
-﻿using Game.Test;
-using UnityXFrame.Core.UIs;
-using XFrame.Modules.Procedure;
+﻿using XFrame.Modules.Procedure;
 
 namespace Game.Core.Procedure
 {

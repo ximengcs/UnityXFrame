@@ -9,6 +9,7 @@ using XFrame.Modules.XType;
 
 namespace UnityXFrame.Core.Diagnotics
 {
+    [CoreModule]
     public partial class Debuger : SingletonModule<Debuger>
     {
         #region Internal Field
@@ -57,10 +58,10 @@ namespace UnityXFrame.Core.Diagnotics
         }
 
         #region Life Fun
-        protected override void OnInit(object data)
+        protected override void OnStart()
         {
-            base.OnInit(data);
-            Skin = data as GUISkin;
+            base.OnStart();
+            Skin = Init.Inst.Data.DebuggerSkin;
             m_CloseButtonStyle = Skin.customStyles[0];
             m_TitleStyle = Skin.customStyles[1];
             m_ContentStyle = Skin.customStyles[2];
