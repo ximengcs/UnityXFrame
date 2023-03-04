@@ -1,5 +1,4 @@
-﻿
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
 namespace UnityXFrame.Core
@@ -12,6 +11,7 @@ namespace UnityXFrame.Core
         public static int SIZE_Y = 1920;
         public static int UNIT_PIXEL = 100;
         public static int SCENEUI_SORT_LAYER = 0;
+
         public static string SCENEUI_RES_PATH = "Data/SceneUI";
         public static string UI_RES_PATH = "Data/UI";
         public const string MAIN_GROUPUI = "Main";

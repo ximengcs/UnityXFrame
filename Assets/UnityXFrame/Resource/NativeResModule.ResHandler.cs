@@ -8,8 +8,9 @@ namespace UnityXFrame.Core.Resource
     {
         private class ResHandler : IResHandler
         {
+            private string m_ResPath;
+            private Type m_ResType;
             private ResourceRequest m_Request;
-            private Type m_HandleType = typeof(ResLoadTask);
 
             public object Data => m_Request.asset;
 
@@ -17,11 +18,15 @@ namespace UnityXFrame.Core.Resource
 
             public float Pro => m_Request.progress;
 
-            public Type HandleType => m_HandleType;
-
-            public ResHandler(ResourceRequest request)
+            public ResHandler(string resPath, Type resType)
             {
-                m_Request = request;
+                m_ResPath = resPath;
+                m_ResType = resType;
+            }
+
+            public void Start()
+            {
+                m_Request = Resources.LoadAsync(m_ResPath, m_ResType);
             }
         }
     }

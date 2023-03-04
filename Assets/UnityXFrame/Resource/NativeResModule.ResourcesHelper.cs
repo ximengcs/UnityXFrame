@@ -33,7 +33,7 @@ namespace UnityXFrame.Core.Resource
             {
                 resPath = InnerCheckName(resPath);
                 ResLoadTask task = TaskModule.Inst.GetOrNew<ResLoadTask>();
-                task.Add(new ResHandler(Resources.LoadAsync(resPath, type)));
+                task.Add(new ResHandler(resPath, type));
                 task.Start();
                 return task;
             }
@@ -42,7 +42,7 @@ namespace UnityXFrame.Core.Resource
             {
                 resPath = InnerCheckName(resPath);
                 ResLoadTask<T> task = TaskModule.Inst.GetOrNew<ResLoadTask<T>>();
-                task.Add(new ResHandler(Resources.LoadAsync(resPath, typeof(T))));
+                task.Add(new ResHandler(resPath, typeof(T)));
                 task.Start();
                 return task;
             }

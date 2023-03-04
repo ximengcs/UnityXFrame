@@ -7,19 +7,20 @@ namespace UnityXFrame.Core.Resource
     {
         private class ResHandler : IResHandler
         {
-            private Type m_HandleType = typeof(ResLoadTask);
-
             public object Data { get; }
 
             public bool IsDone => true;
 
             public float Pro => 1;
 
-            public Type HandleType => m_HandleType;
-
             public ResHandler(object res)
             {
                 Data = res;
+            }
+
+            public void Start()
+            {
+
             }
         }
     }

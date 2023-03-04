@@ -15,7 +15,7 @@ MonoBehaviour:
   Entrance: Game.Core.Procedure.MainProcedure
   Language: 10
   Logger: UnityXFrame.Core.Diagnotics.Logger
-  ResMode: UnityXFrame.Core.Resource.EditorAssetsHelper
+  ResMode: UnityXFrame.Core.Resource.AddressablesHelper
   ArchivePath: C:/Users/98259/AppData/LocalLow/DefaultCompany/UnityXFrame\archive
   JsonSerializer: UnityXFrame.Core.Serialize.JsonSerializeHelper
   LocalizeFile: {fileID: 0}
