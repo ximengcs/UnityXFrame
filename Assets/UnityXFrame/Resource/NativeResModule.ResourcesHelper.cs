@@ -8,11 +8,11 @@ namespace UnityXFrame.Core.Resource
 {
     public partial class NativeResModule
     {
-        private partial class ResourcesHelper
+        private partial class ResourcesHelper : IResourceHelper
         {
             private string m_AssetPath;
 
-            public void OnInit(string rootPath)
+            void IResourceHelper.OnInit(string rootPath)
             {
                 m_AssetPath = "Assets/Resources/";
             }
@@ -47,9 +47,9 @@ namespace UnityXFrame.Core.Resource
                 return task;
             }
 
-            public void Unload(UnityEngine.Object res)
+            public void Unload(object res)
             {
-                Resources.UnloadAsset(res);
+                Resources.UnloadAsset((UnityEngine.Object)res);
             }
 
             public void UnloadAll()
