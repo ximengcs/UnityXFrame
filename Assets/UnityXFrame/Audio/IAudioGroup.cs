@@ -2,7 +2,7 @@
 
 namespace UnityXFrame.Core.Audios
 {
-    public interface IAudioGroup : IPoolObject
+    public interface IAudioGroup
     {
 
     }

@@ -44,9 +44,7 @@ namespace UnityXFrame.Core.Audios
 
             public void SetGroup(Group group)
             {
-                m_Group?.Remove(this);
                 m_Group = group;
-                m_Group?.Add(this);
             }
 
             public void Play(Action callback = null)
@@ -85,7 +83,7 @@ namespace UnityXFrame.Core.Audios
 
             public void OnDispose(Action callback)
             {
-                m_OnDispose = callback;
+                m_OnDispose += callback;
             }
 
             void IPoolObject.OnCreate()
@@ -110,7 +108,7 @@ namespace UnityXFrame.Core.Audios
                     m_WaitTask.Delete();
                     m_WaitTask = null;
                 }
-                m_Group?.Remove(this);
+
                 m_Group = null;
                 m_Inst.SetActive(false);
                 m_OnDispose = null;
