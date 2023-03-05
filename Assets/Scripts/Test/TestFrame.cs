@@ -70,10 +70,11 @@ namespace Game.Test
             {
                 ResModule.Inst.Preload(
                     new string[] { $"{Constant.AUDIO_PATH}/TestAudio.mp3" },
-                    new Type[] { typeof(AudioClip) });
+                    new Type[] { typeof(AudioClip) })
+                    .Start();
             }
             if (DebugGUI.Button("Play BGM1"))
-                m_Audio1 = AudioModule.Inst.Play("TestAudio.mp3");
+                AudioModule.Inst.PlayLoop("TestAudio.mp3");
 
             if (DebugGUI.Button("Play1"))
                 AudioModule.Inst.PlayAsync("a1.wav");

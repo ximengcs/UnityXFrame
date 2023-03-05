@@ -1,10 +1,10 @@
-﻿using XFrame.Core;
+﻿using System;
+using XFrame.Core;
 using UnityEngine;
 using UnityEngine.Audio;
 using XFrame.Modules.Pools;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
-using System;
 
 namespace UnityXFrame.Core.Audios
 {
@@ -31,6 +31,11 @@ namespace UnityXFrame.Core.Audios
             m_GroupPool = PoolModule.Inst.GetOrNew<Group>();
             m_Mixer = Init.Inst.Data.AudioMixer;
             m_MainGroup = m_Mixer.FindMatchingGroups("Master")[0];
+        }
+
+        public IAudioGroup GetOrNewGroup(string groupName)
+        {
+            return default;
         }
 
         public IAudio Get(string name)
@@ -69,6 +74,11 @@ namespace UnityXFrame.Core.Audios
             IAudio audio = Get(name);
             audio.Play(callback);
             return audio;
+        }
+
+        public IAudio Play(string name, IAudioGroup group, Action callback = null)
+        {
+            return default;
         }
 
         public XTask<IAudio> PlayAsync(string name, Action callback = null)

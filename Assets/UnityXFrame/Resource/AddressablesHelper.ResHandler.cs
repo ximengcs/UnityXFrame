@@ -1,15 +1,17 @@
-﻿using System;
-using XFrame.Modules.Resource;
-using XFrame.Modules.Diagnotics;
+﻿using XFrame.Modules.Resource;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine;
 
 namespace UnityXFrame.Core.Resource
 {
     public partial class AddressablesHelper
     {
-        private class ResHandler : IResHandler
+        private interface IAddresableResHandler : IResHandler
+        {
+            void Release();
+        }
+
+        private class ResHandler : IAddresableResHandler
         {
             private AsyncOperationHandle m_Handle;
             private object m_Data;

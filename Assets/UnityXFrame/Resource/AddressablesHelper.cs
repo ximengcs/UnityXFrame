@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
 using System.Collections.Generic;
@@ -10,26 +9,37 @@ namespace UnityXFrame.Core.Resource
 {
     public partial class AddressablesHelper : IResourceHelper
     {
-        private Dictionary<int, ResHandler> m_LoadMap;
+        private Dictionary<int, IAddresableResHandler> m_LoadMap;
 
         void IResourceHelper.OnInit(string rootPath)
         {
-            m_LoadMap = new Dictionary<int, ResHandler>();
+            Ext.OnInit();
+            m_LoadMap = new Dictionary<int, IAddresableResHandler>();
         }
 
         public object Load(string resPath, Type type)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public T Load<T>(string resPath)
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public ResLoadTask LoadAsync(string resPath, Type type)
         {
-            throw new NotImplementedException();
+            ResLoadTask loadTask = TaskModule.Inst.GetOrNew<ResLoadTask>();
+            object handle = Ext.LoadAssetAsync(resPath, type);
+            ReflectResHandler handler = new ReflectResHandler(handle, type);
+            loadTask.OnComplete((asset) =>
+            {
+                int code = asset.GetHashCode();
+                if (!m_LoadMap.ContainsKey(code))
+                    m_LoadMap.Add(code, handler);
+            });
+            loadTask.Add(handler);
+            return loadTask;
         }
 
         public ResLoadTask<T> LoadAsync<T>(string resPath)
@@ -50,7 +60,7 @@ namespace UnityXFrame.Core.Resource
         public void Unload(object target)
         {
             int code = target.GetHashCode();
-            if (m_LoadMap.TryGetValue(code, out ResHandler handler))
+            if (m_LoadMap.TryGetValue(code, out IAddresableResHandler handler))
             {
                 handler.Release();
                 m_LoadMap.Remove(code);
