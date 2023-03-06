@@ -1,8 +1,6 @@
-﻿using System;
-using UnityEngine;
-using XFrame.Modules.Procedure;
+﻿using UnityEngine;
 using XFrame.Modules.Resource;
-using XFrame.Modules.Tasks;
+using XFrame.Modules.Procedure;
 
 namespace Game.Core.Procedure
 {
@@ -11,11 +9,10 @@ namespace Game.Core.Procedure
         protected override void OnEnter()
         {
             base.OnEnter();
-
-            ITask task = ResModule.Inst.Preload(
-                new string[] { "Assets/Data/Sprites/test.png" },
-                new Type[] { typeof(Sprite) });
-            task.OnComplete(InnerTest).Start();
+            //ITask task = ResModule.Inst.Preload(
+            //    new string[] { "Assets/Data/Sprites/test.png" },
+            //    new Type[] { typeof(Sprite) });
+            //task.OnComplete(InnerTest).Start();
         }
 
         private void InnerTest()

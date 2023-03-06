@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityXFrame.Core;
 using XFrame.Modules.XType;
 using System.Collections.Generic;
+using UnityEditor.Build;
+using System.Text;
 
 namespace UnityXFrame.Editor
 {
@@ -11,6 +13,7 @@ namespace UnityXFrame.Editor
     {
         private class DebugEditor : DataEditorBase
         {
+            private const string DEBUG = "CONSOLE";
             private TypeModule.System m_LogHelperTypes;
             private Type[] m_Types;
             private string[] m_LogHelperTypeNames;
@@ -18,6 +21,7 @@ namespace UnityXFrame.Editor
             private Vector2 m_LogScrollPos;
             private GUISkin m_DebuggerSkin;
             private bool m_MoreColorDetail;
+            private HashSet<string> m_Symbols;
 
             protected override void OnInit()
             {
@@ -37,13 +41,49 @@ namespace UnityXFrame.Editor
                     InnerSelect(0);
 
                 m_DebuggerSkin = m_Data.DebuggerSkin;
+
+                string symbol = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.Standalone);
+                m_Symbols = new HashSet<string>(symbol.Split(';'));
+            }
+
+            private bool InnerIsDebug()
+            {
+                return m_Symbols.Contains(DEBUG);
+            }
+
+            private void InnerSaveDebug(bool debug)
+            {
+                if (debug)
+                {
+                    if (!m_Symbols.Contains(DEBUG))
+                        m_Symbols.Add(DEBUG);
+                }
+                else
+                {
+                    if (m_Symbols.Contains(DEBUG))
+                        m_Symbols.Remove(DEBUG);
+                }
+                StringBuilder symbols = new StringBuilder();
+                foreach (string symbol in m_Symbols)
+                {
+                    symbols.Append(symbol);
+                    symbols.Append(';');
+                }
+
+                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Standalone, symbols.ToString());
+                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.Android, symbols.ToString());
+                PlayerSettings.SetScriptingDefineSymbols(NamedBuildTarget.iOS, symbols.ToString());
             }
 
             public override void OnUpdate()
             {
                 #region DebuggerSkin
                 EditorGUILayout.BeginHorizontal();
-                Utility.Lable("Console Skin");
+                Utility.Lable("Console");
+                int old = InnerIsDebug() ? 0 : 1;
+                int isDebug = GUILayout.Toolbar(old, new string[] { "On", "Off" });
+                if (isDebug != old)
+                    InnerSaveDebug(isDebug == 0 ? true : false);
                 m_DebuggerSkin = (GUISkin)EditorGUILayout.ObjectField(m_DebuggerSkin, typeof(GUISkin), false);
 
                 if (m_DebuggerSkin != null && m_DebuggerSkin != m_Data.DebuggerSkin)

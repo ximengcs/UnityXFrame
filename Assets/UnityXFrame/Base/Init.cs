@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityXFrame.Core.Diagnotics;
 using XFrame.Core;
 using XFrame.Modules.Config;
 using XFrame.Modules.Diagnotics;
-using UnityXFrame.Core.Diagnotics;
 
 namespace UnityXFrame.Core
 {
@@ -29,7 +29,9 @@ namespace UnityXFrame.Core
 
         private void OnGUI()
         {
+#if CONSOLE
             Debuger.Inst.OnGUI();
+#endif
         }
 
         private void OnDestroy()

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿#if CONSOLE
+using System.Text;
 using UnityEngine;
 
 namespace UnityXFrame.Core.Diagnotics
@@ -82,3 +83,4 @@ namespace UnityXFrame.Core.Diagnotics
         }
     }
 }
+#endif

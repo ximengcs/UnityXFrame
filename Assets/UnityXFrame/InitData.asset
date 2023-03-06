@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InitData
   m_EditorClassIdentifier: 
   Entrance: Game.Core.Procedure.MainProcedure
-  Language: 9
+  Language: 10
   Logger: UnityXFrame.Core.Diagnotics.Logger
   ResMode: UnityXFrame.Core.Resource.AddressablesHelper
   ArchivePath: C:/Users/XM/AppData/LocalLow/DefaultCompany/UnityXFrame\archive
