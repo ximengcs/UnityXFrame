@@ -6,21 +6,15 @@ namespace UnityXFrame.Editor
 {
     public partial class InitEditor
     {
-        private class AudioEditor : IDataEditor
+        private class AudioEditor : DataEditorBase
         {
-            private InitData m_Data;
             private AudioMixer m_File;
 
-            public void OnInit(InitData data)
-            {
-                m_Data = data;
-            }
-
-            public void OnUpdate()
+            public override void OnUpdate()
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("AudioMixer");
-                m_File = (AudioMixer)EditorGUILayout.ObjectField(m_File, typeof(AudioMixer), false);
+                m_File = (AudioMixer)EditorGUILayout.ObjectField(m_Data.AudioMixer, typeof(AudioMixer), false);
                 EditorGUILayout.EndHorizontal();
 
                 if (m_File != m_Data.AudioMixer)
@@ -28,11 +22,6 @@ namespace UnityXFrame.Editor
                     m_Data.AudioMixer = m_File;
                     EditorUtility.SetDirty(m_Data);
                 }
-            }
-
-            public void OnDestroy()
-            {
-
             }
         }
     }

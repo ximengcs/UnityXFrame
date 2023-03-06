@@ -8,17 +8,15 @@ namespace UnityXFrame.Editor
 {
     public partial class InitEditor
     {
-        public class ProcedureEditor : IDataEditor
+        private class ProcedureEditor : DataEditorBase
         {
-            private InitData m_Data;
             private TypeModule.System m_ProcTypes;
             private Type[] Types;
             private string[] m_ProcTypeNames;
             private int m_TypeIndex;
 
-            public void OnInit(InitData data)
+            protected override void OnInit()
             {
-                m_Data = data;
                 m_ProcTypes = TypeModule.Inst.GetOrNew<ProcedureBase>();
 
                 Types = m_ProcTypes.ToArray();
@@ -35,7 +33,7 @@ namespace UnityXFrame.Editor
                     InnerSelect(0);
             }
 
-            public void OnUpdate()
+            public override void OnUpdate()
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("Entrance");
@@ -46,11 +44,6 @@ namespace UnityXFrame.Editor
                 EditorGUILayout.EndHorizontal();
             }
 
-            public void OnDestroy()
-            {
-
-            }
-
             private void InnerSelect(int index)
             {
                 m_TypeIndex = index;
@@ -59,5 +52,5 @@ namespace UnityXFrame.Editor
             }
         }
     }
-    
+
 }

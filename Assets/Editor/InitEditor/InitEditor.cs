@@ -40,6 +40,8 @@ namespace UnityXFrame.Editor
 
             foreach (Type type in m_EditorType)
             {
+                if (type.IsAbstract)
+                    continue;
                 IDataEditor editor = Activator.CreateInstance(type) as IDataEditor;
                 editor.OnInit(m_Data);
                 m_Editors.AddLast(editor);
@@ -53,9 +55,15 @@ namespace UnityXFrame.Editor
             XLinkNode<IDataEditor> node = m_Editors.First;
             while (node != null)
             {
-                EditorGUILayout.BeginVertical(GUI.skin.customStyles[195]);
-                node.Value.OnUpdate();
-                EditorGUILayout.EndVertical();
+                IDataEditor editor = node.Value;
+                editor.Enable = Utility.Toggle(editor.Name, editor.Enable);
+                if (editor.Enable)
+                {
+                    EditorGUILayout.BeginVertical(GUI.skin.customStyles[40]);
+                    editor.OnUpdate();
+                    EditorGUILayout.EndVertical();
+                }
+                
                 node = node.Next;
             }
         }

@@ -7,18 +7,15 @@ namespace UnityXFrame.Editor
 {
     public partial class InitEditor
     {
-        private class PathEditor : IDataEditor
+        private class PathEditor : DataEditorBase
         {
-            private InitData m_Data;
-
-            public void OnInit(InitData data)
+            protected override void OnInit()
             {
-                m_Data = data;
                 m_Data.ArchivePath = Constant.ArchivePath;
                 EditorUtility.SetDirty(m_Data);
             }
 
-            public void OnUpdate()
+            public override void OnUpdate()
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("ArchivePath");
@@ -29,11 +26,6 @@ namespace UnityXFrame.Editor
                     EditorUtility.RevealInFinder(m_Data.ArchivePath);
                 }
                 EditorGUILayout.EndHorizontal();
-            }
-
-            public void OnDestroy()
-            {
-
             }
         }
     }
