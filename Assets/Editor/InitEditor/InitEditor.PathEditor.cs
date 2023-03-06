@@ -19,7 +19,11 @@ namespace UnityXFrame.Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("ArchivePath");
-                if (GUILayout.Button(m_Data.ArchivePath))
+                string path = m_Data.ArchivePath;
+                int length = 20;
+                if (path.Length > length)
+                    path = path.Substring(0, length) + "...";
+                if (GUILayout.Button(path))
                 {
                     if (!Directory.Exists(m_Data.ArchivePath))
                         Directory.CreateDirectory(m_Data.ArchivePath);
