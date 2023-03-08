@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Procedure;
+using XFrame.Modules.Diagnotics;
 
 namespace Game.Core.Procedure
 {
@@ -9,6 +10,11 @@ namespace Game.Core.Procedure
         protected override void OnEnter()
         {
             base.OnEnter();
+
+            Log.Debug("Test", "I am test string.");
+            Log.Debug("I am test string.");
+            Log.Debug("None", "I am test string.");
+            Log.Debug("Default", "I am test string.");
             //ITask task = ResModule.Inst.Preload(
             //    new string[] { "Assets/Data/Sprites/test.png" },
             //    new Type[] { typeof(Sprite) });

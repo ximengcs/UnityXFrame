@@ -24,18 +24,34 @@ namespace UnityXFrame.Core.Diagnotics
             {
                 if (m_Colors.TryGetValue(name, out Color color))
                 {
-                    string colorHex = ColorUtility.ToHtmlStringRGB(color);
-                    if (content.Length > MAX_LENGTH)
-                        content = content.Substring(0, MAX_LENGTH);
-                    content = $"<color=#00FFFF>[{name}]</color> <color=#{colorHex}>{content}</color>";
-                    result = content;
+                    InnerFormat(color, name, content, out result);
                     return true;
                 }
                 else
                 {
-                    result = content;
-                    return false;
+                    if (string.IsNullOrEmpty(name) && m_Colors.TryGetValue("Default", out color))
+                    {
+                        InnerFormat(color, "Default", content, out result);
+                        return true;
+                    }
+                    else
+                    {
+                        result = content;
+                        return false;
+                    }
                 }
+            }
+
+            private void InnerFormat(Color color, string name, string content, out string result)
+            {
+                string colorHex = ColorUtility.ToHtmlStringRGB(color);
+                if (content.Length > MAX_LENGTH)
+                    content = content.Substring(0, MAX_LENGTH);
+                if (!string.IsNullOrEmpty(name))
+                    content = $"<color=#00FFFF>[{name}]</color> <color=#{colorHex}>{content}</color>";
+                else
+                    content = $"<color=#{colorHex}>{content}</color>";
+                result = content;
             }
         }
     }

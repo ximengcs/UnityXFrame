@@ -65,7 +65,10 @@ namespace UnityXFrame.Core.Diagnotics
             }
             else
             {
-                result = string.Concat(content);
+                if (content.Length == 1)
+                    m_Formater.Format(string.Empty, content[0].ToString(), out result);
+                else
+                    result = string.Concat(content);
                 return true;
             }
         }
