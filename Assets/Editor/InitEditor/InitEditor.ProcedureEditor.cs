@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEditor;
-using UnityXFrame.Core;
-using XFrame.Modules.Procedure;
 using XFrame.Modules.XType;
+using XFrame.Modules.Procedure;
 
 namespace UnityXFrame.Editor
 {
@@ -10,7 +9,7 @@ namespace UnityXFrame.Editor
     {
         private class ProcedureEditor : DataEditorBase
         {
-            private TypeModule.System m_ProcTypes;
+            private TypeSystem m_ProcTypes;
             private Type[] Types;
             private string[] m_ProcTypeNames;
             private int m_TypeIndex;

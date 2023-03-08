@@ -1,20 +1,21 @@
 using UnityEngine;
-using UnityXFrame.Core.Diagnotics;
 using XFrame.Core;
 using XFrame.Modules.Config;
 using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core.Diagnotics;
 
 namespace UnityXFrame.Core
 {
     public class Init : SingletonMono<Init>
     {
-        [SerializeField] public InitData Data;
+        public InitData Data;
 
         private void Awake()
         {
-            InnerConfigData();
+            InnerConfig();
+            InnerInitBefore();
             Entry.Init();
-            InnerConfigFrame();
+            InnerInitAfter();
         }
 
         private void Start()
@@ -39,7 +40,7 @@ namespace UnityXFrame.Core
             Entry.ShutDown();
         }
 
-        private void InnerConfigData()
+        private void InnerConfig()
         {
             XConfig.Lang = Data.Language;
             XConfig.Entrance = Data.Entrance;
@@ -51,7 +52,12 @@ namespace UnityXFrame.Core
                 XConfig.LocalizeFile = Data.LocalizeFile.text;
         }
 
-        private void InnerConfigFrame()
+        private void InnerInitBefore()
+        {
+
+        }
+
+        private void InnerInitAfter()
         {
             Diagnotics.Logger logger = LogModule.Inst.GetLogger<Diagnotics.Logger>();
             foreach (DebugColor colorData in Data.LogMark)

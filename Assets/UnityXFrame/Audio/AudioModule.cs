@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace UnityXFrame.Core.Audios
 {
-    [CoreModule]
+    [XModule]
     public partial class AudioModule : SingletonModule<AudioModule>
     {
         private Transform m_Root;

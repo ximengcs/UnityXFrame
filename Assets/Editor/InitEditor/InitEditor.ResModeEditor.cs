@@ -1,10 +1,7 @@
 ﻿using System;
 using UnityEditor;
-using UnityXFrame.Core;
 using XFrame.Modules.XType;
 using XFrame.Modules.Resource;
-using XFrame.Modules.Diagnotics;
-using UnityEngine;
 
 namespace UnityXFrame.Editor
 {
@@ -12,7 +9,7 @@ namespace UnityXFrame.Editor
     {
         private class ResModeEditor : DataEditorBase
         {
-            private TypeModule.System m_ResHelperTypes;
+            private TypeSystem m_ResHelperTypes;
             private Type[] m_Types;
             private string[] m_ResHelperTypeNames;
             private int m_ResHelperTypeIndex;

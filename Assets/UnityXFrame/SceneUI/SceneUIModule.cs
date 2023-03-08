@@ -14,7 +14,7 @@ namespace UnityXFrame.Core.SceneUIs
     /// <summary>
     /// SceneUI模块
     /// </summary>
-    [CoreModule]
+    [XModule]
     public partial class SceneUIModule : SingletonModule<SceneUIModule>
     {
         #region Inner Field

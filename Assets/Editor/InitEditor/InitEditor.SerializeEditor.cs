@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEditor;
-using UnityXFrame.Core;
-using XFrame.Modules.Serialize;
 using XFrame.Modules.XType;
+using XFrame.Modules.Serialize;
 
 namespace UnityXFrame.Editor
 {
@@ -10,7 +9,7 @@ namespace UnityXFrame.Editor
     {
         private class SerializeEditor : DataEditorBase
         {
-            private TypeModule.System m_HelperTypes;
+            private TypeSystem m_HelperTypes;
             private Type[] Types;
             private string[] m_HelperTypeNames;
             private int m_HelperTypeIndex;

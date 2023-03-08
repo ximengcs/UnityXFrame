@@ -15,13 +15,13 @@ namespace UnityXFrame.Core.UIs
     /// <summary>
     /// UI模块
     /// </summary>
-    [CoreModule]
+    [XModule]
     [RequireModule(typeof(PoolModule))]
     public partial class UIModule : SingletonModule<UIModule>
     {
         private Canvas m_Canvas;
         private Transform m_Root;
-        private TypeModule.System m_TypeSystem;
+        private TypeSystem m_TypeSystem;
         private Dictionary<Type, IUI> m_UIMap;
         private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;

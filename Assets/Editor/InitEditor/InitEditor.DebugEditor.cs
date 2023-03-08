@@ -14,7 +14,7 @@ namespace UnityXFrame.Editor
         private class DebugEditor : DataEditorBase
         {
             private const string DEBUG = "CONSOLE";
-            private TypeModule.System m_LogHelperTypes;
+            private TypeSystem m_LogHelperTypes;
             private Type[] m_Types;
             private string[] m_LogHelperTypeNames;
             private int m_LogHelperTypeIndex;

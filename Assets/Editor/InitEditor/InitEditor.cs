@@ -17,7 +17,7 @@ namespace UnityXFrame.Editor
 
         private XCore m_FrameCore;
         private InitData m_Data;
-        private TypeModule.System m_EditorType;
+        private TypeSystem m_EditorType;
         private XLinkList<IDataEditor> m_Editors;
 
         private void OnEnable()

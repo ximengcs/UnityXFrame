@@ -10,7 +10,7 @@ using XFrame.Modules.XType;
 
 namespace UnityXFrame.Core.Diagnotics
 {
-    [CoreModule]
+    [XModule]
     public partial class Debuger : SingletonModule<Debuger>
     {
 #region Internal Field
@@ -139,7 +139,7 @@ namespace UnityXFrame.Core.Diagnotics
 
         private void InternalLoadInst()
         {
-            TypeModule.System typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
+            TypeSystem typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
             foreach (Type t in typeSys)
             {
                 DebugWindowAttribute atr = t.GetCustomAttribute<DebugWindowAttribute>();
