@@ -10,17 +10,15 @@ namespace UnityXFrame.Editor
 {
     public partial class InitEditor
     {
-        private class ResModeEditor : IDataEditor
+        private class ResModeEditor : DataEditorBase
         {
-            private InitData m_Data;
             private TypeModule.System m_ResHelperTypes;
             private Type[] m_Types;
             private string[] m_ResHelperTypeNames;
             private int m_ResHelperTypeIndex;
 
-            public void OnInit(InitData data)
+            protected override void OnInit()
             {
-                m_Data = data;
                 m_ResHelperTypes = TypeModule.Inst.GetOrNew<IResourceHelper>();
 
                 m_Types = m_ResHelperTypes.ToArray();
@@ -36,7 +34,7 @@ namespace UnityXFrame.Editor
                     InnerSelect(0);
             }
 
-            public void OnUpdate()
+            public override void OnUpdate()
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("Res Mode");
@@ -46,11 +44,6 @@ namespace UnityXFrame.Editor
 
                 if (index != m_ResHelperTypeIndex)
                     InnerSelect(m_ResHelperTypeIndex);
-            }
-
-            public void OnDestroy()
-            {
-
             }
 
             private void InnerSelect(int index)

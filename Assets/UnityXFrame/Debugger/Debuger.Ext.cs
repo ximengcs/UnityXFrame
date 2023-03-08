@@ -1,4 +1,4 @@
-﻿
+﻿#if CONSOLE
 namespace UnityXFrame.Core.Diagnotics
 {
     public partial class Debuger
@@ -9,3 +9,4 @@ namespace UnityXFrame.Core.Diagnotics
         }
     }
 }
+#endif

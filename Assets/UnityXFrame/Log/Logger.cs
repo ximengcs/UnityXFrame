@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace UnityXFrame.Core.Diagnotics
 {
@@ -46,7 +47,19 @@ namespace UnityXFrame.Core.Diagnotics
         {
             if (content.Length > 1)
             {
-                if (m_Formater.Format(content[0].ToString(), content[1].ToString(), out result))
+                string realContent;
+                if (content.Length > 2)
+                {
+                    object[] contentList = new object[content.Length - 2];
+                    for (int i = 0; i < contentList.Length; i++)
+                        contentList[i] = content[i + 2];
+                    realContent = string.Format((string)content[1], contentList);
+                }
+                else
+                {
+                    realContent = content[1].ToString();
+                }
+                if (m_Formater.Format(content[0].ToString(), realContent, out result))
                     return true;
                 else
                     return false;

@@ -8,17 +8,15 @@ namespace UnityXFrame.Editor
 {
     public partial class InitEditor
     {
-        private class SerializeEditor : IDataEditor
+        private class SerializeEditor : DataEditorBase
         {
-            private InitData m_Data;
             private TypeModule.System m_HelperTypes;
             private Type[] Types;
             private string[] m_HelperTypeNames;
             private int m_HelperTypeIndex;
 
-            public void OnInit(InitData data)
+            protected override void OnInit()
             {
-                m_Data = data;
                 m_HelperTypes = TypeModule.Inst.GetOrNew<IJsonSerializeHelper>();
 
                 Types = m_HelperTypes.ToArray();
@@ -35,7 +33,7 @@ namespace UnityXFrame.Editor
                     InnerSelect(0);
             }
 
-            public void OnUpdate()
+            public override void OnUpdate()
             {
                 EditorGUILayout.BeginHorizontal();
                 Utility.Lable("JsonSerializer");
@@ -44,11 +42,6 @@ namespace UnityXFrame.Editor
                 if (index != m_HelperTypeIndex)
                     InnerSelect(m_HelperTypeIndex);
                 EditorGUILayout.EndHorizontal();
-            }
-
-            public void OnDestroy()
-            {
-
             }
 
             private void InnerSelect(int index)

@@ -16,5 +16,11 @@ namespace UnityXFrame.Editor
         {
             EditorUtility.RevealInFinder(Application.persistentDataPath);
         }
+
+        [MenuItem("Tools/Test GUI Skin")]
+        public static void TestGUISkin()
+        {
+            EditorWindow.GetWindow<TestGUISkinWindow>().Show();
+        }
     }
 }
