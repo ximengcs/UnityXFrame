@@ -47,6 +47,10 @@ namespace Game.Test
             if (DebugGUI.Button("Set Group Layer"))
                 UIModule.Inst.MainGroup.Layer = m_GroupLayer;
 
+            if (DebugGUI.Button("Test"))
+            {
+                Debug.LogWarning(GUI.skin.customStyles.Length);
+            }
             if (DebugGUI.Button("Play bgm1"))
             {
                 XTask<IAudio> task = AudioModule.Inst.PlayLoopAsync("TestAudio.mp3");

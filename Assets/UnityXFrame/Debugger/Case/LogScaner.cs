@@ -48,7 +48,7 @@ namespace UnityXFrame.Core.Diagnotics
             if (DebugGUI.Button("Clear"))
                 content.Clear();
             GUILayout.EndHorizontal();
-            scrollPos = GUILayout.BeginScrollView(scrollPos, false, true, GUILayout.Height(SCROLL_HEIGHT));
+            scrollPos = GUILayout.BeginScrollView(scrollPos, false, false, GUILayout.Height(SCROLL_HEIGHT));
             DebugGUI.TextArea(content.ToString());
             GUILayout.EndScrollView();
             DebugGUI.Line();

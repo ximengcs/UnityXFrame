@@ -26,6 +26,7 @@ namespace UnityXFrame.Core.Diagnotics
 
         private bool m_IsOpen;
         private Rect m_RootRect;
+        private bool m_OnGUIInit;
         private Vector2 m_ContentPos;
         private Vector2 m_DebugMenuPos;
         private List<WindowInfo> m_Windows;
@@ -41,7 +42,6 @@ namespace UnityXFrame.Core.Diagnotics
         private const string TITLE = "Console";
         private const int TIP_CD_KEY = 0;
         private const int TIP_CD = 3;
-        private static Debuger s_Inst;
         #endregion
 
         public void SetTip(IDebugWindow from, string content, string color = null)
@@ -62,6 +62,7 @@ namespace UnityXFrame.Core.Diagnotics
         protected override void OnStart()
         {
             base.OnStart();
+            m_OnGUIInit = false;
             Skin = Init.Inst.Data.DebuggerSkin;
             m_CloseButtonStyle = Skin.customStyles[0];
             m_TitleStyle = Skin.customStyles[1];
@@ -89,6 +90,15 @@ namespace UnityXFrame.Core.Diagnotics
 
             if (m_Windows.Count > 0)
                 InternalSelectMenu(m_Windows[0]);
+
+        }
+
+        private void InnerGUIInit()
+        {
+            GUI.skin.verticalScrollbarThumb = Skin.verticalScrollbarThumb;
+            GUI.skin.horizontalScrollbarThumb = Skin.horizontalScrollbarThumb;
+            Skin.window.fixedWidth = Screen.width;
+            Skin.window.fixedHeight = Mathf.Min(Skin.window.fixedHeight, Screen.height);
         }
 
         protected override void OnDestroy()
@@ -101,11 +111,15 @@ namespace UnityXFrame.Core.Diagnotics
 
         public void OnGUI()
         {
+            if (!m_OnGUIInit)
+            {
+                m_OnGUIInit = true;
+                InnerGUIInit();
+            }
+
             InternalCheckInGUI();
             if (m_IsOpen)
             {
-                Skin.window.fixedWidth = Mathf.Min(Skin.window.fixedWidth, Screen.width);
-                Skin.window.fixedHeight = Mathf.Min(Skin.window.fixedHeight, Screen.height);
                 m_RootRect = GUILayout.Window(0, m_RootRect, InternalDrawRootWindow, String.Empty, Skin.window);
             }
             else
@@ -182,7 +196,8 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.BeginVertical(m_DebugArea);
             GUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
             GUILayout.BeginVertical(m_MenuArea);
-            m_DebugMenuPos = GUILayout.BeginScrollView(m_DebugMenuPos, false, true, Skin.horizontalScrollbar, Skin.verticalScrollbar, Skin.scrollView);
+
+            m_DebugMenuPos = GUILayout.BeginScrollView(m_DebugMenuPos, false, false, Skin.horizontalScrollbar, Skin.verticalScrollbar, Skin.scrollView);
             foreach (WindowInfo windowInfo in m_Windows)
             {
                 string title = windowInfo.Name;
