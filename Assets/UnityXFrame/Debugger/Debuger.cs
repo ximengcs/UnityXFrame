@@ -4,16 +4,16 @@ using UnityEngine;
 using XFrame.Core;
 using System.Reflection;
 using XFrame.Modules.Times;
+using XFrame.Modules.XType;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using XFrame.Modules.XType;
 
 namespace UnityXFrame.Core.Diagnotics
 {
     [XModule]
     public partial class Debuger : SingletonModule<Debuger>
     {
-#region Internal Field
+        #region Internal Field
         private GUISkin Skin;
         private GUIStyle m_TitleStyle;
         private GUIStyle m_CloseButtonStyle;
@@ -42,7 +42,7 @@ namespace UnityXFrame.Core.Diagnotics
         private const int TIP_CD_KEY = 0;
         private const int TIP_CD = 3;
         private static Debuger s_Inst;
-#endregion
+        #endregion
 
         public void SetTip(IDebugWindow from, string content, string color = null)
         {
@@ -58,7 +58,7 @@ namespace UnityXFrame.Core.Diagnotics
                 m_TipNewMsg.Add(code);
         }
 
-#region Life Fun
+        #region Life Fun
         protected override void OnStart()
         {
             base.OnStart();
@@ -117,9 +117,9 @@ namespace UnityXFrame.Core.Diagnotics
                     m_IsOpen = true;
             }
         }
-#endregion
+        #endregion
 
-#region Internal Implement
+        #region Internal Implement
         private void InternalCheckInGUI()
         {
             if (m_EventSytem == null)
@@ -235,7 +235,7 @@ namespace UnityXFrame.Core.Diagnotics
             public bool AlwaysRun;
             public IDebugWindow Window;
         }
-#endregion
+        #endregion
     }
 }
 #endif

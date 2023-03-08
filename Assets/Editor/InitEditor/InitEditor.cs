@@ -63,7 +63,7 @@ namespace UnityXFrame.Editor
                     editor.OnUpdate();
                     EditorGUILayout.EndVertical();
                 }
-                
+
                 node = node.Next;
             }
         }
@@ -71,6 +71,8 @@ namespace UnityXFrame.Editor
         private void OnDisable()
         {
             if (Application.isPlaying)
+                return;
+            if (m_Editors == null)
                 return;
 
             XLinkNode<IDataEditor> node = m_Editors.First;

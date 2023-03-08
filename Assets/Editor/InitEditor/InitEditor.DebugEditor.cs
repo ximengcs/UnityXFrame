@@ -157,6 +157,7 @@ namespace UnityXFrame.Editor
                     if (GUILayout.Button("+"))
                     {
                         DebugColor data = new DebugColor();
+                        data.Value = true;
                         colors.Add(data);
                     }
 
