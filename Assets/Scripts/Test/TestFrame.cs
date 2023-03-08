@@ -49,12 +49,12 @@ namespace Game.Test
 
             if (DebugGUI.Button("Play bgm1"))
             {
-                XTask<IAudio> task = AudioModule.Inst.PlayAsync("TestAudio.mp3");
+                XTask<IAudio> task = AudioModule.Inst.PlayLoopAsync("TestAudio.mp3");
                 task.OnComplete(() => m_Audio1 = task.Data);
             }
             if (DebugGUI.Button("Play1 bgm2"))
             {
-                XTask<IAudio> task = AudioModule.Inst.PlayAsync("TestAudio2.mp3");
+                XTask<IAudio> task = AudioModule.Inst.PlayLoopAsync("TestAudio2.mp3");
                 task.OnComplete(() => m_Audio2 = task.Data);
             }
             if (DebugGUI.Button("Stop bgm1"))
