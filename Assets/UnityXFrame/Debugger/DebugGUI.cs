@@ -14,6 +14,11 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.Button(string.Empty, GUILayout.Height(6));
         }
 
+        public static Vector2 BeginScrollView(Vector2 pos, params GUILayoutOption[] options)
+        {
+            return GUILayout.BeginScrollView(pos, false, false, Style.Skin.horizontalScrollbar, Style.Skin.verticalScrollbar, options);
+        }
+
         public static bool Button(string title, params GUILayoutOption[] options)
         {
             return GUILayout.Button(title, Style.Button, options);

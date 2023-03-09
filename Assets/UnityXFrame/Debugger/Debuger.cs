@@ -69,6 +69,7 @@ namespace UnityXFrame.Core.Diagnotics
             m_ContentStyle = Skin.customStyles[2];
 
             DebugGUI.Style = new DebugStyle();
+            DebugGUI.Style.Skin = Skin;
             DebugGUI.Style.Button = Skin.customStyles[3];
             DebugGUI.Style.Text = Skin.customStyles[4];
             DebugGUI.Style.Lable = Skin.customStyles[5];
@@ -97,6 +98,7 @@ namespace UnityXFrame.Core.Diagnotics
         {
             GUI.skin.verticalScrollbarThumb = Skin.verticalScrollbarThumb;
             GUI.skin.horizontalScrollbarThumb = Skin.horizontalScrollbarThumb;
+            GUI.skin.box = Skin.box;
             Skin.window.fixedWidth = Screen.width;
             Skin.window.fixedHeight = Mathf.Min(Skin.window.fixedHeight, Screen.height);
         }
@@ -197,7 +199,7 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.BeginHorizontal(GUILayout.ExpandWidth(true));
             GUILayout.BeginVertical(m_MenuArea);
 
-            m_DebugMenuPos = GUILayout.BeginScrollView(m_DebugMenuPos, false, false, Skin.horizontalScrollbar, Skin.verticalScrollbar, Skin.scrollView);
+            m_DebugMenuPos = DebugGUI.BeginScrollView(m_DebugMenuPos);
             foreach (WindowInfo windowInfo in m_Windows)
             {
                 string title = windowInfo.Name;
@@ -218,7 +220,7 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(m_ContentArea);
-            m_ContentPos = GUILayout.BeginScrollView(m_ContentPos, false, true, Skin.horizontalScrollbar, Skin.verticalScrollbar, m_ContentStyle);
+            m_ContentPos = DebugGUI.BeginScrollView(m_ContentPos);
             m_Current.Window?.OnDraw();
             GUILayout.EndScrollView();
             GUILayout.EndVertical();

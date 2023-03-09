@@ -11,10 +11,11 @@ namespace UnityXFrame.Core.Diagnotics
         private StringBuilder m_Warning;
         private StringBuilder m_Error;
 
-        private const int SCROLL_HEIGHT = 300;
         private Vector2 m_CommonScrollPos;
         private Vector2 m_WarningScrollPos;
         private Vector2 m_ErrorScrollPos;
+
+        private int m_TabIndex;
 
         public void OnAwake()
         {
@@ -26,9 +27,13 @@ namespace UnityXFrame.Core.Diagnotics
 
         public void OnDraw()
         {
-            InternalDrawKind("Common", m_Common, ref m_CommonScrollPos);
-            InternalDrawKind("Warning", m_Warning, ref m_WarningScrollPos);
-            InternalDrawKind("Error", m_Error, ref m_ErrorScrollPos);
+            m_TabIndex = DebugGUI.Toolbar(m_TabIndex, new string[] { "Debug", "Warning", "Error" });
+            switch (m_TabIndex)
+            {
+                case 0: InternalDrawKind(m_Common, ref m_CommonScrollPos); break;
+                case 1: InternalDrawKind(m_Warning, ref m_WarningScrollPos); break;
+                case 2: InternalDrawKind(m_Error, ref m_ErrorScrollPos); break;
+            }
         }
 
         public void Dispose()
@@ -39,19 +44,17 @@ namespace UnityXFrame.Core.Diagnotics
             m_Error = null;
         }
 
-        private void InternalDrawKind(string kind, StringBuilder content, ref Vector2 scrollPos)
+        private void InternalDrawKind(StringBuilder content, ref Vector2 scrollPos)
         {
             GUILayout.BeginHorizontal();
-            DebugGUI.Label(kind);
             if (DebugGUI.Button("Copy"))
                 GUIUtility.systemCopyBuffer = content.ToString();
             if (DebugGUI.Button("Clear"))
                 content.Clear();
             GUILayout.EndHorizontal();
-            scrollPos = GUILayout.BeginScrollView(scrollPos, false, false, GUILayout.Height(SCROLL_HEIGHT));
-            DebugGUI.TextArea(content.ToString());
+            scrollPos = DebugGUI.BeginScrollView(scrollPos);
+            GUILayout.Box(new GUIContent(content.ToString()));
             GUILayout.EndScrollView();
-            DebugGUI.Line();
         }
 
         private void InternalLogCallback(string condition, string stackTrace, LogType type)
