@@ -1,6 +1,5 @@
 ﻿using UnityXFrame.Core.UIs;
 using UnityXFrame.Core.Diagnotics;
-using Newtonsoft.Json.Linq;
 using UnityXFrame.Core.Audios;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
@@ -10,6 +9,7 @@ using UnityEngine;
 
 namespace Game.Test
 {
+    [DebugHelp("框架测试窗口")]
     public class TestFrame : IDebugWindow
     {
         private int m_Group;

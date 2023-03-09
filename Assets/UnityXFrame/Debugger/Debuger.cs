@@ -23,15 +23,19 @@ namespace UnityXFrame.Core.Diagnotics
         private GUIStyle m_DebugArea;
         private GUIStyle m_MenuArea;
         private GUIStyle m_ContentArea;
+        private GUIStyle m_HelpWindowStyle;
 
         private bool m_IsOpen;
+        private bool m_HelpOpen;
         private Rect m_RootRect;
         private bool m_OnGUIInit;
+        private Rect m_HelpRect;
         private Vector2 m_ContentPos;
         private Vector2 m_DebugMenuPos;
         private List<WindowInfo> m_Windows;
         private WindowInfo m_Current;
 
+        private TweenModule m_TweenModule;
         private HashSet<int> m_TipNewMsg;
         private bool m_AlwaysTip;
         private string m_Tip;
@@ -80,7 +84,9 @@ namespace UnityXFrame.Core.Diagnotics
             DebugGUI.Style.Toolbar = Skin.customStyles[10];
             m_MenuArea = Skin.customStyles[11];
             m_ContentArea = Skin.customStyles[12];
+            m_HelpWindowStyle = Skin.customStyles[13];
 
+            m_TweenModule = new TweenModule();
             m_Timer = new CDTimer();
             m_Timer.Record(TIP_CD_KEY, TIP_CD);
             m_TipNewMsg = new HashSet<int>();
@@ -91,7 +97,6 @@ namespace UnityXFrame.Core.Diagnotics
 
             if (m_Windows.Count > 0)
                 InternalSelectMenu(m_Windows[0]);
-
         }
 
         private void InnerGUIInit()
@@ -101,6 +106,9 @@ namespace UnityXFrame.Core.Diagnotics
             GUI.skin.box = Skin.box;
             Skin.window.fixedWidth = Screen.width;
             Skin.window.fixedHeight = Mathf.Min(Skin.window.fixedHeight, Screen.height);
+            m_HelpWindowStyle.fixedWidth = Skin.window.fixedWidth;
+            m_HelpRect.y = Skin.window.fixedHeight;
+            m_HelpWindowStyle.fixedHeight = 0;
         }
 
         protected override void OnDestroy()
@@ -122,7 +130,12 @@ namespace UnityXFrame.Core.Diagnotics
             InternalCheckInGUI();
             if (m_IsOpen)
             {
-                m_RootRect = GUILayout.Window(0, m_RootRect, InternalDrawRootWindow, String.Empty, Skin.window);
+                if (m_HelpWindowStyle.fixedHeight > 0)
+                {
+                    m_HelpRect = GUILayout.Window(1, m_HelpRect, InternalDrawHelpWindow, string.Empty, m_HelpWindowStyle);
+                }
+                m_RootRect = GUILayout.Window(0, m_RootRect, InternalDrawRootWindow, string.Empty, Skin.window);
+                m_TweenModule.OnUpdate();
             }
             else
             {
@@ -134,6 +147,22 @@ namespace UnityXFrame.Core.Diagnotics
             }
         }
         #endregion
+
+        private Vector2 scrollPos;
+        private void InternalDrawHelpWindow(int windowId)
+        {
+            if (m_HelpWindowStyle.fixedHeight < m_RootRect.height)
+                return;
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Help", m_TitleStyle);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            scrollPos = DebugGUI.BeginScrollView(scrollPos);
+            GUILayout.Box(m_Current.HelpInfo);
+            GUILayout.EndScrollView();
+        }
 
         #region Internal Implement
         private void InternalCheckInGUI()
@@ -176,6 +205,12 @@ namespace UnityXFrame.Core.Diagnotics
                 if (string.IsNullOrEmpty(info.Name))
                     info.Name = t.Name.Replace("Case", string.Empty);
 
+                DebugHelpAttribute helpAtr = t.GetCustomAttribute<DebugHelpAttribute>();
+                if (helpAtr != null)
+                    info.HelpInfo = helpAtr.Content;
+                else
+                    info.HelpInfo = "No help information";
+
                 IDebugWindow window = Activator.CreateInstance(t) as IDebugWindow;
                 info.Window = window;
                 m_Windows.Add(info);
@@ -185,6 +220,13 @@ namespace UnityXFrame.Core.Diagnotics
             }
         }
 
+        private void InnerClose()
+        {
+            m_IsOpen = false;
+            m_HelpOpen = false;
+            m_HelpWindowStyle.fixedHeight = 0;
+        }
+
         private void InternalDrawRootWindow(int windowId)
         {
             GUILayout.BeginHorizontal();
@@ -192,7 +234,7 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.Label(TITLE, m_TitleStyle);
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("X", m_CloseButtonStyle))
-                m_IsOpen = false;
+                InnerClose();
             GUILayout.EndHorizontal();
 
             GUILayout.BeginVertical(m_DebugArea);
@@ -228,6 +270,14 @@ namespace UnityXFrame.Core.Diagnotics
             GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();
+            if (GUILayout.Button("?", m_TipTitleStyle))
+            {
+                m_HelpOpen = !m_HelpOpen;
+                float target = m_HelpOpen ? m_RootRect.height : 0;
+                m_TweenModule.Do("?", target, 0.1f,
+                    () => m_HelpWindowStyle.fixedHeight,
+                    (v) => m_HelpWindowStyle.fixedHeight = v);
+            }
             if (GUILayout.Button("Tip", m_TipTitleStyle))
                 m_AlwaysTip = !m_AlwaysTip;
             if (!m_AlwaysTip && m_Timer.Check(TIP_CD_KEY, true))
@@ -251,6 +301,7 @@ namespace UnityXFrame.Core.Diagnotics
             public int Order;
             public bool AlwaysRun;
             public IDebugWindow Window;
+            public string HelpInfo;
         }
         #endregion
     }
