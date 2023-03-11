@@ -19,9 +19,9 @@ namespace UnityXFrame.Core.Audios
         private Dictionary<string, Group> m_Groups;
         private const string MAIN_GROUP = "Main";
 
-        protected override void OnStart()
+        protected override void OnInit(object data)
         {
-            base.OnStart();
+            base.OnInit(data);
 
             m_Mixer = Init.Inst.Data.AudioMixer;
             m_Root = new GameObject("Audios").transform;

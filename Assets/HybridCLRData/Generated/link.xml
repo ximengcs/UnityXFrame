@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="mscorlib">
+    <type fullname="System.Action" preserve="all" />
+    <type fullname="System.Array" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
+    <type fullname="System.IDisposable" preserve="all" />
+    <type fullname="System.Int32" preserve="all" />
+    <type fullname="System.Object" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.CompilerGeneratedAttribute" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
+    <type fullname="System.RuntimeTypeHandle" preserve="all" />
+    <type fullname="System.Security.Permissions.SecurityAction" preserve="all" />
+    <type fullname="System.Security.Permissions.SecurityPermissionAttribute" preserve="all" />
+    <type fullname="System.Security.UnverifiableCodeAttribute" preserve="all" />
+    <type fullname="System.String" preserve="all" />
+    <type fullname="System.Type" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AudioModule">
+    <type fullname="UnityEngine.AudioClip" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule">
+    <type fullname="UnityEngine.Debug" preserve="all" />
+    <type fullname="UnityEngine.Events.UnityAction" preserve="all" />
+    <type fullname="UnityEngine.Events.UnityEvent" preserve="all" />
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.MonoBehaviour" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.IMGUIModule">
+    <type fullname="UnityEngine.GUI" preserve="all" />
+    <type fullname="UnityEngine.GUILayoutOption" preserve="all" />
+    <type fullname="UnityEngine.GUISkin" preserve="all" />
+    <type fullname="UnityEngine.GUIStyle" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UI">
+    <type fullname="UnityEngine.UI.Button" preserve="all" />
+    <type fullname="UnityEngine.UI.Button/ButtonClickedEvent" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityXFrame">
+    <type fullname="UnityXFrame.Core.Audios.AudioModule" preserve="all" />
+    <type fullname="UnityXFrame.Core.Audios.IAudio" preserve="all" />
+    <type fullname="UnityXFrame.Core.Constant" preserve="all" />
+    <type fullname="UnityXFrame.Core.Diagnotics.DebugGUI" preserve="all" />
+    <type fullname="UnityXFrame.Core.Diagnotics.DebugHelpAttribute" preserve="all" />
+    <type fullname="UnityXFrame.Core.Diagnotics.IDebugWindow" preserve="all" />
+    <type fullname="UnityXFrame.Core.UIs.IUI" preserve="all" />
+    <type fullname="UnityXFrame.Core.UIs.IUIGroup" preserve="all" />
+    <type fullname="UnityXFrame.Core.UIs.MonoUI" preserve="all" />
+    <type fullname="UnityXFrame.Core.UIs.UI" preserve="all" />
+    <type fullname="UnityXFrame.Core.UIs.UIModule" preserve="all" />
+  </assembly>
+  <assembly fullname="XFrame">
+    <type fullname="XFrame.Core.SingletonModule`1" preserve="all" />
+    <type fullname="XFrame.Modules.Diagnotics.Log" preserve="all" />
+    <type fullname="XFrame.Modules.Procedure.ProcedureBase" preserve="all" />
+    <type fullname="XFrame.Modules.Resource.ResModule" preserve="all" />
+    <type fullname="XFrame.Modules.StateMachine.FsmState" preserve="all" />
+    <type fullname="XFrame.Modules.Tasks.ITask" preserve="all" />
+    <type fullname="XFrame.Modules.Tasks.TaskBase" preserve="all" />
+    <type fullname="XFrame.Modules.Tasks.XTask`1" preserve="all" />
+  </assembly>
+</linker>

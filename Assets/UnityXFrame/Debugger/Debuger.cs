@@ -63,9 +63,9 @@ namespace UnityXFrame.Core.Diagnotics
         }
 
         #region Life Fun
-        protected override void OnStart()
+        protected override void OnInit(object data)
         {
-            base.OnStart();
+            base.OnInit(data);
             m_OnGUIInit = false;
             Skin = Init.Inst.Data.DebuggerSkin;
             m_CloseButtonStyle = Skin.customStyles[0];

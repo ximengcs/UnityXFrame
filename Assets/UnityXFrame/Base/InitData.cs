@@ -3,6 +3,7 @@ using UnityEngine;
 using XFrame.Modules.Local;
 using System.Collections.Generic;
 using UnityEngine.Audio;
+using HybridCLR;
 
 namespace UnityXFrame.Core
 {
@@ -18,6 +19,9 @@ namespace UnityXFrame.Core
         public GUISkin DebuggerSkin;
         public List<DebugColor> LogMark;
         public AudioMixer AudioMixer;
+        public HomologousImageMode AOTMetaMode;
+        public string AOTMetaDllPath;
+        public string HotfixDllPath;
     }
 
     [Serializable]
