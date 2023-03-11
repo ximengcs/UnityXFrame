@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using XFrame.Modules.Resource;
+using XFrame.Modules.Download;
 using XFrame.Modules.Procedure;
 using XFrame.Modules.Diagnotics;
+using XFrame.Modules.Tasks;
+using System;
 
 namespace Game.Core.Procedure
 {
@@ -15,10 +18,11 @@ namespace Game.Core.Procedure
             Log.Debug("I am test string.");
             Log.Debug("None", "I am test string.");
             Log.Debug("Default", "I am test string.");
-            //ITask task = ResModule.Inst.Preload(
-            //    new string[] { "Assets/Data/Sprites/test.png" },
-            //    new Type[] { typeof(Sprite) });
-            //task.OnComplete(InnerTest).Start();
+            
+            ITask task = ResModule.Inst.Preload(
+                new string[] { "Assets/Data/Sprites/test.png" },
+                new Type[] { typeof(Sprite) });
+            task.OnComplete(InnerTest).Start();
         }
 
         private void InnerTest()

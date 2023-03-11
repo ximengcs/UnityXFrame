@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Networking;
+using XFrame.Modules.Diagnotics;
 using XFrame.Modules.Download;
 
 namespace UnityXFrame.Core.Download
@@ -6,22 +7,23 @@ namespace UnityXFrame.Core.Download
     public class DownloadHelper : IDownloadHelper
     {
         private UnityWebRequest m_Request;
+        private bool m_Complete;
 
         public bool IsDone { get; private set; }
         public DownloadResult Result { get; private set; }
 
-        bool IDownloadHelper.IsDone => throw new System.NotImplementedException();
-
-        DownloadResult IDownloadHelper.Result => throw new System.NotImplementedException();
-
         void IDownloadHelper.Request(string url)
         {
+            m_Complete = false;
             m_Request = UnityWebRequest.Get(url);
             m_Request.SendWebRequest();
         }
 
         void IDownloadHelper.Update()
         {
+            if (m_Complete)
+                return;
+
             if (m_Request == null)
                 return;
 
@@ -33,12 +35,13 @@ namespace UnityXFrame.Core.Download
                     m_Request.downloadHandler.text,
                     m_Request.downloadHandler.data,
                     m_Request.error);
-            m_Request = null;
+
+            m_Complete = true;
         }
 
         void IDownloadHelper.Dispose()
         {
-            m_Request.Dispose();
+            m_Request?.Dispose();
             m_Request = null;
             IsDone = default;
             Result = default;

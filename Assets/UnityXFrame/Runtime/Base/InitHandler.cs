@@ -1,4 +1,5 @@
 ﻿using HybridCLR;
+using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using System.Reflection;
@@ -7,7 +8,7 @@ using XFrame.Modules.XType;
 using XFrame.Modules.Config;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Diagnotics;
-using System.IO;
+using XFrame.Modules.Download;
 
 namespace UnityXFrame.Core
 {
@@ -22,6 +23,7 @@ namespace UnityXFrame.Core
             XConfig.DefaultLogger = data.Logger;
             XConfig.ArchivePath = Constant.ArchivePath;
             XConfig.DefaultJsonSerializer = data.JsonSerializer;
+            XConfig.DefaultDownloadHelper = data.DownloadHelper;
             if (data.LocalizeFile != null)
                 XConfig.LocalizeFile = data.LocalizeFile.text;
         }
@@ -68,16 +70,42 @@ namespace UnityXFrame.Core
                 task.Add(loadHotTask);
             }
 
-            string path = Path.Combine(Application.persistentDataPath, "hotfix.bytes");
-            if (File.Exists(path))
+            bool success = false;
+            bool start = false;
+            BolActionTask testTask = TaskModule.Inst.GetOrNew<BolActionTask>();
+            testTask.Add(() =>
             {
-                byte[] testbytes = File.ReadAllBytes(path);
-                if (testbytes != null)
+                if (!start)
                 {
-                    Assembly.Load(testbytes);
-                    TypeModule.Inst.UpdateType();
+                    start = true;
+                    string url = "ftp://47.108.188.157/pub/test/Hotfix.bytes";
+                    DownloadModule.Inst.DownData(url, (data) =>
+                    {
+                        Log.Debug("download success");
+                        Log.Debug(data.Length);
+                        Assembly.Load(data);
+                        TypeModule.Inst.UpdateType();
+                        success = true;
+                    }, () =>
+                    {
+                        Log.Debug("download error");
+                        success = true;
+                    });
                 }
-            }
+                return success;
+            });
+            task.Add(testTask);
+
+            //string path = Path.Combine(Application.persistentDataPath, "hotfix.bytes");
+            //if (File.Exists(path))
+            //{
+            //    byte[] testbytes = File.ReadAllBytes(path);
+            //    if (testbytes != null)
+            //    {
+            //        Assembly.Load(testbytes);
+            //        TypeModule.Inst.UpdateType();
+            //    }
+            //}
 
             return task;
         }
