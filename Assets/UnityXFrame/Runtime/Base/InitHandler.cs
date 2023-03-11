@@ -1,5 +1,4 @@
 ﻿using HybridCLR;
-using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using System.Reflection;
@@ -9,6 +8,7 @@ using XFrame.Modules.Config;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Diagnotics;
 using XFrame.Modules.Download;
+using System;
 
 namespace UnityXFrame.Core
 {
@@ -64,7 +64,6 @@ namespace UnityXFrame.Core
                     if (bytes != null)
                     {
                         Assembly.Load(bytes);
-                        TypeModule.Inst.UpdateType();
                     }
                 });
                 task.Add(loadHotTask);
@@ -83,8 +82,12 @@ namespace UnityXFrame.Core
                     {
                         Log.Debug("download success");
                         Log.Debug(data.Length);
+                        AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
+                        {
+                            Log.Debug(sender.GetType().Name);
+                            Log.Debug(args.LoadedAssembly.FullName);
+                        };
                         Assembly.Load(data);
-                        TypeModule.Inst.UpdateType();
                         success = true;
                     }, () =>
                     {

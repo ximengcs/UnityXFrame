@@ -186,38 +186,56 @@ namespace UnityXFrame.Core.Diagnotics
         {
             TypeSystem typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
             foreach (Type t in typeSys)
+                InnerAddWindowInfo(t);
+            TypeModule.Inst.OnTypeChange(InnerNewWindowHandle);
+        }
+
+        private void InnerNewWindowHandle()
+        {
+            HashSet<Type> types = new HashSet<Type>();
+            foreach (WindowInfo info in m_Windows)
+                types.Add(info.GetType());
+
+            TypeSystem typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
+            foreach (Type t in typeSys)
             {
-                DebugWindowAttribute atr = t.GetCustomAttribute<DebugWindowAttribute>();
-
-                WindowInfo info = new WindowInfo();
-                if (atr != null)
-                {
-                    info.Name = atr.Name;
-                    info.AlwaysRun = atr.AlwaysRun;
-                    info.Order = atr.Order;
-                }
-                else
-                {
-                    info.Name = default;
-                    info.AlwaysRun = default;
-                    info.Order = default;
-                }
-                if (string.IsNullOrEmpty(info.Name))
-                    info.Name = t.Name.Replace("Case", string.Empty);
-
-                DebugHelpAttribute helpAtr = t.GetCustomAttribute<DebugHelpAttribute>();
-                if (helpAtr != null)
-                    info.HelpInfo = helpAtr.Content;
-                else
-                    info.HelpInfo = "No help information";
-
-                IDebugWindow window = Activator.CreateInstance(t) as IDebugWindow;
-                info.Window = window;
-                m_Windows.Add(info);
-
-                if (info.AlwaysRun)
-                    window.OnAwake();
+                if (!types.Contains(t))
+                    InnerAddWindowInfo(t);
             }
+        }
+
+        private void InnerAddWindowInfo(Type type)
+        {
+            DebugWindowAttribute atr = type.GetCustomAttribute<DebugWindowAttribute>();
+
+            WindowInfo info = new WindowInfo();
+            if (atr != null)
+            {
+                info.Name = atr.Name;
+                info.AlwaysRun = atr.AlwaysRun;
+                info.Order = atr.Order;
+            }
+            else
+            {
+                info.Name = default;
+                info.AlwaysRun = default;
+                info.Order = default;
+            }
+            if (string.IsNullOrEmpty(info.Name))
+                info.Name = type.Name.Replace("Case", string.Empty);
+
+            DebugHelpAttribute helpAtr = type.GetCustomAttribute<DebugHelpAttribute>();
+            if (helpAtr != null)
+                info.HelpInfo = helpAtr.Content;
+            else
+                info.HelpInfo = "No help information";
+
+            IDebugWindow window = Activator.CreateInstance(type) as IDebugWindow;
+            info.Window = window;
+            m_Windows.Add(info);
+
+            if (info.AlwaysRun)
+                window.OnAwake();
         }
 
         private void InnerClose()

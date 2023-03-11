@@ -21,7 +21,6 @@ namespace UnityXFrame.Core.UIs
     {
         private Canvas m_Canvas;
         private Transform m_Root;
-        private TypeSystem m_TypeSystem;
         private Dictionary<Type, IUI> m_UIMap;
         private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;
@@ -31,7 +30,6 @@ namespace UnityXFrame.Core.UIs
         {
             base.OnInit(data);
 
-            m_TypeSystem = TypeModule.Inst.GetOrNew<IUI>();
             InnerCheckCanvas(data);
             if (m_Canvas != null)
             {
@@ -114,7 +112,7 @@ namespace UnityXFrame.Core.UIs
         /// <returns>UI实例</returns>
         public IUI Open(string uiName, object data = default, bool useNavtive = false)
         {
-            Type uiType = m_TypeSystem.GetByName(uiName);
+            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
             return Open(uiType, data, useNavtive);
         }
 
@@ -128,7 +126,7 @@ namespace UnityXFrame.Core.UIs
         /// <returns>UI实例</returns>
         public IUI Open(string uiName, string groupName, object data = default, bool useNavtive = false)
         {
-            Type uiType = m_TypeSystem.GetByName(uiName);
+            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
             return Open(uiType, groupName, data, useNavtive);
         }
 
@@ -226,7 +224,7 @@ namespace UnityXFrame.Core.UIs
 
         public void Close(string uiName)
         {
-            Type uiType = m_TypeSystem.GetByName(uiName);
+            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
             InnerCloseUI(uiType);
         }
         #endregion
@@ -244,7 +242,7 @@ namespace UnityXFrame.Core.UIs
 
         public IUI Get(string uiName)
         {
-            Type uiType = m_TypeSystem.GetByName(uiName);
+            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
             return InnerGetUI(uiType);
         }
         #endregion
