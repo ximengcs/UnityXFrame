@@ -8,7 +8,6 @@ using XFrame.Modules.Config;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Diagnotics;
 using System.IO;
-using System.Collections.Generic;
 
 namespace UnityXFrame.Core
 {
@@ -68,6 +67,18 @@ namespace UnityXFrame.Core
                 });
                 task.Add(loadHotTask);
             }
+
+            string path = Path.Combine(Application.persistentDataPath, "hotfix.bytes");
+            if (File.Exists(path))
+            {
+                byte[] testbytes = File.ReadAllBytes(path);
+                if (testbytes != null)
+                {
+                    Assembly.Load(testbytes);
+                    TypeModule.Inst.UpdateType();
+                }
+            }
+
             return task;
         }
 

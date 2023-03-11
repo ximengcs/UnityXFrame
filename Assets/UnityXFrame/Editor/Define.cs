@@ -5,7 +5,7 @@ namespace UnityXFrame.Editor
 {
     public class Define
     {
-        [MenuItem("Tools/Build Assets")]
+        [MenuItem("Tools/Build AssetsBundle")]
         public static void BuildAB()
         {
             EditorWindow.GetWindow<BuildEditor>().Show();
