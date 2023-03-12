@@ -1,6 +1,7 @@
 ﻿using System;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Resource;
+using XFrame.Modules.Diagnotics;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -29,6 +30,8 @@ namespace UnityXFrame.Core.Resource
 
         public ResLoadTask LoadAsync(string resPath, Type type)
         {
+            Log.Debug(Addressables.BuildPath);
+            Log.Debug(Addressables.RuntimePath);
             ResLoadTask loadTask = TaskModule.Inst.GetOrNew<ResLoadTask>();
             object handle = Ext.LoadAssetAsync(resPath, type);
             ReflectResHandler handler = new ReflectResHandler(handle, type);

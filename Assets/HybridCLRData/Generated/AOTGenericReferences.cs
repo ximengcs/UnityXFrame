@@ -12,7 +12,5 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	public void RefMethods()
 	{
 		// System.Object[] System.Array::Empty<System.Object>()
-		// System.Object UnityEngine.GameObject::AddComponent<System.Object>()
-		// System.Object XFrame.Modules.Resource.ResModule::Load<System.Object>(System.String)
 	}
 }

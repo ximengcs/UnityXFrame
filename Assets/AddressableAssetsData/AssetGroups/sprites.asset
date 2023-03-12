@@ -17,8 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 8d00be3b6c2485a4c982239691f5629f
   m_SerializeEntries:
-  - m_GUID: 602da960e8dd0cd4886d56890da78826
-    m_Address: Assets/Data/Sprites/test.png
+  - m_GUID: e7b69be89ba124349879a3b3df0bf37e
+    m_Address: Sprites
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

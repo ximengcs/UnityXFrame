@@ -1,12 +1,6 @@
-﻿using System;
-using HybridCLR;
-using UnityEngine;
-using XFrame.Core;
-using System.Reflection;
+﻿using XFrame.Core;
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Config;
-using XFrame.Modules.Resource;
-using XFrame.Modules.Download;
 using XFrame.Modules.Diagnotics;
 
 namespace UnityXFrame.Core
@@ -29,80 +23,13 @@ namespace UnityXFrame.Core
 
         public ITask BeforeHandle()
         {
-            return InnerInitHotfixTask();
+            return new EmptyTask();
         }
 
         public ITask AfterHandle()
         {
             InnerConfigLog();
             return new EmptyTask();
-        }
-
-        private ITask InnerInitHotfixTask()
-        {
-            InitData data = Init.Inst.Data;
-            XTask task = TaskModule.Inst.GetOrNew<XTask>();
-            if (!string.IsNullOrEmpty(data.AOTMetaDllPath))
-            {
-                ResLoadTask<TextAsset> loadAOTTask = ResModule.Inst.LoadAsync<TextAsset>(data.AOTMetaDllPath);
-                loadAOTTask.OnComplete((asset) =>
-                {
-                    byte[] bytes = asset.bytes;
-                    if (bytes != null)
-                        RuntimeApi.LoadMetadataForAOTAssembly(bytes, Init.Inst.Data.AOTMetaMode);
-                });
-                task.Add(loadAOTTask);
-            }
-
-            if (!string.IsNullOrEmpty(data.HotfixDllPath))
-            {
-                ResLoadTask<TextAsset> loadHotTask = ResModule.Inst.LoadAsync<TextAsset>(data.HotfixDllPath);
-                loadHotTask.OnComplete((asset) =>
-                {
-                    byte[] bytes = asset.bytes;
-                    if (bytes != null)
-                    {
-                        Assembly.Load(bytes);
-                    }
-                });
-                task.Add(loadHotTask);
-            }
-
-            string url = "ftp://47.108.188.157/pub/test/Hotfix.bytes";
-            DownTask downer = DownloadModule.Inst.Down(url);
-            downer.OnComplete(() =>
-            {
-                if (downer.Success)
-                {
-                    byte[] data = downer.Data;
-                    Log.Debug("download success");
-                    Log.Debug(data.Length);
-                    AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
-                    {
-                        Log.Debug(sender.GetType().Name);
-                        Log.Debug(args.LoadedAssembly.FullName);
-                    };
-                    Assembly.Load(data);
-                }
-                else
-                {
-                    Log.Debug("download error");
-                }
-            });
-            task.Add(downer);
-
-            //string path = Path.Combine(Application.persistentDataPath, "hotfix.bytes");
-            //if (File.Exists(path))
-            //{
-            //    byte[] testbytes = File.ReadAllBytes(path);
-            //    if (testbytes != null)
-            //    {
-            //        Assembly.Load(testbytes);
-            //        TypeModule.Inst.UpdateType();
-            //    }
-            //}
-
-            return task;
         }
 
         private void InnerConfigLog()

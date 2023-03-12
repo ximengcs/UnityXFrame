@@ -194,7 +194,7 @@ namespace UnityXFrame.Core.Diagnotics
         {
             HashSet<Type> types = new HashSet<Type>();
             foreach (WindowInfo info in m_Windows)
-                types.Add(info.GetType());
+                types.Add(info.Window.GetType());
 
             TypeSystem typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
             foreach (Type t in typeSys)

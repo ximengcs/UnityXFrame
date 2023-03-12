@@ -22,9 +22,6 @@
     <type fullname="UnityEngine.Debug" preserve="all" />
     <type fullname="UnityEngine.Events.UnityAction" preserve="all" />
     <type fullname="UnityEngine.Events.UnityEvent" preserve="all" />
-    <type fullname="UnityEngine.GameObject" preserve="all" />
-    <type fullname="UnityEngine.Sprite" preserve="all" />
-    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.IMGUIModule">
     <type fullname="UnityEngine.GUI" preserve="all" />
@@ -52,9 +49,7 @@
   <assembly fullname="XFrame">
     <type fullname="XFrame.Core.SingletonModule`1" preserve="all" />
     <type fullname="XFrame.Modules.Diagnotics.Log" preserve="all" />
-    <type fullname="XFrame.Modules.Procedure.ProcedureBase" preserve="all" />
     <type fullname="XFrame.Modules.Resource.ResModule" preserve="all" />
-    <type fullname="XFrame.Modules.StateMachine.FsmState" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.ITask" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.TaskBase" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.XTask`1" preserve="all" />

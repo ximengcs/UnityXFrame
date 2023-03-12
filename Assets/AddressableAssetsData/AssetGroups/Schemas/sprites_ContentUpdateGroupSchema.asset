@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: sprites_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
   m_Group: {fileID: 11400000, guid: 2dc904b747daff542a40f7410fb8ee6d, type: 2}
-  m_StaticContent: 1
+  m_StaticContent: 0
