@@ -11,15 +11,21 @@ namespace UnityXFrame.Core.Download
 
         public bool IsDone { get; private set; }
         public DownloadResult Result { get; private set; }
+        public string Url { get; set; }
 
-        void IDownloadHelper.Request(string url)
+        void IDownloadHelper.OnInit()
+        {
+
+        }
+
+        void IDownloadHelper.Request()
         {
             m_Complete = false;
-            m_Request = UnityWebRequest.Get(url);
+            m_Request = UnityWebRequest.Get(Url);
             m_Request.SendWebRequest();
         }
 
-        void IDownloadHelper.Update()
+        void IDownloadHelper.OnUpdate()
         {
             if (m_Complete)
                 return;
@@ -39,7 +45,7 @@ namespace UnityXFrame.Core.Download
             m_Complete = true;
         }
 
-        void IDownloadHelper.Dispose()
+        void IDownloadHelper.OnDispose()
         {
             m_Request?.Dispose();
             m_Request = null;

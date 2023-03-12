@@ -1,14 +1,13 @@
-﻿using HybridCLR;
+﻿using System;
+using HybridCLR;
 using UnityEngine;
 using XFrame.Core;
 using System.Reflection;
 using XFrame.Modules.Tasks;
-using XFrame.Modules.XType;
 using XFrame.Modules.Config;
 using XFrame.Modules.Resource;
-using XFrame.Modules.Diagnotics;
 using XFrame.Modules.Download;
-using System;
+using XFrame.Modules.Diagnotics;
 
 namespace UnityXFrame.Core
 {
@@ -69,35 +68,28 @@ namespace UnityXFrame.Core
                 task.Add(loadHotTask);
             }
 
-            bool success = false;
-            bool start = false;
-            BolActionTask testTask = TaskModule.Inst.GetOrNew<BolActionTask>();
-            testTask.Add(() =>
+            string url = "ftp://47.108.188.157/pub/test/Hotfix.bytes";
+            DownTask downer = DownloadModule.Inst.Down(url);
+            downer.OnComplete(() =>
             {
-                if (!start)
+                if (downer.Success)
                 {
-                    start = true;
-                    string url = "ftp://47.108.188.157/pub/test/Hotfix.bytes";
-                    DownloadModule.Inst.DownData(url, (data) =>
+                    byte[] data = downer.Data;
+                    Log.Debug("download success");
+                    Log.Debug(data.Length);
+                    AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
                     {
-                        Log.Debug("download success");
-                        Log.Debug(data.Length);
-                        AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
-                        {
-                            Log.Debug(sender.GetType().Name);
-                            Log.Debug(args.LoadedAssembly.FullName);
-                        };
-                        Assembly.Load(data);
-                        success = true;
-                    }, () =>
-                    {
-                        Log.Debug("download error");
-                        success = true;
-                    });
+                        Log.Debug(sender.GetType().Name);
+                        Log.Debug(args.LoadedAssembly.FullName);
+                    };
+                    Assembly.Load(data);
                 }
-                return success;
+                else
+                {
+                    Log.Debug("download error");
+                }
             });
-            task.Add(testTask);
+            task.Add(downer);
 
             //string path = Path.Combine(Application.persistentDataPath, "hotfix.bytes");
             //if (File.Exists(path))
