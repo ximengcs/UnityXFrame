@@ -1,14 +1,12 @@
 ﻿using System;
 using UnityEngine;
-using XFrame.Modules.XType;
 using XFrame.Modules.Tasks;
-using XFrame.Modules.Download;
 using XFrame.Modules.Resource;
 using XFrame.Modules.Procedure;
 using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core.Resource;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
-using UnityXFrame.Core.Resource;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Game.Core.Procedure
@@ -19,39 +17,47 @@ namespace Game.Core.Procedure
         {
             base.OnEnter();
 
-            HotUpdateTask updateTask = TaskModule.Inst.GetOrNew<HotUpdateTask>();
-            updateTask.Start();
-
-            string url = "ftp://47.108.188.157/pub/test/Hotfix.bytes";
-            Log.Debug(url);
-            DownTask downer = DownloadModule.Inst.Down(url);
-            downer.OnComplete(() =>
-            {
-                if (downer.Success)
+            Log.Debug("Generate hot update check task.");
+            HotUpdateCheckTask checkTask = TaskModule.Inst.GetOrNew<HotUpdateCheckTask>();
+            Log.Debug("Start hot update check task.");
+            checkTask.OnComplete(() =>
                 {
-                    byte[] data = downer.Data;
-                    Log.Debug("download success");
-                    Log.Debug(data.Length);
-                    AppDomain.CurrentDomain.AssemblyLoad += (sender, args) =>
+                    if (checkTask.Success)
                     {
-                        Log.Debug(sender.GetType().Name);
-                        Log.Debug(args.LoadedAssembly.FullName);
-                    };
-                    TypeModule.Inst.LoadAssembly(data);
-                }
-                else
-                {
-                    Log.Debug("download error");
-                }
-                InnerTest1();
-            }).Start();
-
-            Log.Debug("Test", "I am test string.");
-            Log.Debug("I am test string.");
-            Log.Debug("None", "I am test string.");
-            Log.Debug("Default", "I am test string.");
-
-
+                        List<string> list = checkTask.ResList;
+                        Log.Debug($"Hot update check task has success. require down count : {list.Count}");
+                        foreach (string item in list)
+                            Log.Debug($"Item : {item}");
+                        if (list.Count > 0)
+                        {
+                            Log.Debug("Generate hot update download task.");
+                            HotUpdateDownTask downTask = TaskModule.Inst.GetOrNew<HotUpdateDownTask>();
+                            Log.Debug("Start hot update download task.");
+                            downTask.AddList(list)
+                                .OnComplete(() =>
+                                {
+                                    if (downTask.Success)
+                                    {
+                                        Log.Debug("Hot update download task has success.");
+                                        ChangeState<EnterHotfixProcedure>();
+                                    }
+                                    else
+                                    {
+                                        Log.Debug("Hot update download task has failure.");
+                                    }
+                                }).Start();
+                        }
+                        else
+                        {
+                            ChangeState<EnterHotfixProcedure>();
+                            Log.Debug($"Count is 0, dnt require download");
+                        }
+                    }
+                    else
+                    {
+                        Log.Debug("Hot update check task has failure.");
+                    }
+                }).Start();
         }
 
         private void InnerTest1()

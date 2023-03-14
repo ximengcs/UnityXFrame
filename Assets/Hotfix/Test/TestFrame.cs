@@ -6,6 +6,7 @@ using XFrame.Modules.Resource;
 using System;
 using UnityXFrame.Core;
 using UnityEngine;
+using XFrame.Modules.Diagnotics;
 
 namespace Game.Test
 {
@@ -32,6 +33,11 @@ namespace Game.Test
 
         public void OnDraw()
         {
+            if (DebugGUI.Button("Hello"))
+            {
+                Log.Debug("Hello");
+            }
+
             m_UI = DebugGUI.IntField(m_UI);
             m_Group = DebugGUI.IntField(m_Group);
             m_Layer = DebugGUI.IntField(m_Layer);
