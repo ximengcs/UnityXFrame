@@ -10,5 +10,7 @@ namespace UnityXFrame.Core.Diagnotics
         public GUIStyle Lable;
         public GUIStyle TextArea;
         public GUIStyle Toolbar;
+        public GUIStyle ProgressSlider;
+        public GUIStyle ProgressThumb;
     }
 }

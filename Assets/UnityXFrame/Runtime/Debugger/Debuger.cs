@@ -17,7 +17,7 @@ namespace UnityXFrame.Core.Diagnotics
         private GUISkin Skin;
         private GUIStyle m_TitleStyle;
         private GUIStyle m_CloseButtonStyle;
-        private GUIStyle m_ContentStyle;
+        private GUIStyle m_EnterButtonStyle;
         private GUIStyle m_TipTitleStyle;
         private GUIStyle m_TipContentStyle;
         private GUIStyle m_DebugArea;
@@ -70,7 +70,7 @@ namespace UnityXFrame.Core.Diagnotics
             Skin = Init.Inst.Data.DebuggerSkin;
             m_CloseButtonStyle = Skin.customStyles[0];
             m_TitleStyle = Skin.customStyles[1];
-            m_ContentStyle = Skin.customStyles[2];
+            m_EnterButtonStyle = Skin.customStyles[2];
 
             DebugGUI.Style = new DebugStyle();
             DebugGUI.Style.Skin = Skin;
@@ -85,6 +85,8 @@ namespace UnityXFrame.Core.Diagnotics
             m_MenuArea = Skin.customStyles[11];
             m_ContentArea = Skin.customStyles[12];
             m_HelpWindowStyle = Skin.customStyles[13];
+            DebugGUI.Style.ProgressSlider = Skin.customStyles[14];
+            DebugGUI.Style.ProgressThumb = Skin.customStyles[15];
 
             m_TweenModule = new TweenModule();
             m_Timer = new CDTimer();
@@ -142,7 +144,7 @@ namespace UnityXFrame.Core.Diagnotics
                 string title = TITLE;
                 if (m_TipNewMsg.Count > 0)
                     title = $"<color=#FF0000>{title}</color>";
-                if (GUILayout.Button(title, Skin.button))
+                if (GUILayout.Button(title, m_EnterButtonStyle))
                     m_IsOpen = true;
             }
         }
@@ -223,6 +225,8 @@ namespace UnityXFrame.Core.Diagnotics
             }
             if (string.IsNullOrEmpty(info.Name))
                 info.Name = type.Name.Replace("Case", string.Empty);
+            if (info.Name.Length > 10)
+                info.Name = info.Name.Substring(0, 10);
 
             DebugHelpAttribute helpAtr = type.GetCustomAttribute<DebugHelpAttribute>();
             if (helpAtr != null)

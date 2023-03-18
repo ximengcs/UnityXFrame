@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UnityXFrame.Core.Diagnotics
 {
     [DebugWindow(true)]
-    public class LogScaner : IDebugWindow
+    public class LogScanner : IDebugWindow
     {
         private StringBuilder m_Common;
         private StringBuilder m_Warning;

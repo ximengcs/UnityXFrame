@@ -33,9 +33,30 @@ namespace Game.Test
 
         public void OnDraw()
         {
-            if (DebugGUI.Button("Hello"))
+            DebugGUI.Label("1");
+            if (DebugGUI.Button("Create entity"))
             {
-                Log.Debug("Hello");
+                ResModule.Inst.LoadAsync("ILoveU/iloveu.png", typeof(Sprite))
+                    .OnComplete((asset) =>
+                    {
+                        if (asset != null)
+                        {
+                            Sprite sprite = (Sprite)asset;
+                            GameObject inst = new GameObject();
+                            inst.name = sprite.name;
+                            inst.AddComponent<SpriteRenderer>().sprite = sprite;
+                        }
+                    }).Start();
+                //ResModule.Inst.LoadAsync<Sprite>("ILoveU/iloveu.png")
+                //    .OnComplete((asset) =>
+                //    {
+                //        if (asset != null)
+                //        {
+                //            GameObject inst = new GameObject();
+                //            inst.name = asset.name;
+                //            inst.AddComponent<SpriteRenderer>().sprite = asset;
+                //        }
+                //    }).Start();
             }
 
             m_UI = DebugGUI.IntField(m_UI);

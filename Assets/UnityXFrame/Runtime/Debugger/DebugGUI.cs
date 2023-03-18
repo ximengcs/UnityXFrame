@@ -8,6 +8,20 @@ namespace UnityXFrame.Core.Diagnotics
         public static DebugStyle Style;
         private static Dictionary<int, string> s_FloatTexts = new Dictionary<int, string>();
 
+        public static void Progress(float value)
+        {
+            Progress(value, 0, 1);
+        }
+
+        public static void Progress(float value, float startValue, float endValue)
+        {
+            float rate = (value - startValue) / (endValue - startValue);
+            rate = Mathf.Clamp(rate, 0, 1);
+            Rect rect = GUILayoutUtility.GetAspectRect(10f / 1f);
+            rect.width = rate * rect.width;
+            GUI.DrawTexture(rect, Style.ProgressSlider.normal.background, ScaleMode.StretchToFill);
+        }
+
         public static void Line()
         {
             GUILayout.Label(string.Empty, GUILayout.Height(10));

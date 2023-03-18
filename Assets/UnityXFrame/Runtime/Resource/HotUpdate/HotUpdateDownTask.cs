@@ -1,4 +1,5 @@
-﻿using XFrame.Modules.Tasks;
+﻿using System.Collections;
+using XFrame.Modules.Tasks;
 using XFrame.Modules.Diagnotics;
 using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
@@ -72,8 +73,6 @@ namespace UnityXFrame.Core.Resource
         private class Handler : ITaskHandler
         {
             private List<string> m_CheckList;
-            private float m_ProRate;
-            private int m_Count;
 
             public State State { get; private set; }
             public float Pro { get; private set; }
@@ -85,91 +84,113 @@ namespace UnityXFrame.Core.Resource
 
             public void Download()
             {
-                AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs(m_CheckList);
                 State = State.Downloading;
-                updateHandle.Completed += (handle) =>
+                if (m_CheckList != null && m_CheckList.Count > 0)
                 {
-                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    AsyncOperationHandle<List<IResourceLocator>> updateHandle = Addressables.UpdateCatalogs(m_CheckList, true);
+                    updateHandle.Completed += (handle) =>
                     {
-                        Log.Debug("XFrame", "UpdateCatalogs success.");
-                        List<IResourceLocator> list = updateHandle.Result;
-                        List<object> keys = new List<object>();
-                        foreach (IResourceLocator locator in list)
-                            keys.AddRange(locator.Keys);
-
-                        m_Count = keys.Count;
-                        m_ProRate = 1f / m_Count;
-                        foreach (object key in keys)
+                        if (handle.IsValid() && handle.Status == AsyncOperationStatus.Succeeded)
                         {
-                            InnerCheckSize(key);
+                            Log.Debug("XFrame", "UpdateCatalogs success.");
                         }
-                    }
-                    else
-                    {
-                        Log.Debug("XFrame", "UpdateCatalogs failure, cant download res.");
-                        State = State.DownloadFailure;
-                    }
-                };
-            }
+                        else
+                        {
+                            Log.Debug("XFrame", "UpdateCatalogs failure, cant download res.");
+                            State = State.DownloadFailure;
+                        }
 
-            private void InnerCheckSize(object key)
-            {
-                AsyncOperationHandle<long> sizeHandle = Addressables.GetDownloadSizeAsync(key);
-                sizeHandle.Completed += (handle) =>
+                        InnerInit();
+                    };
+                }
+                else
                 {
-                    if (handle.Status == AsyncOperationStatus.Succeeded)
-                    {
-                        long downSize = handle.Result;
-                        Log.Debug("XFrame", $"Down {key} {downSize}");
-                        InnerDownload(key);
-                    }
-                    else
-                    {
-                        Log.Debug("XFrame", $"Get {key} size failure, cant download res.");
-                        State = State.DownloadFailure;
-                    }
+                    InnerInit();
+                }
+            }
+
+            private void InnerInit()
+            {
+                AsyncOperationHandle<IResourceLocator> initHandle = Addressables.InitializeAsync();
+                initHandle.Completed += (handle) =>
+                {
+                    Log.Debug("XFrame", $"Initialize success");
+                    IResourceLocator locator = handle.Result;
+                    InnerCheckSize(locator.Keys);
                 };
             }
 
-            private void InnerDownload(object key)
+            private void InnerCheckSize(IEnumerable<object> keys)
             {
-                AsyncOperationHandle downHandle = Addressables.DownloadDependenciesAsync(key);
+                List<object> list = new List<object>(keys);
+                int count = list.Count;
+                list.Clear();
+
+                foreach (object key in keys)
+                {
+                    AsyncOperationHandle<long> sizeHandle = Addressables.GetDownloadSizeAsync(key);
+                    sizeHandle.Completed += (handle) =>
+                    {
+                        if (handle.IsValid() && handle.Status == AsyncOperationStatus.Succeeded)
+                        {
+                            long downSize = handle.Result;
+                            if (downSize > 0)
+                            {
+                                Log.Debug("XFrame", $"Require {key} download size: {downSize}");
+                                list.Add(key);
+                            }
+
+                            count--;
+                            if (count == 0)
+                            {
+                                if (State != State.DownloadFailure)
+                                {
+                                    if (list.Count > 0)
+                                        InnerDownload(list);
+                                    else
+                                        State = State.DownloadSuccess;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Log.Debug("XFrame", $"Get size failure, cant download res.");
+                            State = State.DownloadFailure;
+                        }
+                        Addressables.Release(handle);
+                    };
+                }
+
+            }
+
+            private void InnerDownload(IEnumerable keys)
+            {
+                AsyncOperationHandle downHandle = Addressables.DownloadDependenciesAsync(keys, Addressables.MergeMode.Union);
                 BolActionTask task = TaskModule.Inst.GetOrNew<BolActionTask>();
-                float curPor = 0;
                 task.Add(() =>
                 {
                     bool isDone = downHandle.IsDone;
                     if (isDone)
                     {
-                        if (downHandle.Status == AsyncOperationStatus.Succeeded)
+                        if (downHandle.IsValid() && downHandle.Status == AsyncOperationStatus.Succeeded)
                         {
-                            Log.Debug("XFrame", $"Down {key} success.");
-                            InnerCheckNextEnd();
+                            State = State.DownloadSuccess;
+                            Log.Debug("XFrame", $"Download success.");
                         }
                         else
                         {
                             State = State.DownloadFailure;
-                            Log.Debug("XFrame", $"Down {key} failure, cant download res.");
+                            Log.Debug("XFrame", $"Download failure, can't download res. {downHandle.OperationException}");
                         }
+                        Pro = 1;
+                        Addressables.Release(downHandle);
                     }
                     else
                     {
-                        Pro -= curPor;
-                        curPor = downHandle.PercentComplete * m_ProRate;
-                        Pro += curPor;
+                        Pro = downHandle.PercentComplete;
                     }
                     return isDone;
                 }).Start();
-            }
-
-            private void InnerCheckNextEnd()
-            {
-                m_Count--;
-                if (m_Count == 0)
-                {
-                    State = State.DownloadSuccess;
-                    Pro = 1f;
-                }
             }
         }
     }

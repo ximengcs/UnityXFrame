@@ -23,9 +23,22 @@ namespace UnityXFrame.Core.Diagnotics
         {
             if (DebugGUI.Button("Refresh"))
                 InnerRefresh();
-            m_Pos = DebugGUI.BeginScrollView(m_Pos);
-            GUILayout.Box(new GUIContent(m_Str.ToString()));
-            GUILayout.EndScrollView();
+
+            GUILayout.BeginHorizontal();
+            DebugGUI.Button("Q", GUILayout.Width(30));
+            DebugGUI.Button("W", GUILayout.Width(30));
+            DebugGUI.Button("E", GUILayout.Width(30));
+            DebugGUI.Button("R", GUILayout.Width(30));
+            DebugGUI.Button("T", GUILayout.Width(30));
+            DebugGUI.Button("Y", GUILayout.Width(30));
+            DebugGUI.Button("U", GUILayout.Width(30));
+            DebugGUI.Button("I", GUILayout.Width(30));
+            DebugGUI.Button("O", GUILayout.Width(30));
+            GUILayout.EndHorizontal();
+
+            //m_Pos = DebugGUI.BeginScrollView(m_Pos);
+            //GUILayout.Box(new GUIContent(m_Str.ToString()));
+            //GUILayout.EndScrollView();
         }
 
         public void Dispose()

@@ -23,7 +23,7 @@ namespace UnityXFrame.Core.Resource
             public void OnUse(Handler handler)
             {
                 m_Handler = handler;
-                m_Handler.Check();
+                m_Handler.Start();
             }
 
             public float OnHandle(ITask from)
@@ -35,7 +35,7 @@ namespace UnityXFrame.Core.Resource
                 else
                 {
                     HotUpdateCheckTask task = (HotUpdateCheckTask)from;
-                    if (m_Handler.Op.Status == AsyncOperationStatus.Succeeded)
+                    if (m_Handler.Op.IsValid() && m_Handler.Op.Status == AsyncOperationStatus.Succeeded)
                     {
                         task.Success = true;
                         task.ResList = m_Handler.Op.Result;
@@ -59,9 +59,14 @@ namespace UnityXFrame.Core.Resource
         {
             public AsyncOperationHandle<List<string>> Op { get; private set; }
 
-            public void Check()
+            public void Start()
             {
                 Op = Addressables.CheckForCatalogUpdates(true);
+            }
+
+            public void Dispose()
+            {
+
             }
         }
     }

@@ -46,6 +46,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1d5040c2502f354496791ae7fe243bc, type: 2}
   - {fileID: 11400000, guid: 5de5bc7740161744493c0a21c9b31fa5, type: 2}
   - {fileID: 11400000, guid: 54e3eb032ea804b4eab21a6e8040db74, type: 2}
+  - {fileID: 11400000, guid: ed77600371d6cf94e9b980e1c68837e3, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -66,7 +67,7 @@ MonoBehaviour:
       - m_Id: bd4d48dd11c7b23448ae2c010655edb7
         m_Value: C:\Users\98259\Desktop\Test\[BuildTarget]\Build
       - m_Id: c31a5a10fc0ce434f8dbfc68bb6ad85d
-        m_Value: ftp://47.108.188.157/pub/abtest
+        m_Value: http://47.108.188.157:3000/res
     m_ProfileEntryNames:
     - m_Id: bb44eb0d0a4271d4b9bb2fd97b14a591
       m_Name: BuildTarget

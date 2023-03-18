@@ -400,7 +400,7 @@ static void __M2N_i4i8i1(const MethodInfo* method, uint16_t* argVarIndexs, Stack
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Comparison`1::Invoke(T,T)
 static void __M2N_i4i8i1i1(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int64_t __arg0, int8_t __arg1, int8_t __arg2, const MethodInfo* method);
@@ -1264,7 +1264,7 @@ static void __M2N_i4i8r4i8(const MethodInfo* method, uint16_t* argVarIndexs, Sta
 }
 
 
-// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static void __M2N_i4i8r4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int64_t __arg0, float __arg1, float __arg2, const MethodInfo* method);
@@ -4480,7 +4480,7 @@ static void __M2N_r4i8(const MethodInfo* method, uint16_t* argVarIndexs, StackOb
 }
 
 
-// System.Single UnityEngine.Material::GetFloat(System.Int32)
+// System.Single System.Single::Parse(System.String,System.Globalization.NumberStyles)
 static void __M2N_r4i8i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef float (*NativeMethod)(int64_t __arg0, int32_t __arg1, const MethodInfo* method);
@@ -4677,6 +4677,14 @@ static void __M2N_r4S16(const MethodInfo* method, uint16_t* argVarIndexs, StackO
 {
     typedef float (*NativeMethod)(ValueTypeSize<16> __arg0, const MethodInfo* method);
     *(float*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(ValueTypeSize<16>*)(localVarBase+argVarIndexs[0]), method);
+}
+
+
+// System.Single System.Single::Parse(System.ReadOnlySpan`1<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider)
+static void __M2N_r4S16i4i8(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
+{
+    typedef float (*NativeMethod)(ValueTypeSize<16> __arg0, int32_t __arg1, int64_t __arg2, const MethodInfo* method);
+    *(float*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(ValueTypeSize<16>*)(localVarBase+argVarIndexs[0]), *(int32_t*)(localVarBase+argVarIndexs[1]), *(int64_t*)(localVarBase+argVarIndexs[2]), method);
 }
 
 
@@ -6464,7 +6472,7 @@ static void __M2N_S4i2(const MethodInfo* method, uint16_t* argVarIndexs, StackOb
 }
 
 
-// UnityEngine.LayerMask UnityEngine.LayerMask::op_Implicit(System.Int32)
+// UnityEngine.Cache UnityEngine.Caching::GetCacheAt(System.Int32)
 static void __M2N_S4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef ValueTypeSize<4> (*NativeMethod)(int32_t __arg0, const MethodInfo* method);
@@ -8584,7 +8592,7 @@ static void __M2N_u1r4(const MethodInfo* method, uint16_t* argVarIndexs, StackOb
 }
 
 
-// System.Boolean UnityEngine.Mathf::Approximately(System.Single,System.Single)
+// System.Boolean System.Single::op_Equality(System.Single,System.Single)
 static void __M2N_u1r4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef uint8_t (*NativeMethod)(float __arg0, float __arg1, const MethodInfo* method);
@@ -13760,7 +13768,7 @@ static void __M2N_vi8vf4vf4vf4vf4(const MethodInfo* method, uint16_t* argVarInde
 }
 
 
-// System.Void XFrame.Core.Entry::Update(System.Single)
+// System.Void UnityXFrame.Core.Diagnotics.DebugGUI::Progress(System.Single)
 static void __M2N_vr4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef void (*NativeMethod)(float __arg0, const MethodInfo* method);
@@ -13776,7 +13784,7 @@ static void __M2N_vr4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackO
 }
 
 
-// System.Void UnityEngine.GL::Vertex3(System.Single,System.Single,System.Single)
+// System.Void UnityXFrame.Core.Diagnotics.DebugGUI::Progress(System.Single,System.Single,System.Single)
 static void __M2N_vr4r4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef void (*NativeMethod)(float __arg0, float __arg1, float __arg2, const MethodInfo* method);
@@ -14714,6 +14722,7 @@ Managed2NativeMethodInfo hybridclr::interpreter::g_managed2nativeStub[] =
 	{"r4r4r4r4", __M2N_r4r4r4r4},
 	{"r4r8", __M2N_r4r8},
 	{"r4S16", __M2N_r4S16},
+	{"r4S16i4i8", __M2N_r4S16i4i8},
 	{"r4S64", __M2N_r4S64},
 	{"r4S64r4", __M2N_r4S64r4},
 	{"r4u1", __M2N_r4u1},
@@ -16028,7 +16037,7 @@ static int32_t __N2M_i4i8i1(int64_t __arg0, int8_t __arg1, const MethodInfo* met
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Comparison`1::Invoke(T,T)
 static int32_t __N2M_i4i8i1i1(int64_t __arg0, int8_t __arg1, int8_t __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
@@ -16308,7 +16317,7 @@ static int32_t __N2M_i4i8r4(int64_t __arg0, float __arg1, const MethodInfo* meth
 }
 
 
-// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static int32_t __N2M_i4i8r4r4(int64_t __arg0, float __arg1, float __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
