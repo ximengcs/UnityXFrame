@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using XFrame.Modules.Tasks;
-using UnityXFrame.Core.Resource;
 using XFrame.Modules.Diagnotics;
 using System.Collections.Generic;
+using UnityXFrame.Core.HotUpdate;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 

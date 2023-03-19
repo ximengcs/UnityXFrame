@@ -2,7 +2,7 @@
 using XFrame.Modules.Tasks;
 using XFrame.Modules.Procedure;
 using XFrame.Modules.Diagnotics;
-using UnityXFrame.Core.Resource;
+using UnityXFrame.Core.HotUpdate;
 
 namespace Game.Core.Procedure
 {
