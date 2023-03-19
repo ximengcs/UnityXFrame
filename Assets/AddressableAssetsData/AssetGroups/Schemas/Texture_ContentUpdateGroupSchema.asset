@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
-  m_Name: all_ContentUpdateGroupSchema
+  m_Name: Texture_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: 5de5bc7740161744493c0a21c9b31fa5, type: 2}
+  m_Group: {fileID: 11400000, guid: 9ea3f6e5f50ac9446a411dd7ff4a73d6, type: 2}
   m_StaticContent: 0

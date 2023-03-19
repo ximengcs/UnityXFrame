@@ -10,17 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: sprites
+  m_Name: Common
   m_EditorClassIdentifier: 
-  m_GroupName: sprites
+  m_GroupName: Common
   m_Data:
     m_SerializedData: []
   m_GUID: 8d00be3b6c2485a4c982239691f5629f
-  m_SerializeEntries:
-  - m_GUID: e7b69be89ba124349879a3b3df0bf37e
-    m_Address: Sprites
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: f690568f028bded4e920f7df9d96583e, type: 2}
   m_SchemaSet:
