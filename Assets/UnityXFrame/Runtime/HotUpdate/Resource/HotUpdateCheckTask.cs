@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace UnityXFrame.Core.Resource
+namespace UnityXFrame.Core.HotUpdate
 {
     public class HotUpdateCheckTask : TaskBase
     {

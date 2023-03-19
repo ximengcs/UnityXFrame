@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace UnityXFrame.Core.Resource
+namespace UnityXFrame.Core.HotUpdate
 {
     public class HotUpdateDownTask : TaskBase
     {
