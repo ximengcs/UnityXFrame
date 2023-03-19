@@ -3,6 +3,7 @@ using UnityEditor.AI;
 
 namespace UnityXFrame.Core.Diagnotics
 {
+    [DebugWindow(-1000)]
     public class EditorTool : IDebugWindow
     {
         private int m_ShowNav;

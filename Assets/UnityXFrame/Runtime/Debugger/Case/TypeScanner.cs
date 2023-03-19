@@ -5,6 +5,7 @@ using XFrame.Modules.XType;
 
 namespace UnityXFrame.Core.Diagnotics
 {
+    [DebugWindow(-998, "Types")]
     public class TypeScanner : IDebugWindow
     {
         private Vector2 m_Pos;

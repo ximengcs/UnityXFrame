@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UnityXFrame.Core.Diagnotics
 {
-    [DebugWindow(true)]
+    [DebugWindow(-997, "Log", true)]
     public class LogScanner : IDebugWindow
     {
         private StringBuilder m_Common;

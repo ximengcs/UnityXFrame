@@ -1,14 +1,13 @@
-﻿using UnityXFrame.Core.UIs;
-using UnityXFrame.Core.Diagnotics;
-using UnityXFrame.Core.Audios;
-using XFrame.Modules.Tasks;
-using XFrame.Modules.Resource;
-using System;
-using UnityXFrame.Core;
+﻿using System;
 using UnityEngine;
-using XFrame.Modules.Diagnotics;
+using UnityXFrame.Core;
+using UnityXFrame.Core.UIs;
+using XFrame.Modules.Tasks;
+using UnityXFrame.Core.Audios;
+using XFrame.Modules.Resource;
+using UnityXFrame.Core.Diagnotics;
 
-namespace Game.Test
+namespace XHotfix.Test
 {
     [DebugHelp("框架测试窗口")]
     public class TestFrame : IDebugWindow
@@ -47,16 +46,6 @@ namespace Game.Test
                             inst.AddComponent<SpriteRenderer>().sprite = sprite;
                         }
                     }).Start();
-                //ResModule.Inst.LoadAsync<Sprite>("ILoveU/iloveu.png")
-                //    .OnComplete((asset) =>
-                //    {
-                //        if (asset != null)
-                //        {
-                //            GameObject inst = new GameObject();
-                //            inst.name = asset.name;
-                //            inst.AddComponent<SpriteRenderer>().sprite = asset;
-                //        }
-                //    }).Start();
             }
 
             m_UI = DebugGUI.IntField(m_UI);

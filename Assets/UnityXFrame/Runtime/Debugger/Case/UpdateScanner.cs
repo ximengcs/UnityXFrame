@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace UnityXFrame.Core.Diagnotics
 {
-    [DebugWindow]
+    [DebugWindow(-999, "ResUpdate")]
     public class UpdateScanner : IDebugWindow
     {
         private HotUpdateCheckTask m_CheckTask;

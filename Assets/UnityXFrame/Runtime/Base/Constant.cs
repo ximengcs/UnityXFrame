@@ -18,6 +18,7 @@ namespace UnityXFrame.Core
         public static string HOTFIX_PATH = "Hotfix/Hotfix.Bytes";
         public const string MAIN_GROUPUI = "Main";
 
+        public const string HOTFIX_ENTRANCE = "XHotfix.Core.HotfixMainProcedure";
 
         public const string UPDATE_CHECK_TASK = "UpdateCheckTask";
         public const string UPDATE_RES_TASK = "UpdateResTask";

@@ -45,6 +45,7 @@
     <type fullname="UnityXFrame.Core.Diagnotics.DebugGUI" preserve="all" />
     <type fullname="UnityXFrame.Core.Diagnotics.DebugHelpAttribute" preserve="all" />
     <type fullname="UnityXFrame.Core.Diagnotics.IDebugWindow" preserve="all" />
+    <type fullname="UnityXFrame.Core.HotUpdate.HotProcedureBase" preserve="all" />
     <type fullname="UnityXFrame.Core.UIs.IUI" preserve="all" />
     <type fullname="UnityXFrame.Core.UIs.IUIGroup" preserve="all" />
     <type fullname="UnityXFrame.Core.UIs.MonoUI" preserve="all" />
@@ -56,6 +57,7 @@
     <type fullname="XFrame.Modules.Diagnotics.Log" preserve="all" />
     <type fullname="XFrame.Modules.Resource.ResLoadTask" preserve="all" />
     <type fullname="XFrame.Modules.Resource.ResModule" preserve="all" />
+    <type fullname="XFrame.Modules.StateMachine.FsmState" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.ITask" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.TaskBase" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.XTask`1" preserve="all" />

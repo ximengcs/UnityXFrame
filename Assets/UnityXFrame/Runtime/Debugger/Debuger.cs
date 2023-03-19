@@ -95,7 +95,6 @@ namespace UnityXFrame.Core.Diagnotics
 
             m_Windows = new List<WindowInfo>();
             InternalLoadInst();
-            m_Windows.Sort((info1, info2) => info1.Order - info2.Order);
 
             if (m_Windows.Count > 0)
                 InternalSelectMenu(m_Windows[0]);
@@ -189,6 +188,7 @@ namespace UnityXFrame.Core.Diagnotics
             TypeSystem typeSys = TypeModule.Inst.GetOrNew<IDebugWindow>();
             foreach (Type t in typeSys)
                 InnerAddWindowInfo(t);
+            m_Windows.Sort((info1, info2) => info2.Order - info1.Order);
             TypeModule.Inst.OnTypeChange(InnerNewWindowHandle);
         }
 
@@ -204,6 +204,7 @@ namespace UnityXFrame.Core.Diagnotics
                 if (!types.Contains(t))
                     InnerAddWindowInfo(t);
             }
+            m_Windows.Sort((info1, info2) => info2.Order - info1.Order);
         }
 
         private void InnerAddWindowInfo(Type type)
