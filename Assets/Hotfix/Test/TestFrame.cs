@@ -36,7 +36,7 @@ namespace Game.Test
             DebugGUI.Label("1");
             if (DebugGUI.Button("Create entity"))
             {
-                ResModule.Inst.LoadAsync("ILoveU/iloveu.png", typeof(Sprite))
+                ResModule.Inst.LoadAsync("Textures/iloveu.png", typeof(Sprite))
                     .OnComplete((asset) =>
                     {
                         if (asset != null)

@@ -2,6 +2,7 @@
 <linker>
   <assembly fullname="mscorlib">
     <type fullname="System.Action" preserve="all" />
+    <type fullname="System.Action`1" preserve="all" />
     <type fullname="System.Array" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
@@ -12,7 +13,6 @@
     <type fullname="System.Runtime.CompilerServices.CompilerGeneratedAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
     <type fullname="System.RuntimeTypeHandle" preserve="all" />
-    <type fullname="System.Single" preserve="all" />
     <type fullname="System.String" preserve="all" />
     <type fullname="System.Type" preserve="all" />
   </assembly>
@@ -23,6 +23,10 @@
     <type fullname="UnityEngine.Debug" preserve="all" />
     <type fullname="UnityEngine.Events.UnityAction" preserve="all" />
     <type fullname="UnityEngine.Events.UnityEvent" preserve="all" />
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.Object" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.IMGUIModule">
     <type fullname="UnityEngine.GUI" preserve="all" />
@@ -50,6 +54,7 @@
   <assembly fullname="XFrame">
     <type fullname="XFrame.Core.SingletonModule`1" preserve="all" />
     <type fullname="XFrame.Modules.Diagnotics.Log" preserve="all" />
+    <type fullname="XFrame.Modules.Resource.ResLoadTask" preserve="all" />
     <type fullname="XFrame.Modules.Resource.ResModule" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.ITask" preserve="all" />
     <type fullname="XFrame.Modules.Tasks.TaskBase" preserve="all" />

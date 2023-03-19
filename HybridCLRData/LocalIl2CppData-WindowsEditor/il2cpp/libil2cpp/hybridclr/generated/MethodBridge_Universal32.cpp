@@ -288,7 +288,7 @@ static void __M2N_C48i4i8(const MethodInfo* method, uint16_t* argVarIndexs, Stac
 }
 
 
-// System.Collections.Generic.KeyValuePair`2<TKey,TValue> System.Collections.Generic.Dictionary`2/Enumerator::get_Current()
+// T System.Collections.Generic.IEnumerator`1::get_Current()
 static void __M2N_C56i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef ValueTypeSizeAlign8<56> (*NativeMethod)(int32_t __arg0, const MethodInfo* method);
@@ -872,7 +872,7 @@ static void __M2N_i4i4C16(const MethodInfo* method, uint16_t* argVarIndexs, Stac
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static void __M2N_i4i4C16C16(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, ValueTypeSizeAlign8<16> __arg2, const MethodInfo* method);
@@ -888,7 +888,7 @@ static void __M2N_i4i4C16i4(const MethodInfo* method, uint16_t* argVarIndexs, St
 }
 
 
-// System.Int32 System.Array::IndexOf<T>(T[],T,System.Int32,System.Int32)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
 static void __M2N_i4i4C16i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
@@ -1032,7 +1032,7 @@ static void __M2N_i4i4i1(const MethodInfo* method, uint16_t* argVarIndexs, Stack
 }
 
 
-// System.Int32 System.Comparison`1::Invoke(T,T)
+// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static void __M2N_i4i4i1i1(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, int8_t __arg1, int8_t __arg2, const MethodInfo* method);
@@ -1072,7 +1072,7 @@ static void __M2N_i4i4i2(const MethodInfo* method, uint16_t* argVarIndexs, Stack
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static void __M2N_i4i4i2i2(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, int16_t __arg1, int16_t __arg2, const MethodInfo* method);
@@ -2112,7 +2112,7 @@ static void __M2N_i4i4r4i4(const MethodInfo* method, uint16_t* argVarIndexs, Sta
 }
 
 
-// System.Int32 System.Array::IndexOf<T>(T[],T,System.Int32,System.Int32)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
 static void __M2N_i4i4r4i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, float __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
@@ -2120,7 +2120,7 @@ static void __M2N_i4i4r4i4i4(const MethodInfo* method, uint16_t* argVarIndexs, S
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static void __M2N_i4i4r4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, float __arg1, float __arg2, const MethodInfo* method);
@@ -2248,7 +2248,7 @@ static void __M2N_i4i4S12i4(const MethodInfo* method, uint16_t* argVarIndexs, St
 }
 
 
-// System.Int32 System.Array::IndexOf<T>(T[],T,System.Int32,System.Int32)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
 static void __M2N_i4i4S12i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSize<12> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
@@ -2312,7 +2312,7 @@ static void __M2N_i4i4S16i4(const MethodInfo* method, uint16_t* argVarIndexs, St
 }
 
 
-// System.Int32 System.Array::IndexOf<T>(T[],T,System.Int32,System.Int32)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
 static void __M2N_i4i4S16i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSize<16> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
@@ -2528,7 +2528,7 @@ static void __M2N_i4i4S28i4(const MethodInfo* method, uint16_t* argVarIndexs, St
 }
 
 
-// System.Int32 System.Array::IndexOf<T>(T[],T,System.Int32,System.Int32)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
 static void __M2N_i4i4S28i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSize<28> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
@@ -2557,6 +2557,14 @@ static void __M2N_i4i4S32(const MethodInfo* method, uint16_t* argVarIndexs, Stac
 {
     typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSize<32> __arg1, const MethodInfo* method);
     *(int32_t*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(int32_t*)(localVarBase+argVarIndexs[0]), *(ValueTypeSize<32>*)(localVarBase+argVarIndexs[1]), method);
+}
+
+
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static void __M2N_i4i4S32i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
+{
+    typedef int32_t (*NativeMethod)(int32_t __arg0, ValueTypeSize<32> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method);
+    *(int32_t*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(int32_t*)(localVarBase+argVarIndexs[0]), *(ValueTypeSize<32>*)(localVarBase+argVarIndexs[1]), *(int32_t*)(localVarBase+argVarIndexs[2]), *(int32_t*)(localVarBase+argVarIndexs[3]), method);
 }
 
 
@@ -4093,14 +4101,6 @@ static void __M2N_r4S8(const MethodInfo* method, uint16_t* argVarIndexs, StackOb
 {
     typedef float (*NativeMethod)(ValueTypeSize<8> __arg0, const MethodInfo* method);
     *(float*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(ValueTypeSize<8>*)(localVarBase+argVarIndexs[0]), method);
-}
-
-
-// System.Single System.Single::Parse(System.ReadOnlySpan`1<System.Char>,System.Globalization.NumberStyles,System.IFormatProvider)
-static void __M2N_r4S8i4i4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
-{
-    typedef float (*NativeMethod)(ValueTypeSize<8> __arg0, int32_t __arg1, int32_t __arg2, const MethodInfo* method);
-    *(float*)ret = ((NativeMethod)(method->methodPointerCallByInterp))(*(ValueTypeSize<8>*)(localVarBase+argVarIndexs[0]), *(int32_t*)(localVarBase+argVarIndexs[1]), *(int32_t*)(localVarBase+argVarIndexs[2]), method);
 }
 
 
@@ -7568,7 +7568,7 @@ static void __M2N_u1r4(const MethodInfo* method, uint16_t* argVarIndexs, StackOb
 }
 
 
-// System.Boolean System.Single::op_Equality(System.Single,System.Single)
+// System.Boolean UnityEngine.Mathf::Approximately(System.Single,System.Single)
 static void __M2N_u1r4r4(const MethodInfo* method, uint16_t* argVarIndexs, StackObject* localVarBase, void* ret)
 {
     typedef uint8_t (*NativeMethod)(float __arg0, float __arg1, const MethodInfo* method);
@@ -11761,6 +11761,7 @@ Managed2NativeMethodInfo hybridclr::interpreter::g_managed2nativeStub[] =
 	{"i4i4S28S28", __M2N_i4i4S28S28},
 	{"i4i4S2S4", __M2N_i4i4S2S4},
 	{"i4i4S32", __M2N_i4i4S32},
+	{"i4i4S32i4i4", __M2N_i4i4S32i4i4},
 	{"i4i4S36", __M2N_i4i4S36},
 	{"i4i4S36i4", __M2N_i4i4S36i4},
 	{"i4i4S36i4i4", __M2N_i4i4S36i4i4},
@@ -11953,7 +11954,6 @@ Managed2NativeMethodInfo hybridclr::interpreter::g_managed2nativeStub[] =
 	{"r4S52", __M2N_r4S52},
 	{"r4S64r4", __M2N_r4S64r4},
 	{"r4S8", __M2N_r4S8},
-	{"r4S8i4i4", __M2N_r4S8i4i4},
 	{"r4S8S8", __M2N_r4S8S8},
 	{"r4u1", __M2N_r4u1},
 	{"r4u2", __M2N_r4u2},
@@ -12994,7 +12994,7 @@ static ValueTypeSizeAlign8<48> __N2M_C48i4i8(int32_t __arg0, int64_t __arg1, con
 }
 
 
-// System.Collections.Generic.KeyValuePair`2<TKey,TValue> System.Collections.Generic.Dictionary`2/Enumerator::get_Current()
+// T System.Collections.Generic.IEnumerator`1::get_Current()
 static ValueTypeSizeAlign8<56> __N2M_C56i4(int32_t __arg0, const MethodInfo* method)
 {
     StackObject args[8] = {*(uint64_t*)&__arg0 };
@@ -13254,7 +13254,7 @@ static int32_t __N2M_i4i4C16(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, con
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static int32_t __N2M_i4i4C16C16(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, ValueTypeSizeAlign8<16> __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, (uint64_t)&__arg2 };
@@ -13269,6 +13269,16 @@ static int32_t __N2M_i4i4C16i4(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, i
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, *(uint64_t*)&__arg2 };
     StackObject* ret = args + 3;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4C16i4i4(int32_t __arg0, ValueTypeSizeAlign8<16> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
     Interpreter::Execute(method, args, ret);
     return *(int32_t*)ret;
 }
@@ -13384,7 +13394,7 @@ static int32_t __N2M_i4i4i1(int32_t __arg0, int8_t __arg1, const MethodInfo* met
 }
 
 
-// System.Int32 System.Comparison`1::Invoke(T,T)
+// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static int32_t __N2M_i4i4i1i1(int32_t __arg0, int8_t __arg1, int8_t __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
@@ -13414,7 +13424,7 @@ static int32_t __N2M_i4i4i2(int32_t __arg0, int16_t __arg1, const MethodInfo* me
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static int32_t __N2M_i4i4i2i2(int32_t __arg0, int16_t __arg1, int16_t __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
@@ -13944,7 +13954,17 @@ static int32_t __N2M_i4i4r4(int32_t __arg0, float __arg1, const MethodInfo* meth
 }
 
 
-// System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4r4i4i4(int32_t __arg0, float __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
+// System.Int32 System.Collections.Generic.IComparer`1::Compare(T,T)
 static int32_t __N2M_i4i4r4r4(int32_t __arg0, float __arg1, float __arg2, const MethodInfo* method)
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
@@ -14114,6 +14134,16 @@ static int32_t __N2M_i4i4S16(int32_t __arg0, ValueTypeSize<16> __arg1, const Met
 }
 
 
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4S16i4i4(int32_t __arg0, ValueTypeSize<16> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
 // System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static int32_t __N2M_i4i4S16S16(int32_t __arg0, ValueTypeSize<16> __arg1, ValueTypeSize<16> __arg2, const MethodInfo* method)
 {
@@ -14244,6 +14274,16 @@ static int32_t __N2M_i4i4S28(int32_t __arg0, ValueTypeSize<28> __arg1, const Met
 }
 
 
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4S28i4i4(int32_t __arg0, ValueTypeSize<28> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
 // System.Int32 System.Collections.Generic.Comparer`1::Compare(T,T)
 static int32_t __N2M_i4i4S28S28(int32_t __arg0, ValueTypeSize<28> __arg1, ValueTypeSize<28> __arg2, const MethodInfo* method)
 {
@@ -14269,6 +14309,16 @@ static int32_t __N2M_i4i4S32(int32_t __arg0, ValueTypeSize<32> __arg1, const Met
 {
     StackObject args[3] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1 };
     StackObject* ret = args + 2;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4S32i4i4(int32_t __arg0, ValueTypeSize<32> __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, (uint64_t)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
     Interpreter::Execute(method, args, ret);
     return *(int32_t*)ret;
 }
@@ -14549,6 +14599,16 @@ static int32_t __N2M_i4i4u1i4(int32_t __arg0, uint8_t __arg1, int32_t __arg2, co
 {
     StackObject args[4] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2 };
     StackObject* ret = args + 3;
+    Interpreter::Execute(method, args, ret);
+    return *(int32_t*)ret;
+}
+
+
+// System.IAsyncResult System.Action`1::BeginInvoke(T,System.AsyncCallback,System.Object)
+static int32_t __N2M_i4i4u1i4i4(int32_t __arg0, uint8_t __arg1, int32_t __arg2, int32_t __arg3, const MethodInfo* method)
+{
+    StackObject args[5] = {*(uint64_t*)&__arg0, *(uint64_t*)&__arg1, *(uint64_t*)&__arg2, *(uint64_t*)&__arg3 };
+    StackObject* ret = args + 4;
     Interpreter::Execute(method, args, ret);
     return *(int32_t*)ret;
 }
@@ -19297,6 +19357,7 @@ Native2ManagedMethodInfo hybridclr::interpreter::g_native2managedStub[] =
 	{"i4i4C16", (Il2CppMethodPointer)__N2M_i4i4C16},
 	{"i4i4C16C16", (Il2CppMethodPointer)__N2M_i4i4C16C16},
 	{"i4i4C16i4", (Il2CppMethodPointer)__N2M_i4i4C16i4},
+	{"i4i4C16i4i4", (Il2CppMethodPointer)__N2M_i4i4C16i4i4},
 	{"i4i4C16S4", (Il2CppMethodPointer)__N2M_i4i4C16S4},
 	{"i4i4C24S4", (Il2CppMethodPointer)__N2M_i4i4C24S4},
 	{"i4i4C32", (Il2CppMethodPointer)__N2M_i4i4C32},
@@ -19364,6 +19425,7 @@ Native2ManagedMethodInfo hybridclr::interpreter::g_native2managedStub[] =
 	{"i4i4i8i8", (Il2CppMethodPointer)__N2M_i4i4i8i8},
 	{"i4i4i8S4", (Il2CppMethodPointer)__N2M_i4i4i8S4},
 	{"i4i4r4", (Il2CppMethodPointer)__N2M_i4i4r4},
+	{"i4i4r4i4i4", (Il2CppMethodPointer)__N2M_i4i4r4i4i4},
 	{"i4i4r4r4", (Il2CppMethodPointer)__N2M_i4i4r4r4},
 	{"i4i4r4r4r4", (Il2CppMethodPointer)__N2M_i4i4r4r4r4},
 	{"i4i4r4S4", (Il2CppMethodPointer)__N2M_i4i4r4S4},
@@ -19381,6 +19443,7 @@ Native2ManagedMethodInfo hybridclr::interpreter::g_native2managedStub[] =
 	{"i4i4S12S12i4", (Il2CppMethodPointer)__N2M_i4i4S12S12i4},
 	{"i4i4S12S12S68", (Il2CppMethodPointer)__N2M_i4i4S12S12S68},
 	{"i4i4S16", (Il2CppMethodPointer)__N2M_i4i4S16},
+	{"i4i4S16i4i4", (Il2CppMethodPointer)__N2M_i4i4S16i4i4},
 	{"i4i4S16S16", (Il2CppMethodPointer)__N2M_i4i4S16S16},
 	{"i4i4S16S4", (Il2CppMethodPointer)__N2M_i4i4S16S4},
 	{"i4i4S1S1", (Il2CppMethodPointer)__N2M_i4i4S1S1},
@@ -19394,9 +19457,11 @@ Native2ManagedMethodInfo hybridclr::interpreter::g_native2managedStub[] =
 	{"i4i4S24r4i4i4i4", (Il2CppMethodPointer)__N2M_i4i4S24r4i4i4i4},
 	{"i4i4S24S24", (Il2CppMethodPointer)__N2M_i4i4S24S24},
 	{"i4i4S28", (Il2CppMethodPointer)__N2M_i4i4S28},
+	{"i4i4S28i4i4", (Il2CppMethodPointer)__N2M_i4i4S28i4i4},
 	{"i4i4S28S28", (Il2CppMethodPointer)__N2M_i4i4S28S28},
 	{"i4i4S2S4", (Il2CppMethodPointer)__N2M_i4i4S2S4},
 	{"i4i4S32", (Il2CppMethodPointer)__N2M_i4i4S32},
+	{"i4i4S32i4i4", (Il2CppMethodPointer)__N2M_i4i4S32i4i4},
 	{"i4i4S36", (Il2CppMethodPointer)__N2M_i4i4S36},
 	{"i4i4S36S36", (Il2CppMethodPointer)__N2M_i4i4S36S36},
 	{"i4i4S4", (Il2CppMethodPointer)__N2M_i4i4S4},
@@ -19425,6 +19490,7 @@ Native2ManagedMethodInfo hybridclr::interpreter::g_native2managedStub[] =
 	{"i4i4S8S8u1", (Il2CppMethodPointer)__N2M_i4i4S8S8u1},
 	{"i4i4u1", (Il2CppMethodPointer)__N2M_i4i4u1},
 	{"i4i4u1i4", (Il2CppMethodPointer)__N2M_i4i4u1i4},
+	{"i4i4u1i4i4", (Il2CppMethodPointer)__N2M_i4i4u1i4i4},
 	{"i4i4u1S4", (Il2CppMethodPointer)__N2M_i4i4u1S4},
 	{"i4i4u1u1", (Il2CppMethodPointer)__N2M_i4i4u1u1},
 	{"i4i4u2", (Il2CppMethodPointer)__N2M_i4i4u2},
