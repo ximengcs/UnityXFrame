@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using XFrame.Modules.Containers;
 
 namespace UnityXFrame.Core.UIs
 {
     /// <summary>
     /// UI
     /// </summary>
-    public interface IUI : IUIElement
+    public interface IUI : IUIElement, IContainer
     {
         /// <summary>
         /// 根节点
@@ -26,7 +27,7 @@ namespace UnityXFrame.Core.UIs
         /// 打开UI
         /// </summary>
         /// <param name="data">数据</param>
-        void Open(object data);
+        void Open();
 
         /// <summary>
         /// 关闭UI
@@ -43,7 +44,7 @@ namespace UnityXFrame.Core.UIs
         /// 打开生命周期，每次UI打开时被调用
         /// </summary>
         /// <param name="data">数据</param>
-        protected internal void OnOpen(object data);
+        protected internal void OnOpen();
 
         /// <summary>
         /// 关闭生命周期，每次UI关闭时被调用

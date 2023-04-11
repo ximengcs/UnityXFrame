@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 using XFrame.Core;
 using XFrame.Collections;
@@ -86,9 +85,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
-            return Open(uiType, Constant.MAIN_GROUPUI, data, useNavtive);
+            return Open(uiType, Constant.MAIN_GROUPUI, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -98,9 +97,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(object data = default, bool useNavtive = false) where T : IUI
+        public T Open<T>(Action<IDataProvider> dataHandler = null, bool useNavtive = false) where T : IUI
         {
-            return (T)Open(typeof(T), data, useNavtive);
+            return (T)Open(typeof(T), dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -110,11 +109,11 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(string uiName, object data = default, bool useNavtive = false)
+        public IUI Open(string uiName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
             TypeSystem typeSys = TypeModule.Inst.GetOrNew<IUI>();
             Type uiType = typeSys.GetByName(uiName);
-            return Open(uiType, data, useNavtive);
+            return Open(uiType, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -125,10 +124,10 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(string uiName, string groupName, object data = default, bool useNavtive = false)
+        public IUI Open(string uiName, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
             Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
-            return Open(uiType, groupName, data, useNavtive);
+            return Open(uiType, groupName, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -139,9 +138,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(string groupName, object data = default, bool useNavtive = false) where T : IUI
+        public T Open<T>(string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false) where T : IUI
         {
-            return (T)Open(typeof(T), groupName, data, useNavtive);
+            return (T)Open(typeof(T), groupName, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -152,10 +151,10 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, string groupName, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
-            return InnerOpenUI(group, uiType, data, useNavtive);
+            return InnerOpenUI(group, uiType, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -166,9 +165,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, IUIGroup group, object data = default, bool useNavtive = false)
+        public IUI Open(Type uiType, IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
-            return InnerOpenUI(group, uiType, data, useNavtive);
+            return InnerOpenUI(group, uiType, dataHandler, useNavtive);
         }
 
         /// <summary>
@@ -179,10 +178,10 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(IUI ui, string groupName, object data = default, bool useNavtive = false)
+        public IUI Open(IUI ui, string groupName, Action<IDataProvider> dataHandler = null)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
-            return InnerOpenUI(ui, group, data, useNavtive);
+            return InnerOpenUI(ui, group, dataHandler);
         }
 
         /// <summary>
@@ -193,9 +192,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(IUI ui, IUIGroup group, object data = default, bool useNavtive = false)
+        public IUI Open(IUI ui, IUIGroup group, Action<IDataProvider> dataHandler = null)
         {
-            return InnerOpenUI(ui, group, data, useNavtive);
+            return InnerOpenUI(ui, group, dataHandler);
         }
 
         /// <summary>
@@ -206,9 +205,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(IUIGroup group, object data = default, bool useNavtive = false)
+        public T Open<T>(IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
         {
-            return (T)InnerOpenUI(group, typeof(T), data, useNavtive);
+            return (T)InnerOpenUI(group, typeof(T), dataHandler, useNavtive);
         }
         #endregion
 
@@ -289,7 +288,7 @@ namespace UnityXFrame.Core.UIs
                 ui.Close();
         }
 
-        private IUI InnerOpenUI(IUIGroup group, Type uiType, object data, bool useNavtive)
+        private IUI InnerOpenUI(IUIGroup group, Type uiType, Action<IDataProvider> dataHandler, bool useNavtive)
         {
             if (!m_UIMap.TryGetValue(uiType, out IUI ui))
             {
@@ -316,10 +315,10 @@ namespace UnityXFrame.Core.UIs
                 m_UIMap[uiType] = ui;
             }
 
-            return InnerOpenUI(ui, group, data, useNavtive);
+            return InnerOpenUI(ui, group, dataHandler);
         }
 
-        private IUI InnerOpenUI(IUI ui, IUIGroup group, object data, bool useNavtive)
+        private IUI InnerOpenUI(IUI ui, IUIGroup group, Action<IDataProvider> dataHandler)
         {
             IUIGroup oldGroup = ui.Group;
             if (oldGroup != group)
@@ -328,7 +327,8 @@ namespace UnityXFrame.Core.UIs
                 group.AddUI(ui);
                 ui.OnGroupChange(group);
             }
-            ui.Open(data);
+            dataHandler?.Invoke(ui);
+            ui.Open();
             group.Open();
             return ui;
         }

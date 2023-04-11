@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using XFrame.Modules.Containers;
 using XFrame.Modules.Diagnotics;
 
 namespace UnityXFrame.Core.UIs
@@ -8,12 +10,15 @@ namespace UnityXFrame.Core.UIs
     /// </summary>
     public abstract partial class UI : IUI
     {
+        private IContainer m_Container;
+
         protected bool m_IsOpen;
         protected int Layer;
         protected IUIGroup m_Group;
         protected GameObject m_Root;
         protected Transform m_Transform;
 
+        #region UI Interface
         int IUI.Layer
         {
             get { return Layer; }
@@ -28,7 +33,7 @@ namespace UnityXFrame.Core.UIs
 
         public string Name => m_Root.name;
 
-        public void Open(object data)
+        public void Open()
         {
             if (m_IsOpen)
                 return;
@@ -36,7 +41,7 @@ namespace UnityXFrame.Core.UIs
             IUIGroup group = m_Group;
             if (group != null)
             {
-                group.OpenUI(this, data);
+                group.OpenUI(this);
             }
             else
             {
@@ -72,6 +77,7 @@ namespace UnityXFrame.Core.UIs
 
         void IUI.OnInit(GameObject inst)
         {
+            m_Container = ContainerModule.Inst.New(this);
             m_Transform = inst.transform;
             m_Root = inst;
             OnInit();
@@ -83,15 +89,27 @@ namespace UnityXFrame.Core.UIs
                 OnUpdate();
         }
 
-        void IUI.OnOpen(object data)
+        void IUI.OnOpen()
         {
             m_Root.gameObject.SetActive(true);
-            OnOpen(data);
+            m_Container.Dispatch((com) =>
+            {
+                UICom uiCom = com as UICom;
+                if (uiCom != null)
+                    uiCom.OnOpen();
+            });
+            OnOpen();
         }
 
         void IUI.OnClose()
         {
             m_Root.gameObject.SetActive(false);
+            m_Container.Dispatch((com) =>
+            {
+                UICom uiCom = com as UICom;
+                if (uiCom != null)
+                    uiCom.OnClose();
+            });
             OnClose();
         }
 
@@ -101,10 +119,110 @@ namespace UnityXFrame.Core.UIs
             if (refresh)
                 m_Group?.SetUILayer(this, Layer);
         }
+        #endregion
 
+        #region Sub Class Implement Life Fun
         protected virtual void OnInit() { }
         protected virtual void OnUpdate() { }
-        protected virtual void OnOpen(object data) { }
+        protected virtual void OnOpen() { }
         protected virtual void OnClose() { }
+        #endregion
+
+        #region Container Interface
+        public T Get<T>(int id = 0) where T : ICom
+        {
+            return m_Container.Get<T>(id);
+        }
+
+        public ICom Get(Type type, int id = 0)
+        {
+            return m_Container.Get(type, id);
+        }
+
+        public T Add<T>(Action<ICom> comInitComplete = null) where T : ICom
+        {
+            return m_Container.Add<T>(comInitComplete);
+        }
+
+        public T Add<T>(int id, Action<ICom> comInitComplete = null) where T : ICom
+        {
+            return m_Container.Add<T>(id, comInitComplete);
+        }
+
+        public ICom Add(Type type, Action<ICom> comInitComplete = null)
+        {
+            return m_Container.Add(type, comInitComplete);
+        }
+
+        public ICom Add(Type type, int id = 0, Action<ICom> comInitComplete = null)
+        {
+            return m_Container.Add(type, id, comInitComplete);
+        }
+
+        public T GetOrAdd<T>(Action<ICom> comInitComplete = null) where T : ICom
+        {
+            return m_Container.GetOrAdd<T>(comInitComplete);
+        }
+
+        public T GetOrAdd<T>(int id = 0, Action<ICom> comInitComplete = null) where T : ICom
+        {
+            return m_Container.GetOrAdd<T>(id, comInitComplete);
+        }
+
+        public ICom GetOrAdd(Type type, Action<ICom> comInitComplete = null)
+        {
+            return m_Container.GetOrAdd(type, comInitComplete);
+        }
+
+        public ICom GetOrAdd(Type type, int id = 0, Action<ICom> comInitComplete = null)
+        {
+            return m_Container.GetOrAdd(type, id, comInitComplete);
+        }
+
+        public void Remove<T>(int id = 0) where T : ICom
+        {
+            m_Container.Remove<T>(id);
+        }
+
+        public void Remove(Type type, int id = 0)
+        {
+            m_Container.Remove(type, id);
+        }
+
+        public void Clear()
+        {
+            m_Container.Clear();
+        }
+
+        public void Dispatch(Action<ICom> handle)
+        {
+            m_Container.Dispatch(handle);
+        }
+
+        public void SetData<T>(T value)
+        {
+            m_Container.SetData(value);
+        }
+
+        public T GetData<T>()
+        {
+            return m_Container.GetData<T>();
+        }
+
+        public void SetData<T>(string name, T value)
+        {
+            m_Container.SetData<T>(name, value);
+        }
+
+        public T GetData<T>(string name)
+        {
+            return m_Container.GetData<T>(name);
+        }
+
+        public void Dispose()
+        {
+            m_Container.Dispose();
+        }
+        #endregion
     }
 }

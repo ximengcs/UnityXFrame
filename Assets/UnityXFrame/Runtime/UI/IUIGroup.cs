@@ -38,7 +38,7 @@ namespace UnityXFrame.Core.UIs
         /// 组内打开UI生命周期
         /// </summary>
         /// <param name="ui">打开的UI</param>
-        protected internal void OpenUI(IUI ui, object data);
+        protected internal void OpenUI(IUI ui);
 
         /// <summary>
         /// 组内关闭UI生命周期

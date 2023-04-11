@@ -67,9 +67,9 @@ namespace UnityXFrame.Core.UIs
             ui.OnClose();
         }
 
-        void IUIGroup.OpenUI(IUI ui, object data)
+        void IUIGroup.OpenUI(IUI ui)
         {
-            ui.OnOpen(data);
+            ui.OnOpen();
         }
 
         void IUIGroup.OnInit()
