@@ -2,7 +2,7 @@
 
 namespace Game.Test
 {
-    public class TestUI1 : UI
+    public class LoadingUI : UI
     {
 
     }

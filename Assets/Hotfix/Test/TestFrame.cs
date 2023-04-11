@@ -6,6 +6,8 @@ using XFrame.Modules.Tasks;
 using UnityXFrame.Core.Audios;
 using XFrame.Modules.Resource;
 using UnityXFrame.Core.Diagnotics;
+using XFrame.Utility;
+using Game.Test;
 
 namespace XHotfix.Test
 {
@@ -53,9 +55,9 @@ namespace XHotfix.Test
             m_Layer = DebugGUI.IntField(m_Layer);
             m_GroupLayer = DebugGUI.IntField(m_GroupLayer);
             if (DebugGUI.Button("Open UI"))
-                UIModule.Inst.Open($"TestUI{m_UI}", default, true);
+                UIModule.Inst.Open("Game.Test.LoadingUI", default, true);
             if (DebugGUI.Button("Close UI"))
-                UIModule.Inst.Close($"TestUI{m_UI}");
+                UIModule.Inst.Close<LoadingUI>();
             if (DebugGUI.Button("Open UI To Group"))
                 UIModule.Inst.Open($"TestUI{m_UI}", $"Group{m_UI}", default, true);
             if (DebugGUI.Button("Set Layer"))

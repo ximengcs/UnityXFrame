@@ -112,7 +112,8 @@ namespace UnityXFrame.Core.UIs
         /// <returns>UI实例</returns>
         public IUI Open(string uiName, object data = default, bool useNavtive = false)
         {
-            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
+            TypeSystem typeSys = TypeModule.Inst.GetOrNew<IUI>();
+            Type uiType = typeSys.GetByName(uiName);
             return Open(uiType, data, useNavtive);
         }
 
@@ -293,13 +294,12 @@ namespace UnityXFrame.Core.UIs
             if (!m_UIMap.TryGetValue(uiType, out IUI ui))
             {
                 GameObject prefab;
-                string uiPath = Path.Combine(Constant.UI_RES_PATH, uiType.Name);
+                string uiPath = $"{Constant.UI_RES_PATH}/{uiType.Name}.prefab";
 
                 if (useNavtive)
-                    prefab = NativeResModule.Inst.Load<GameObject>(uiPath);
+                    prefab = Entry.GetModule<NativeResModule>().Load<GameObject>(uiPath);
                 else
                     prefab = ResModule.Inst.Load<GameObject>(uiPath);
-
 
                 if (prefab == null)
                 {
