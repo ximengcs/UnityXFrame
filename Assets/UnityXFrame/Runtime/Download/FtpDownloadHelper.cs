@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using XFrame.Modules.Diagnotics;
 
 namespace XFrame.Modules.Download
 {

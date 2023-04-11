@@ -1,10 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using XFrame.Modules.Serialize;
 
 namespace UnityXFrame.Core.Serialize
 {
     public class JsonSerializeHelper : IJsonSerializeHelper
     {
+        public object Deserialize(string json, Type dataType)
+        {
+            return JsonConvert.DeserializeObject(json, dataType);
+        }
+
         public T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json);

@@ -1,8 +1,4 @@
-﻿using UnityXFrame.Core;
-using XFrame.Modules.Tasks;
-using XFrame.Modules.Procedure;
-using XFrame.Modules.Diagnotics;
-using UnityXFrame.Core.HotUpdate;
+﻿using XFrame.Modules.Procedure;
 
 namespace Game.Core.Procedure
 {

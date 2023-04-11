@@ -1,5 +1,4 @@
 ﻿using UnityEngine.Networking;
-using XFrame.Modules.Diagnotics;
 using XFrame.Modules.Download;
 
 namespace UnityXFrame.Core.Download
