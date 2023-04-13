@@ -7,6 +7,7 @@ namespace UnityXFrame.Core.UIs
 {
     public abstract partial class MonoUI : MonoBehaviour, IUI
     {
+        private int m_Id;
         private IContainer m_Container;
 
         protected bool m_IsOpen;
@@ -28,6 +29,8 @@ namespace UnityXFrame.Core.UIs
         bool IUI.IsOpen => m_IsOpen;
 
         IUIGroup IUI.Group => m_Group;
+
+        public int Id => m_Id;
 
         public Transform Root => m_Transform;
 
@@ -67,6 +70,7 @@ namespace UnityXFrame.Core.UIs
 
         void IUI.OnDestroy()
         {
+            m_Container.Dispose();
             GameObject.Destroy(m_Root);
         }
 
@@ -75,8 +79,9 @@ namespace UnityXFrame.Core.UIs
             m_Group = newGroup as UIGroup;
         }
 
-        void IUI.OnInit(GameObject inst)
+        void IUI.OnInit(int id, GameObject inst)
         {
+            m_Id = id;
             m_Container = ContainerModule.Inst.New(this);
             m_Transform = inst.transform;
             m_Root = inst;

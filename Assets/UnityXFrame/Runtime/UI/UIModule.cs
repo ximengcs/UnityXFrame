@@ -20,7 +20,7 @@ namespace UnityXFrame.Core.UIs
     {
         private Canvas m_Canvas;
         private Transform m_Root;
-        private Dictionary<Type, IUI> m_UIMap;
+        private Dictionary<int, IUI> m_UIMap;
         private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;
 
@@ -33,7 +33,7 @@ namespace UnityXFrame.Core.UIs
             if (m_Canvas != null)
             {
                 m_Root = m_Canvas.transform;
-                m_UIMap = new Dictionary<Type, IUI>();
+                m_UIMap = new Dictionary<int, IUI>();
                 m_GroupList = new XLinkList<IUIGroup>();
                 m_Factorys = new Dictionary<Type, IUIFactory>();
                 AddFactory<UI, UI.Factory>();
@@ -85,9 +85,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public IUI Open(Type uiType, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
-            return Open(uiType, Constant.MAIN_GROUPUI, dataHandler, useNavtive);
+            return Open(uiType, Constant.MAIN_GROUPUI, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace UnityXFrame.Core.UIs
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(Action<IDataProvider> dataHandler = null, bool useNavtive = false) where T : IUI
+        public T Open<T>(Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default) where T : IUI
         {
-            return (T)Open(typeof(T), dataHandler, useNavtive);
+            return (T)Open(typeof(T), dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -108,12 +108,13 @@ namespace UnityXFrame.Core.UIs
         /// <param name="uiName">UI名</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public IUI Open(string uiName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public IUI Open(string uiName, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
             TypeSystem typeSys = TypeModule.Inst.GetOrNew<IUI>();
             Type uiType = typeSys.GetByName(uiName);
-            return Open(uiType, dataHandler, useNavtive);
+            return Open(uiType, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -123,11 +124,12 @@ namespace UnityXFrame.Core.UIs
         /// <param name="groupName">UI组名</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public IUI Open(string uiName, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public IUI Open(string uiName, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
             Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
-            return Open(uiType, groupName, dataHandler, useNavtive);
+            return Open(uiType, groupName, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -137,10 +139,11 @@ namespace UnityXFrame.Core.UIs
         /// <param name="groupName">UI组名</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false) where T : IUI
+        public T Open<T>(string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default) where T : IUI
         {
-            return (T)Open(typeof(T), groupName, dataHandler, useNavtive);
+            return (T)Open(typeof(T), groupName, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -150,11 +153,12 @@ namespace UnityXFrame.Core.UIs
         /// <param name="groupName">UI组名</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public IUI Open(Type uiType, string groupName, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
             IUIGroup group = InnerGetOrNewGroup(groupName, m_GroupList.Count);
-            return InnerOpenUI(group, uiType, dataHandler, useNavtive);
+            return InnerOpenUI(group, uiType, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -164,10 +168,11 @@ namespace UnityXFrame.Core.UIs
         /// <param name="group">UI组</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public IUI Open(Type uiType, IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public IUI Open(Type uiType, IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
-            return InnerOpenUI(group, uiType, dataHandler, useNavtive);
+            return InnerOpenUI(group, uiType, dataHandler, useNavtive, id);
         }
 
         /// <summary>
@@ -204,46 +209,122 @@ namespace UnityXFrame.Core.UIs
         /// <param name="group">UI组</param>
         /// <param name="data">UI数据</param>
         /// <param name="useNavtive">是否为本地UI</param>
+        /// <param name="id">UI Id</param>
         /// <returns>UI实例</returns>
-        public T Open<T>(IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false)
+        public T Open<T>(IUIGroup group, Action<IDataProvider> dataHandler = null, bool useNavtive = false, int id = default)
         {
-            return (T)InnerOpenUI(group, typeof(T), dataHandler, useNavtive);
+            return (T)InnerOpenUI(group, typeof(T), dataHandler, useNavtive, id);
         }
         #endregion
 
         #region Close UI
-        public void Close<T>() where T : IUI
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="id">UI Id</param>
+        public void Close<T>(int id = default) where T : IUI
         {
-            InnerCloseUI(typeof(T));
+            InnerCloseUI(typeof(T), id);
         }
 
-        public void Close(Type uiType)
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="uiType">UI类型</param>
+        /// <param name="id">UI Id</param>
+        public void Close(Type uiType, int id = default)
         {
-            InnerCloseUI(uiType);
+            InnerCloseUI(uiType, id);
         }
 
-        public void Close(string uiName)
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="uiName">UI类型名</param>
+        /// <param name="id">UI Id</param>
+        public void Close(string uiName, int id = default)
         {
             Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
-            InnerCloseUI(uiType);
+            InnerCloseUI(uiType, id);
         }
         #endregion
 
         #region Get UI
-        public IUI Get(Type uiType)
+        /// <summary>
+        /// 获取UI
+        /// </summary>
+        /// <param name="uiType">UI类型</param>
+        /// <param name="id">UI Id</param>
+        /// <returns>UI实例</returns>
+        public IUI Get(Type uiType, int id = default)
         {
-            return InnerGetUI(uiType);
+            return InnerGetUI(uiType, id);
         }
 
-        public T Get<T>() where T : IUI
+        /// <summary>
+        /// 获取UI
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="id">UI Id</param>
+        /// <returns>UI实例</returns>
+        public T Get<T>(int id = default) where T : IUI
         {
-            return (T)InnerGetUI(typeof(T));
+            return (T)InnerGetUI(typeof(T), id);
         }
 
-        public IUI Get(string uiName)
+        /// <summary>
+        /// 获取UI
+        /// </summary>
+        /// <param name="uiName">UI类型名</param>
+        /// <param name="id">UI Id</param>
+        /// <returns>UI实例</returns>
+        public IUI Get(string uiName, int id = default)
         {
             Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
-            return InnerGetUI(uiType);
+            return InnerGetUI(uiType, id);
+        }
+
+        /// <summary>
+        /// 销毁UI
+        /// </summary>
+        /// <param name="ui">待销毁UI</param>
+        public void DestroyUI(IUI ui)
+        {
+            InnerDestroyUI(ui);
+        }
+
+        /// <summary>
+        /// 销毁UI
+        /// </summary>
+        /// <typeparam name="T">UI类型</typeparam>
+        /// <param name="id">UI Id</param>
+        public void DestroyUI<T>(int id = default) where T : IUI
+        {
+            DestroyUI(typeof(T), id);
+        }
+
+        /// <summary>
+        /// 销毁UI
+        /// </summary>
+        /// <param name="type">UI类型</param>
+        /// <param name="id">UI Id</param>
+        public void DestroyUI(Type type, int id = default)
+        {
+            IUI ui = InnerGetUI(type, id);
+            if (ui != null)
+                DestroyUI(ui);
+        }
+
+        /// <summary>
+        /// 销毁UI
+        /// </summary>
+        /// <param name="uiName">UI类型名</param>
+        /// <param name="id">UI Id</param>
+        public void DestroyUI(string uiName, int id = default)
+        {
+            Type uiType = TypeModule.Inst.GetOrNew<IUI>().GetByName(uiName);
+            DestroyUI(uiType, id);
         }
         #endregion
 
@@ -282,15 +363,17 @@ namespace UnityXFrame.Core.UIs
             return default;
         }
 
-        private void InnerCloseUI(Type uiTyp)
+        private void InnerCloseUI(Type uiType, int id)
         {
-            if (m_UIMap.TryGetValue(uiTyp, out IUI ui))
+            id = InnerEnsureUIId(uiType, id);
+            if (m_UIMap.TryGetValue(id, out IUI ui))
                 ui.Close();
         }
 
-        private IUI InnerOpenUI(IUIGroup group, Type uiType, Action<IDataProvider> dataHandler, bool useNavtive)
+        private IUI InnerOpenUI(IUIGroup group, Type uiType, Action<IDataProvider> dataHandler, bool useNavtive, int id)
         {
-            if (!m_UIMap.TryGetValue(uiType, out IUI ui))
+            id = InnerEnsureUIId(uiType, id);
+            if (!m_UIMap.TryGetValue(id, out IUI ui))
             {
                 GameObject prefab;
                 string uiPath = $"{Constant.UI_RES_PATH}/{uiType.Name}.prefab";
@@ -311,8 +394,8 @@ namespace UnityXFrame.Core.UIs
                 IUIFactory factory = InnerGetUIFactory(uiType);
 
                 ui = factory.Create(inst, uiType);
-                ui.OnInit(inst);
-                m_UIMap[uiType] = ui;
+                ui.OnInit(id, inst);
+                m_UIMap[id] = ui;
             }
 
             return InnerOpenUI(ui, group, dataHandler);
@@ -333,6 +416,15 @@ namespace UnityXFrame.Core.UIs
             return ui;
         }
 
+        private void InnerDestroyUI(IUI ui)
+        {
+            int id = ui.Id;
+            IUIGroup group = ui.Group;
+            group?.RemoveUI(ui);
+            ui.OnDestroy();
+            m_UIMap.Remove(id);
+        }
+
         private void InnerCheckCanvas(object canvas)
         {
             if (canvas != null)
@@ -341,12 +433,18 @@ namespace UnityXFrame.Core.UIs
                 m_Canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         }
 
-        private IUI InnerGetUI(Type uiType)
+        private IUI InnerGetUI(Type uiType, int id)
         {
-            if (m_UIMap.TryGetValue(uiType, out IUI ui))
+            id = InnerEnsureUIId(uiType, id);
+            if (m_UIMap.TryGetValue(id, out IUI ui))
                 return ui;
             else
                 return default;
+        }
+
+        private int InnerEnsureUIId(Type type, int uiId)
+        {
+            return uiId == default ? type.GetHashCode() : uiId;
         }
 
         private IUIGroup InnerGetOrNewGroup(string groupName, int layer)

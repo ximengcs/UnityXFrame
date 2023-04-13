@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityXFrame.Core.UIs;
 
 namespace Game.Test
@@ -20,7 +19,6 @@ namespace Game.Test
             {
                 base.OnOpen();
                 float pro = ShareData.GetData<float>();
-                Debug.LogWarning(pro);
                 m_Slider.value = pro;
             }
 

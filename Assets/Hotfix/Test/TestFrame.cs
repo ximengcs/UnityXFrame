@@ -58,6 +58,8 @@ namespace XHotfix.Test
                 UIModule.Inst.Open("Game.Test.LoadingUI", (data) => data.SetData(0.5f), true);
             if (DebugGUI.Button("Close UI"))
                 UIModule.Inst.Close<LoadingUI>();
+            if (DebugGUI.Button("Destroy UI"))
+                UIModule.Inst.DestroyUI<LoadingUI>();
             if (DebugGUI.Button("Open UI To Group"))
                 UIModule.Inst.Open($"TestUI{m_UI}", $"Group{m_UI}", default, true);
             if (DebugGUI.Button("Set Layer"))

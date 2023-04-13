@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace UnityXFrame.Core.UIs
 {
     /// <summary>
@@ -32,6 +34,29 @@ namespace UnityXFrame.Core.UIs
         /// 关闭UI组
         /// </summary>
         void Close();
+
+        /// <summary>
+        /// 添加组辅助器
+        /// </summary>
+        /// <param name="type">辅助器类型</param>
+        void AddHelper(Type type);
+
+        /// <summary>
+        /// 添加组辅助器
+        /// </summary>
+        /// <typeparam name="T">辅助器类型</typeparam>
+        void AddHelper<T>() where T : IUIGroupHelper;
+
+        /// <summary>
+        /// 添加组辅助器
+        /// </summary>
+        void AddHelper(IUIGroupHelper helper);
+
+        /// <summary>
+        /// 移除组辅助器
+        /// </summary>
+        void RemoveHelper();
+
 
         #region Life Fun
         /// <summary>

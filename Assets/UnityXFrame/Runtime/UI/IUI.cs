@@ -8,6 +8,8 @@ namespace UnityXFrame.Core.UIs
     /// </summary>
     public interface IUI : IUIElement, IContainer
     {
+        int Id { get; }
+
         /// <summary>
         /// 根节点
         /// </summary>
@@ -55,7 +57,7 @@ namespace UnityXFrame.Core.UIs
         /// 初始化生命周期
         /// </summary>
         /// <param name="inst">UI实体</param>
-        protected internal void OnInit(GameObject inst);
+        protected internal void OnInit(int id, GameObject inst);
 
         /// <summary>
         /// UI组改变生命周期

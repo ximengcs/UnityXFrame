@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using XFrame.Collections;
 
 namespace UnityXFrame.Core.UIs
@@ -10,6 +11,7 @@ namespace UnityXFrame.Core.UIs
         private Transform m_Root;
         private CanvasGroup m_CanvasGroup;
         private XLinkList<IUI> m_UIs;
+        private IUIGroupHelper m_UIHelper;
 
         public string Name { get; }
         public bool IsOpen { get; private set; }
@@ -64,12 +66,18 @@ namespace UnityXFrame.Core.UIs
 
         void IUIGroup.CloseUI(IUI ui)
         {
-            ui.OnClose();
+            if (m_UIHelper != null)
+                m_UIHelper.OnUIClose(ui);
+            else
+                ui.OnClose();
         }
 
         void IUIGroup.OpenUI(IUI ui)
         {
-            ui.OnOpen();
+            if (m_UIHelper != null)
+                m_UIHelper.OnUIOpen(ui);
+            else
+                ui.OnOpen();
         }
 
         void IUIGroup.OnInit()
@@ -85,9 +93,13 @@ namespace UnityXFrame.Core.UIs
                 XLinkNode<IUI> node = m_UIs.First;
                 while (node != null)
                 {
-                    node.Value.OnUpdate();
+                    if (m_UIHelper != null)
+                        m_UIHelper.OnUIUpdate(node.Value);
+                    else
+                        node.Value.OnUpdate();
                     node = node.Next;
                 }
+                m_UIHelper?.OnUpdate();
             }
         }
 
@@ -96,7 +108,10 @@ namespace UnityXFrame.Core.UIs
             XLinkNode<IUI> node = m_UIs.First;
             while (node != null)
             {
-                node.Value.OnDestroy();
+                if (m_UIHelper != null)
+                    m_UIHelper.OnUIDestroy(node.Value);
+                else
+                    node.Value.OnDestroy();
                 node = node.Next;
             }
         }
@@ -134,6 +149,33 @@ namespace UnityXFrame.Core.UIs
             layer = Mathf.Min(layer, m_UIs.Count - 1);
             layer = Mathf.Max(layer, 0);
             UIModule.SetLayer(m_Root, ui, layer);
+        }
+
+        public void AddHelper(Type type)
+        {
+            InnerAddHelper((IUIGroupHelper)Activator.CreateInstance(type));
+        }
+
+        public void AddHelper(IUIGroupHelper helper)
+        {
+            InnerAddHelper(helper);
+        }
+
+        public void AddHelper<T>() where T : IUIGroupHelper
+        {
+            AddHelper(typeof(T));
+        }
+
+        public void RemoveHelper()
+        {
+            InnerAddHelper(null);
+        }
+
+        private void InnerAddHelper(IUIGroupHelper helper)
+        {
+            m_UIHelper?.OnDestroy();
+            m_UIHelper = helper;
+            m_UIHelper?.OnInit(this);
         }
     }
 }
