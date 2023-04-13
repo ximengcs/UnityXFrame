@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 using XFrame.Collections;
+using System.Collections.Generic;
 
 namespace UnityXFrame.Core.UIs
 {
-    public class UIGroup : IUIGroup
+    public partial class UIGroup : IUIGroup
     {
         private int m_Layer;
         private GameObject m_Inst;
@@ -176,6 +177,16 @@ namespace UnityXFrame.Core.UIs
             m_UIHelper?.OnDestroy();
             m_UIHelper = helper;
             m_UIHelper?.OnInit(this);
+        }
+
+        public IEnumerator<IUI> GetEnumerator()
+        {
+            return new Enumerator(m_UIs);
+        }
+
+        public void SetIt(XItType type)
+        {
+            m_UIs.SetIt(type);
         }
     }
 }

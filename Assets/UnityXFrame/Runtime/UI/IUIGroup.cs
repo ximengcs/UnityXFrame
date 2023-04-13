@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using XFrame.Collections;
 
 namespace UnityXFrame.Core.UIs
 {
@@ -8,7 +8,7 @@ namespace UnityXFrame.Core.UIs
     /// 当打开UI组时，所有处于打开状态的UI会被打开
     /// 当关闭UI组时，所有UI会被关闭
     /// </summary>
-    public interface IUIGroup : IUIElement
+    public interface IUIGroup : IUIElement, IXEnumerable<IUI>
     {
         /// <summary>
         /// 是否处于打开状态

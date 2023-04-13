@@ -18,11 +18,13 @@ namespace UnityXFrame.Core.UIs
     [RequireModule(typeof(PoolModule))]
     public partial class UIModule : SingletonModule<UIModule>
     {
+        #region Inner Fields
         private Canvas m_Canvas;
         private Transform m_Root;
         private Dictionary<int, IUI> m_UIMap;
         private Dictionary<Type, IUIFactory> m_Factorys;
         private XLinkList<IUIGroup> m_GroupList;
+        #endregion
 
         #region Life Fun
         protected override void OnInit(object data)
