@@ -66,10 +66,10 @@ namespace XHotfix.Test
                 UIModule.Inst.Get($"TestUI{m_UI}").Layer = m_Layer;
             if (DebugGUI.Button("Set Group Layer"))
                 UIModule.Inst.MainGroup.Layer = m_GroupLayer;
-
+            
             if (DebugGUI.Button("Test"))
             {
-                Debug.LogWarning(GUI.skin.customStyles.Length);
+                Debug.LogWarning(Faker.Name.FullName());
             }
             if (DebugGUI.Button("Play bgm1"))
             {
