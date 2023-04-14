@@ -396,6 +396,8 @@ namespace UnityXFrame.Core.UIs
                 IUIFactory factory = InnerGetUIFactory(uiType);
 
                 ui = factory.Create(inst, uiType);
+                dataHandler?.Invoke(ui);
+                dataHandler = null;
                 ui.OnInit(id, inst);
                 m_UIMap[id] = ui;
             }

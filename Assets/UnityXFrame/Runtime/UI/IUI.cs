@@ -13,7 +13,7 @@ namespace UnityXFrame.Core.UIs
         /// <summary>
         /// 根节点
         /// </summary>
-        Transform Root { get; }
+        RectTransform Root { get; }
 
         /// <summary>
         /// 是否处于打开的状态
@@ -42,6 +42,8 @@ namespace UnityXFrame.Core.UIs
         IUIGroup Group { get; }
 
         #region Life Fun
+        internal bool Active { get; set; }
+
         /// <summary>
         /// 打开生命周期，每次UI打开时被调用
         /// </summary>

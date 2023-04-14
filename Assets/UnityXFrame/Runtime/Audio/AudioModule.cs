@@ -9,32 +9,70 @@ using System.Collections.Generic;
 
 namespace UnityXFrame.Core.Audios
 {
+    /// <summary>
+    /// 声音模块
+    /// </summary>
     [XModule]
     public partial class AudioModule : SingletonModule<AudioModule>
     {
+        #region Inner Fields
+        private float m_Volume;
         private Transform m_Root;
         private AudioMixer m_Mixer;
         private AudioMixerGroup m_MainGroup;
         private IPool<Audio> m_AudioPool;
         private Dictionary<string, Group> m_Groups;
         private const string MAIN_GROUP = "Main";
+        #endregion
 
+        #region IModule Life Fun
         protected override void OnInit(object data)
         {
             base.OnInit(data);
 
+            m_Volume = 1.0f;
             m_Mixer = Init.Inst.Data.AudioMixer;
             m_Root = new GameObject("Audios").transform;
             m_AudioPool = PoolModule.Inst.GetOrNew<Audio>();
             m_Groups = new Dictionary<string, Group>();
             m_MainGroup = m_Mixer.FindMatchingGroups("Master")[0];
         }
+        #endregion
 
+        #region Intreface
+        /// <summary>
+        /// 总音量
+        /// </summary>
+        public float Volume
+        {
+            get => m_Volume;
+            set
+            {
+                m_Volume = value;
+                foreach (Group group in m_Groups.Values)
+                    group.Volume = value;
+            }
+        }
+
+        /// <summary>
+        /// 主声音组
+        /// </summary>
+        public IAudioGroup MainGroup => GetOrNewGroup(MAIN_GROUP);
+
+        /// <summary>
+        /// 获取或创建一个音乐组
+        /// </summary>
+        /// <param name="groupName">组名称</param>
+        /// <returns>音乐组</returns>
         public IAudioGroup GetOrNewGroup(string groupName)
         {
             return InnerGetOrNewGroup(groupName);
         }
 
+        /// <summary>
+        /// 移除音乐组
+        /// </summary>
+        /// <param name="groupName">组名称</param>
         public void RemoveGroup(string groupName)
         {
             if (m_Groups.TryGetValue(groupName, out Group group))
@@ -75,6 +113,13 @@ namespace UnityXFrame.Core.Audios
             return task;
         }
 
+        public XTask<IAudio> PlayAsync(string name, string groupName, Action callback = null)
+        {
+            XTask<IAudio> task = InnerReadyAudioAsync(name, groupName);
+            task.OnComplete(() => task.Data.Play(callback));
+            return task;
+        }
+
         public XTask<IAudio> PlayLoopAsync(string name)
         {
             XTask<IAudio> task = InnerReadyAudioAsync(name, MAIN_GROUP);
@@ -82,6 +127,15 @@ namespace UnityXFrame.Core.Audios
             return task;
         }
 
+        public XTask<IAudio> PlayLoopAsync(string name, string groupName)
+        {
+            XTask<IAudio> task = InnerReadyAudioAsync(name, groupName);
+            task.OnComplete(() => task.Data.PlayLoop());
+            return task;
+        }
+        #endregion
+
+        #region Inner Imeplement
         private Audio InnerReadyAudio(string name, string groupName)
         {
             Group group = InnerGetOrNewGroup(groupName);
@@ -139,5 +193,6 @@ namespace UnityXFrame.Core.Audios
             }
             return group;
         }
+        #endregion
     }
 }

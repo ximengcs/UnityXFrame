@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using XFrame.Collections;
 using XFrame.Modules.Containers;
 using XFrame.Modules.Diagnotics;
 
@@ -14,7 +16,7 @@ namespace UnityXFrame.Core.UIs
         protected int Layer;
         protected IUIGroup m_Group;
         protected GameObject m_Root;
-        protected Transform m_Transform;
+        protected RectTransform m_Transform;
 
         int IUI.Layer
         {
@@ -26,13 +28,19 @@ namespace UnityXFrame.Core.UIs
             }
         }
 
+        bool IUI.Active
+        {
+            get => m_Root.activeSelf;
+            set => m_Root.SetActive(value);
+        }
+
         bool IUI.IsOpen => m_IsOpen;
 
         IUIGroup IUI.Group => m_Group;
 
         public int Id => m_Id;
 
-        public Transform Root => m_Transform;
+        public RectTransform Root => m_Transform;
 
         public string Name => m_Root.name;
 
@@ -68,9 +76,15 @@ namespace UnityXFrame.Core.UIs
             }
         }
 
+        public MonoUI()
+        {
+            m_Container = ContainerModule.Inst.New(this);
+        }
+
         void IUI.OnDestroy()
         {
-            m_Container.Dispose();
+            ContainerModule.Inst.Remove(m_Container);
+            m_Container = null;
             GameObject.Destroy(m_Root);
         }
 
@@ -82,8 +96,7 @@ namespace UnityXFrame.Core.UIs
         void IUI.OnInit(int id, GameObject inst)
         {
             m_Id = id;
-            m_Container = ContainerModule.Inst.New(this);
-            m_Transform = inst.transform;
+            m_Transform = inst.GetComponent<RectTransform>();
             m_Root = inst;
             OnInit();
         }
@@ -96,13 +109,11 @@ namespace UnityXFrame.Core.UIs
 
         void IUI.OnOpen()
         {
-            m_Root.gameObject.SetActive(true);
             OnOpen();
         }
 
         void IUI.OnClose()
         {
-            m_Root.gameObject.SetActive(false);
             OnClose();
         }
 
@@ -212,7 +223,18 @@ namespace UnityXFrame.Core.UIs
 
         public void Dispose()
         {
-            m_Container.Dispose();
+            ContainerModule.Inst.Remove(m_Container);
+            m_Container = null;
+        }
+
+        public IEnumerator<ICom> GetEnumerator()
+        {
+            return m_Container.GetEnumerator();
+        }
+
+        public void SetIt(XItType type)
+        {
+            m_Container.SetIt(type);
         }
         #endregion
     }

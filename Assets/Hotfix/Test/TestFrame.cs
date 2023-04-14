@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Test;
 using UnityEngine;
 using UnityXFrame.Core;
 using UnityXFrame.Core.UIs;
@@ -6,8 +7,6 @@ using XFrame.Modules.Tasks;
 using UnityXFrame.Core.Audios;
 using XFrame.Modules.Resource;
 using UnityXFrame.Core.Diagnotics;
-using XFrame.Utility;
-using Game.Test;
 
 namespace XHotfix.Test
 {
@@ -60,34 +59,76 @@ namespace XHotfix.Test
                 UIModule.Inst.Close<LoadingUI>();
             if (DebugGUI.Button("Destroy UI"))
                 UIModule.Inst.DestroyUI<LoadingUI>();
+
+            if (DebugGUI.Button("Set Group"))
+            {
+                IUIGroup testGroup = UIModule.Inst.GetOrNewGroup("TestGroup");
+                IUIGroup mainGroup = UIModule.Inst.MainGroup;
+                mainGroup.Layer = 0;
+                testGroup.Layer = 1;
+                testGroup.AddHelper<TestUIGroupHelper>();
+                mainGroup.AddHelper<TestMainGroupHelper>();
+            }
+            if (DebugGUI.Button("Open Dialog"))
+                UIModule.Inst.Open<DialogUI>("TestGroup", (data) =>
+                {
+                    data.SetData(new Vector2(100, 100));
+                    data.SetData(Color.red * 0.5f);
+                }, true, 1);
+            if (DebugGUI.Button("Open Dialog2"))
+                UIModule.Inst.Open<DialogUI>("TestGroup", (data) =>
+                {
+                    data.SetData(new Vector2(-100, -100));
+                    data.SetData(Color.green * 0.5f);
+                }, true, 2);
+            if (DebugGUI.Button("Close Dialog"))
+                UIModule.Inst.Close<DialogUI>(1);
+            if (DebugGUI.Button("Close Dialog2"))
+                UIModule.Inst.Close<DialogUI>(2);
+
             if (DebugGUI.Button("Open UI To Group"))
                 UIModule.Inst.Open($"TestUI{m_UI}", $"Group{m_UI}", default, true);
             if (DebugGUI.Button("Set Layer"))
                 UIModule.Inst.Get($"TestUI{m_UI}").Layer = m_Layer;
             if (DebugGUI.Button("Set Group Layer"))
                 UIModule.Inst.MainGroup.Layer = m_GroupLayer;
-            
+
             if (DebugGUI.Button("Test"))
             {
                 Debug.LogWarning(Faker.Name.FullName());
             }
+            if (DebugGUI.Button("Test Group"))
+            {
+                AudioModule.Inst.GetOrNewGroup("AudioEffect").Volume = 1;
+                AudioModule.Inst.MainGroup.Volume = 0.2f;
+            }
             if (DebugGUI.Button("Play bgm1"))
             {
-                XTask<IAudio> task = AudioModule.Inst.PlayLoopAsync("TestAudio.mp3");
-                task.OnComplete(() => m_Audio1 = task.Data);
+                AudioModule.Inst.PlayLoopAsync("TestAudio.mp3")
+                    .OnComplete((audio) =>
+                    {
+                        m_Audio1?.Stop();
+                        m_Audio1 = audio;
+                    });
             }
             if (DebugGUI.Button("Play1 bgm2"))
             {
-                XTask<IAudio> task = AudioModule.Inst.PlayLoopAsync("TestAudio2.mp3");
-                task.OnComplete(() => m_Audio2 = task.Data);
+                AudioModule.Inst.PlayLoopAsync("TestAudio2.mp3")
+                    .OnComplete((audio) =>
+                    {
+                        m_Audio2?.Stop();
+                        m_Audio2 = audio;
+                    });
             }
             if (DebugGUI.Button("Stop bgm1"))
             {
-                m_Audio1.Stop();
+                m_Audio1?.Stop();
+                m_Audio1 = null;
             }
             if (DebugGUI.Button("Stop bgm2"))
             {
-                m_Audio2.Stop();
+                m_Audio2?.Stop();
+                m_Audio2 = null;
             }
 
             if (DebugGUI.Button("Test Preload"))
@@ -101,11 +142,11 @@ namespace XHotfix.Test
                 AudioModule.Inst.PlayLoop("TestAudio.mp3");
 
             if (DebugGUI.Button("Play1"))
-                AudioModule.Inst.PlayAsync("a1.wav");
+                AudioModule.Inst.PlayAsync("a1.wav", "AudioEffect");
             if (DebugGUI.Button("Play2"))
-                AudioModule.Inst.PlayAsync("a2.wav");
+                AudioModule.Inst.PlayAsync("a2.wav", "AudioEffect");
             if (DebugGUI.Button("Play3"))
-                AudioModule.Inst.PlayAsync("a3.wav");
+                AudioModule.Inst.PlayAsync("a3.wav", "AudioEffect");
         }
     }
 }

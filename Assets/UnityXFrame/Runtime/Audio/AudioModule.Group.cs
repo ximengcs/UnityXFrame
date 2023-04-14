@@ -6,10 +6,23 @@ namespace UnityXFrame.Core.Audios
     {
         private class Group : IAudioGroup
         {
+            private float m_Volume;
             private List<IAudio> m_Audios;
+
+            public float Volume
+            {
+                get => m_Volume;
+                set
+                {
+                    m_Volume = value;
+                    foreach (IAudio audio in m_Audios)
+                        audio.Volume = audio.Volume;
+                }
+            }
 
             public void OnInit()
             {
+                m_Volume = 1.0f;
                 m_Audios = new List<IAudio>();
             }
 

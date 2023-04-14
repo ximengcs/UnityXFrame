@@ -12,6 +12,7 @@ namespace UnityXFrame.Core.Audios
         {
             private GameObject m_Inst;
             private AudioSource m_Source;
+            private float m_Volume;
 
             private float m_DefaultVolume;
             private BolActionTask m_WaitTask;
@@ -30,10 +31,21 @@ namespace UnityXFrame.Core.Audios
                 }
             }
 
+            public float Volume
+            {
+                get => m_Volume;
+                set
+                {
+                    m_Volume = value;
+                    InnerUpdateSourceVolume();
+                }
+            }
+
             public IAudioGroup Group => m_Group;
 
             public void OnInit(Transform root, AudioMixerGroup group, AudioClip clip)
             {
+                m_Volume = 1.0f;
                 m_Inst = new GameObject(clip.name);
                 m_Inst.transform.SetParent(root);
                 m_Source = m_Inst.AddComponent<AudioSource>();
@@ -50,6 +62,7 @@ namespace UnityXFrame.Core.Audios
             public void Play(Action callback = null)
             {
                 m_Source.loop = false;
+                InnerUpdateSourceVolume();
                 m_Source.Play();
 
                 if (m_WaitTask != null)
@@ -72,6 +85,7 @@ namespace UnityXFrame.Core.Audios
             public void PlayLoop()
             {
                 m_Source.loop = true;
+                InnerUpdateSourceVolume();
                 m_Source.Play();
             }
 
@@ -112,6 +126,11 @@ namespace UnityXFrame.Core.Audios
                 m_Group = null;
                 m_Inst.SetActive(false);
                 m_OnDispose = null;
+            }
+
+            private void InnerUpdateSourceVolume()
+            {
+                m_Source.volume = Inst.Volume * Group.Volume * m_Volume;
             }
         }
     }

@@ -70,7 +70,10 @@ namespace UnityXFrame.Core.UIs
             if (m_UIHelper != null)
                 m_UIHelper.OnUIClose(ui);
             else
+            {
                 ui.OnClose();
+                ui.Active = false;
+            }
         }
 
         void IUIGroup.OpenUI(IUI ui)
@@ -78,7 +81,10 @@ namespace UnityXFrame.Core.UIs
             if (m_UIHelper != null)
                 m_UIHelper.OnUIOpen(ui);
             else
+            {
+                ui.Active = true;
                 ui.OnOpen();
+            }
         }
 
         void IUIGroup.OnInit()
