@@ -63,28 +63,47 @@ namespace XHotfix.Test
             if (DebugGUI.Button("Set Group"))
             {
                 IUIGroup testGroup = UIModule.Inst.GetOrNewGroup("TestGroup");
+                IUIGroup test2Group = UIModule.Inst.GetOrNewGroup("TestOnlyOneGroup");
                 IUIGroup mainGroup = UIModule.Inst.MainGroup;
                 mainGroup.Layer = 0;
                 testGroup.Layer = 1;
+                test2Group.Layer = 1;
                 testGroup.AddHelper<TestUIGroupHelper>();
+                test2Group.AddHelper<TestOnlyOneUIGroupHelper>();
                 mainGroup.AddHelper<TestMainGroupHelper>();
             }
             if (DebugGUI.Button("Open Dialog"))
                 UIModule.Inst.Open<DialogUI>("TestGroup", (data) =>
                 {
                     data.SetData(new Vector2(100, 100));
-                    data.SetData(Color.red * 0.5f);
+                    data.SetData(new Color(0.5f, 0, 0, 1));
                 }, true, 1);
             if (DebugGUI.Button("Open Dialog2"))
                 UIModule.Inst.Open<DialogUI>("TestGroup", (data) =>
                 {
                     data.SetData(new Vector2(-100, -100));
-                    data.SetData(Color.green * 0.5f);
+                    data.SetData(new Color(0, 0.5f, 0, 1));
                 }, true, 2);
+            if (DebugGUI.Button("Open Dialog3"))
+                UIModule.Inst.Open<DialogUI>("TestOnlyOneGroup", (data) =>
+                {
+                    data.SetData(new Vector2(50, 50));
+                    data.SetData(new Color(0.5f, 0.5f, 0, 1));
+                }, true, 3);
+            if (DebugGUI.Button("Open Dialog4"))
+                UIModule.Inst.Open<DialogUI>("TestOnlyOneGroup", (data) =>
+                {
+                    data.SetData(new Vector2(-50, -50));
+                    data.SetData(new Color(0.5f, 0, 0.5f, 1));
+                }, true, 4);
             if (DebugGUI.Button("Close Dialog"))
                 UIModule.Inst.Close<DialogUI>(1);
             if (DebugGUI.Button("Close Dialog2"))
                 UIModule.Inst.Close<DialogUI>(2);
+            if (DebugGUI.Button("Close Dialog3"))
+                UIModule.Inst.Close<DialogUI>(3);
+            if (DebugGUI.Button("Close Dialog4"))
+                UIModule.Inst.Close<DialogUI>(4);
 
             if (DebugGUI.Button("Open UI To Group"))
                 UIModule.Inst.Open($"TestUI{m_UI}", $"Group{m_UI}", default, true);

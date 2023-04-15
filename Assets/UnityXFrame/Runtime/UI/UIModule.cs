@@ -392,10 +392,10 @@ namespace UnityXFrame.Core.UIs
                 }
 
                 GameObject inst = GameObject.Instantiate(prefab);
-                inst.name = uiType.Name;
                 IUIFactory factory = InnerGetUIFactory(uiType);
-
                 ui = factory.Create(inst, uiType);
+                inst.name = GetInstName(ui);
+
                 dataHandler?.Invoke(ui);
                 dataHandler = null;
                 ui.OnInit(id, inst);

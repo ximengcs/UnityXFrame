@@ -16,7 +16,7 @@ namespace UnityXFrame.Core.UIs
         private IContainer m_Container;
 
         protected bool m_IsOpen;
-        protected int Layer;
+        protected int m_Layer;
         protected IUIGroup m_Group;
         protected GameObject m_Root;
         protected RectTransform m_Transform;
@@ -24,7 +24,7 @@ namespace UnityXFrame.Core.UIs
         #region UI Interface
         int IUI.Layer
         {
-            get { return Layer; }
+            get { return m_Layer; }
             set { ((IUI)this).SetLayer(value, true); }
         }
 
@@ -131,9 +131,9 @@ namespace UnityXFrame.Core.UIs
 
         void IUI.SetLayer(int layer, bool refresh)
         {
-            Layer = layer;
+            m_Layer = layer;
             if (refresh)
-                m_Group?.SetUILayer(this, Layer);
+                m_Group?.SetUILayer(this, m_Layer);
         }
         #endregion
 
