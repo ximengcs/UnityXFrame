@@ -16,11 +16,11 @@ namespace UnityXFrame.Core
         public static string SCENEUI_RES_PATH = "Data/SceneUI";
         public static string UI_RES_PATH = "Data/UI";
         public static string HOTFIX_PATH = "Hotfix/Hotfix.Bytes";
-        public const string MAIN_GROUPUI = "Main";
+        public static string MAIN_GROUPUI = "Main";
 
-        public const string HOTFIX_ENTRANCE = "XHotfix.Core.HotfixMainProcedure";
+        public static string HOTFIX_ENTRANCE = "XHotfix.Core.HotfixMainProcedure";
 
-        public const string UPDATE_CHECK_TASK = "UpdateCheckTask";
-        public const string UPDATE_RES_TASK = "UpdateResTask";
+        public static string UPDATE_CHECK_TASK = "UpdateCheckTask";
+        public static string UPDATE_RES_TASK = "UpdateResTask";
     }
 }
