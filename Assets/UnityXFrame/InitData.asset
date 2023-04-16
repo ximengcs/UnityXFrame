@@ -16,7 +16,7 @@ MonoBehaviour:
   Language: 0
   Logger: UnityXFrame.Core.Diagnotics.Logger
   ResMode: UnityXFrame.Core.Resource.AddressablesHelper
-  ArchivePath: C:/Users/98259/AppData/LocalLow/DefaultCompany/UnityXFrame\archive
+  ArchivePath: C:/Users/XiMi/AppData/LocalLow/DefaultCompany/UnityXFrame\archive
   JsonSerializer: UnityXFrame.Core.Serialize.JsonSerializeHelper
   DownloadHelper: XFrame.Modules.Download.FtpDownloadHelper
   LocalizeFile: {fileID: 0}
