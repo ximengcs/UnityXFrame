@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace UnityXFrame.Core.UIs
 {
     /// <summary>
@@ -6,6 +8,13 @@ namespace UnityXFrame.Core.UIs
     /// </summary>
     public interface IUIGroupHelper
     {
+        /// <summary>
+        /// 是否处理UI组中的UI类
+        /// </summary>
+        /// <param name="type">UI类</param>
+        /// <returns>true为处理</returns>
+        internal bool MatchType(Type type);
+
         /// <summary>
         /// 初始化生命周期
         /// </summary>

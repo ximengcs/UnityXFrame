@@ -12,7 +12,7 @@ namespace UnityXFrame.Core.UIs
         private Transform m_Root;
         private CanvasGroup m_CanvasGroup;
         private XLinkList<IUI> m_UIs;
-        private IUIGroupHelper m_UIHelper;
+        private XLinkList<IUIGroupHelper> m_UIHelper;
 
         public string Name { get; }
         public bool IsOpen { get; private set; }
@@ -39,6 +39,7 @@ namespace UnityXFrame.Core.UIs
             m_Inst = root;
             m_Root = root.transform;
             m_UIs = new XLinkList<IUI>();
+            m_UIHelper = new XLinkList<IUIGroupHelper>();
             m_CanvasGroup = root.GetComponent<CanvasGroup>();
 
             RectTransform rectTf = m_Root as RectTransform;
@@ -67,8 +68,18 @@ namespace UnityXFrame.Core.UIs
 
         void IUIGroup.CloseUI(IUI ui)
         {
-            if (m_UIHelper != null)
-                m_UIHelper.OnUIClose(ui);
+            if (m_UIHelper != null && m_UIHelper.Count > 0)
+            {
+                foreach (XLinkNode<IUIGroupHelper> helperNode in m_UIHelper)
+                {
+                    IUIGroupHelper helper = helperNode.Value;
+                    if (helper.MatchType(ui.GetType()))
+                    {
+                        helper.OnUIClose(ui);
+                        break;
+                    }
+                }
+            }
             else
             {
                 ui.OnClose();
@@ -78,8 +89,18 @@ namespace UnityXFrame.Core.UIs
 
         void IUIGroup.OpenUI(IUI ui)
         {
-            if (m_UIHelper != null)
-                m_UIHelper.OnUIOpen(ui);
+            if (m_UIHelper != null && m_UIHelper.Count > 0)
+            {
+                foreach (XLinkNode<IUIGroupHelper> helperNode in m_UIHelper)
+                {
+                    IUIGroupHelper helper = helperNode.Value;
+                    if (helper.MatchType(ui.GetType()))
+                    {
+                        helper.OnUIOpen(ui);
+                        break;
+                    }
+                }
+            }
             else
             {
                 ui.Active = true;
@@ -100,13 +121,24 @@ namespace UnityXFrame.Core.UIs
                 XLinkNode<IUI> node = m_UIs.First;
                 while (node != null)
                 {
-                    if (m_UIHelper != null)
-                        m_UIHelper.OnUIUpdate(node.Value);
+                    IUI ui = node.Value;
+                    if (m_UIHelper != null && m_UIHelper.Count > 0)
+                    {
+                        foreach (XLinkNode<IUIGroupHelper> helperNode in m_UIHelper)
+                        {
+                            IUIGroupHelper helper = helperNode.Value;
+                            if (helper.MatchType(ui.GetType()))
+                            {
+                                helper.OnUIUpdate(ui);
+                                break;
+                            }
+                            helper.OnUpdate();
+                        }
+                    }
                     else
-                        node.Value.OnUpdate();
+                        ui.OnUpdate();
                     node = node.Next;
                 }
-                m_UIHelper?.OnUpdate();
             }
         }
 
@@ -115,10 +147,22 @@ namespace UnityXFrame.Core.UIs
             XLinkNode<IUI> node = m_UIs.First;
             while (node != null)
             {
-                if (m_UIHelper != null)
-                    m_UIHelper.OnUIDestroy(node.Value);
+                IUI ui = node.Value;
+                if (m_UIHelper != null && m_UIHelper.Count > 0)
+                {
+                    foreach (XLinkNode<IUIGroupHelper> helperNode in m_UIHelper)
+                    {
+                        IUIGroupHelper helper = helperNode.Value;
+                        if (helper.MatchType(ui.GetType()))
+                        {
+                            helper.OnUIDestroy(ui);
+                            break;
+                        }
+                        helper.OnDestroy();
+                    }
+                }
                 else
-                    node.Value.OnDestroy();
+                    ui.OnDestroy();
                 node = node.Next;
             }
         }
@@ -173,16 +217,35 @@ namespace UnityXFrame.Core.UIs
             AddHelper(typeof(T));
         }
 
-        public void RemoveHelper()
+        public void RemoveHelper<T>() where T : IUIGroupHelper
         {
-            InnerAddHelper(null);
+            RemoveHelper(typeof(T));
+        }
+
+        public void RemoveHelper(Type type)
+        {
+            InnerRemoveHelper(type);
         }
 
         private void InnerAddHelper(IUIGroupHelper helper)
         {
-            m_UIHelper?.OnDestroy();
-            m_UIHelper = helper;
-            m_UIHelper?.OnInit(this);
+            m_UIHelper.AddLast(helper);
+            helper.OnInit(this);
+        }
+
+        private void InnerRemoveHelper(Type type)
+        {
+            XLinkNode<IUIGroupHelper> node = m_UIHelper.First;
+            while (node != null)
+            {
+                if (node.Value.GetType() == type)
+                {
+                    node.Value.OnDestroy();
+                    node.Delete();
+                    break;
+                }
+                node = node.Next;
+            }
         }
 
         public IEnumerator<IUI> GetEnumerator()

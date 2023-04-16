@@ -55,8 +55,14 @@ namespace UnityXFrame.Core.UIs
         /// <summary>
         /// 移除组辅助器
         /// </summary>
-        void RemoveHelper();
+        /// <typeparam name="T">辅助器类型</typeparam>
+        void RemoveHelper<T>() where T : IUIGroupHelper;
 
+        /// <summary>
+        /// 移除组辅助器
+        /// </summary>
+        /// <param name="type">辅助器类型</param>
+        void RemoveHelper(Type type);
 
         #region Life Fun
         /// <summary>

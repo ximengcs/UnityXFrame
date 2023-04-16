@@ -1,9 +1,16 @@
 ﻿
+using System;
+
 namespace UnityXFrame.Core.UIs
 {
     public abstract class UIGroupHelperBase : IUIGroupHelper
     {
         protected IUIGroup m_Owner;
+
+        bool IUIGroupHelper.MatchType(System.Type type)
+        {
+            return MatchType(type);
+        }
 
         void IUIGroupHelper.OnInit(IUIGroup owner)
         {
@@ -41,6 +48,7 @@ namespace UnityXFrame.Core.UIs
             OnUIUpdate(ui);
         }
 
+        protected virtual bool MatchType(Type type) { return true; }
         protected virtual void OnInit() { }
         protected virtual void OnUpdate() { }
         protected virtual void OnDestroy() { }
