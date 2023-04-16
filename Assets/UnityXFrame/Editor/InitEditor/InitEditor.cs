@@ -24,6 +24,8 @@ namespace UnityXFrame.Editor
         {
             if (Application.isPlaying)
                 return;
+
+            Utility.Init();
             m_FrameCore = XCore.Create(typeof(TypeModule), typeof(PoolModule));
             m_Editors = new XLinkList<IDataEditor>();
             m_EditorType = TypeModule.Inst.GetOrNew<IDataEditor>();

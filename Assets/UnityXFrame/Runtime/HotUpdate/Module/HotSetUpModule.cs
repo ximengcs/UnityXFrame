@@ -15,6 +15,11 @@ namespace UnityXFrame.Core.HotUpdate
             TypeModule.Inst.OnTypeChange(InnerTypeHandler);
         }
 
+        public void StartHotProc()
+        {
+            ProcedureModule.Inst.Redirect(Constant.HOTFIX_ENTRANCE);
+        }
+
         private void InnerTypeHandler()
         {
             Entry.AddModules<HotModuleAttribute>();
@@ -24,7 +29,7 @@ namespace UnityXFrame.Core.HotUpdate
                 Log.Debug(type.Name);
                 ProcedureModule.Inst.Add(type);
             }
-            ProcedureModule.Inst.Redirect(Constant.HOTFIX_ENTRANCE);
+            StartHotProc();
         }
     }
 }
