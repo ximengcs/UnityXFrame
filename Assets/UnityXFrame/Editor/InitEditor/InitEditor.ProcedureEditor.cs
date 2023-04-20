@@ -22,8 +22,8 @@ namespace UnityXFrame.Editor
                 m_ProcTypeNames = new string[Types.Length];
                 for (int i = 0; i < Types.Length; i++)
                 {
-                    string name = Types[i].Name;
-                    m_ProcTypeNames[i] = name;
+                    string name = Types[i].FullName;
+                    m_ProcTypeNames[i] = Types[i].Name;
                     if (name == m_Data.Entrance)
                         m_TypeIndex = i;
                 }
