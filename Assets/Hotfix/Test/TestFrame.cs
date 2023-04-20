@@ -7,6 +7,7 @@ using XFrame.Modules.Tasks;
 using UnityXFrame.Core.Audios;
 using XFrame.Modules.Resource;
 using UnityXFrame.Core.Diagnotics;
+using XFrame.Modules.Containers;
 
 namespace XHotfix.Test
 {

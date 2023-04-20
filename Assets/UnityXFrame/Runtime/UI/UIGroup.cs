@@ -114,7 +114,7 @@ namespace UnityXFrame.Core.UIs
             Close();
         }
 
-        void IUIGroup.OnUpdate()
+        void IUIGroup.OnUpdate(float elapseTime)
         {
             if (IsOpen)
             {
@@ -129,14 +129,14 @@ namespace UnityXFrame.Core.UIs
                             IUIGroupHelper helper = helperNode.Value;
                             if (helper.MatchType(ui.GetType()))
                             {
-                                helper.OnUIUpdate(ui);
+                                helper.OnUIUpdate(ui, elapseTime);
                                 break;
                             }
                             helper.OnUpdate();
                         }
                     }
                     else
-                        ui.OnUpdate();
+                        ui.OnUpdate(elapseTime);
                     node = node.Next;
                 }
             }

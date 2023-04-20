@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using XFrame.Collections;
 using XFrame.Modules.Containers;
 using XFrame.Modules.Diagnotics;
@@ -10,13 +8,10 @@ namespace UnityXFrame.Core.UIs
     /// <summary>
     /// UI基类
     /// </summary>
-    public abstract partial class UI : IUI
+    public abstract partial class UI : Container, IUI
     {
-        private int m_Id;
-        private IContainer m_Container;
-
-        protected bool m_IsOpen;
         protected int m_Layer;
+        protected bool m_IsOpen;
         protected IUIGroup m_Group;
         protected GameObject m_Root;
         protected RectTransform m_Transform;
@@ -37,8 +32,6 @@ namespace UnityXFrame.Core.UIs
         bool IUI.IsOpen => m_IsOpen;
 
         IUIGroup IUI.Group => m_Group;
-
-        public int Id => m_Id;
 
         public RectTransform Root => m_Transform;
 
@@ -76,40 +69,49 @@ namespace UnityXFrame.Core.UIs
             }
         }
 
-        void IUI.OnDestroy()
-        {
-            ContainerModule.Inst.Remove(m_Container);
-            m_Container = null;
-            GameObject.Destroy(m_Root);
-        }
-
-        public UI()
-        {
-            m_Container = ContainerModule.Inst.New(this);
-        }
-
         void IUI.OnGroupChange(IUIGroup newGroup)
         {
             m_Group = newGroup as UIGroup;
         }
 
-        void IUI.OnInit(int id, GameObject inst)
+        void IUI.OnInit(int id, OnUIReady onReady)
         {
-            m_Id = id;
-            m_Transform = inst.GetComponent<RectTransform>();
-            m_Root = inst;
-            OnInit();
+            IContainer thisContainer = this;
+            thisContainer.OnInit(id, this, (c) =>
+            {
+                onReady?.Invoke(this);
+                m_Root = c.GetData<GameObject>();
+                m_Transform = m_Root.GetComponent<RectTransform>();
+            });
         }
 
-        void IUI.OnUpdate()
+        void IContainer.OnUpdate(float elapseTime)
         {
             if (m_IsOpen)
-                OnUpdate();
+            {
+                SetIt(XItType.Forward);
+                foreach (ICom com in this)
+                {
+                    if (com.Active)
+                        com.OnUpdate(elapseTime);
+                }
+                OnUpdate(elapseTime);
+            }
+        }
+
+        void IContainer.OnDestroy()
+        {
+            SetIt(XItType.Backward);
+            foreach (ICom com in this)
+                com.OnDestroy();
+            OnDestroy();
+            GameObject.Destroy(m_Root);
+            m_Root = null;
         }
 
         void IUI.OnOpen()
         {
-            m_Container.Dispatch((com) =>
+            DispatchCom((com) =>
             {
                 UICom uiCom = com as UICom;
                 if (uiCom != null)
@@ -120,7 +122,7 @@ namespace UnityXFrame.Core.UIs
 
         void IUI.OnClose()
         {
-            m_Container.Dispatch((com) =>
+            DispatchCom((com) =>
             {
                 UICom uiCom = com as UICom;
                 if (uiCom != null)
@@ -138,118 +140,8 @@ namespace UnityXFrame.Core.UIs
         #endregion
 
         #region Sub Class Implement Life Fun
-        protected virtual void OnInit() { }
-        protected virtual void OnUpdate() { }
         protected virtual void OnOpen() { }
         protected virtual void OnClose() { }
-        #endregion
-
-        #region Container Interface
-        public T Get<T>(int id = 0) where T : ICom
-        {
-            return m_Container.Get<T>(id);
-        }
-
-        public ICom Get(Type type, int id = 0)
-        {
-            return m_Container.Get(type, id);
-        }
-
-        public T Add<T>(Action<ICom> comInitComplete = null) where T : ICom
-        {
-            return m_Container.Add<T>(comInitComplete);
-        }
-
-        public T Add<T>(int id, Action<ICom> comInitComplete = null) where T : ICom
-        {
-            return m_Container.Add<T>(id, comInitComplete);
-        }
-
-        public ICom Add(Type type, Action<ICom> comInitComplete = null)
-        {
-            return m_Container.Add(type, comInitComplete);
-        }
-
-        public ICom Add(Type type, int id = 0, Action<ICom> comInitComplete = null)
-        {
-            return m_Container.Add(type, id, comInitComplete);
-        }
-
-        public T GetOrAdd<T>(Action<ICom> comInitComplete = null) where T : ICom
-        {
-            return m_Container.GetOrAdd<T>(comInitComplete);
-        }
-
-        public T GetOrAdd<T>(int id = 0, Action<ICom> comInitComplete = null) where T : ICom
-        {
-            return m_Container.GetOrAdd<T>(id, comInitComplete);
-        }
-
-        public ICom GetOrAdd(Type type, Action<ICom> comInitComplete = null)
-        {
-            return m_Container.GetOrAdd(type, comInitComplete);
-        }
-
-        public ICom GetOrAdd(Type type, int id = 0, Action<ICom> comInitComplete = null)
-        {
-            return m_Container.GetOrAdd(type, id, comInitComplete);
-        }
-
-        public void Remove<T>(int id = 0) where T : ICom
-        {
-            m_Container.Remove<T>(id);
-        }
-
-        public void Remove(Type type, int id = 0)
-        {
-            m_Container.Remove(type, id);
-        }
-
-        public void Clear()
-        {
-            m_Container.Clear();
-        }
-
-        public void Dispatch(Action<ICom> handle)
-        {
-            m_Container.Dispatch(handle);
-        }
-
-        public void SetData<T>(T value)
-        {
-            m_Container.SetData(value);
-        }
-
-        public T GetData<T>()
-        {
-            return m_Container.GetData<T>();
-        }
-
-        public void SetData<T>(string name, T value)
-        {
-            m_Container.SetData<T>(name, value);
-        }
-
-        public T GetData<T>(string name)
-        {
-            return m_Container.GetData<T>(name);
-        }
-
-        public void Dispose()
-        {
-            ContainerModule.Inst.Remove(m_Container);
-            m_Container = null;
-        }
-
-        public IEnumerator<ICom> GetEnumerator()
-        {
-            return m_Container.GetEnumerator();
-        }
-
-        public void SetIt(XItType type)
-        {
-            m_Container.SetIt(type);
-        }
         #endregion
     }
 }

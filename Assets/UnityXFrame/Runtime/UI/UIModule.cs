@@ -50,7 +50,7 @@ namespace UnityXFrame.Core.UIs
             while (node != null)
             {
                 if (node.Value.IsOpen)
-                    node.Value.OnUpdate();
+                    node.Value.OnUpdate(escapeTime);
                 node = node.Next;
             }
         }
@@ -395,10 +395,12 @@ namespace UnityXFrame.Core.UIs
                 IUIFactory factory = InnerGetUIFactory(uiType);
                 ui = factory.Create(inst, uiType);
                 inst.name = GetInstName(ui);
-
-                dataHandler?.Invoke(ui);
-                dataHandler = null;
-                ui.OnInit(id, inst);
+                ui.OnInit(id, (ui) =>
+                {
+                    ui.SetData(inst);
+                    dataHandler?.Invoke(ui);
+                    dataHandler = null;
+                });
                 m_UIMap[id] = ui;
             }
 

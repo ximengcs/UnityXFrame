@@ -7,9 +7,9 @@ namespace Game.Test
         protected override void OnInit()
         {
             base.OnInit();
-            UICommonCom com = Add<UICommonCom>();
+            UICommonCom com = AddCom<UICommonCom>();
             com.Add("Progress");
-            Add<TestCom>();
+            AddCom<TestCom>();
         }
 
         protected override void OnOpen()

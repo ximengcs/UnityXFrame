@@ -47,7 +47,7 @@ namespace UnityXFrame.Core.UIs
         /// UI更新事件
         /// </summary>
         /// <param name="ui">需要更新的UI</param>
-        internal void OnUIUpdate(IUI ui);
+        internal void OnUIUpdate(IUI ui, float elapseTime);
 
         /// <summary>
         /// UI销毁事件

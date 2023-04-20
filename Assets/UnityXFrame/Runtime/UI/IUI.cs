@@ -8,8 +8,6 @@ namespace UnityXFrame.Core.UIs
     /// </summary>
     public interface IUI : IUIElement, IContainer
     {
-        int Id { get; }
-
         /// <summary>
         /// 根节点
         /// </summary>
@@ -58,24 +56,14 @@ namespace UnityXFrame.Core.UIs
         /// <summary>
         /// 初始化生命周期
         /// </summary>
-        /// <param name="inst">UI实体</param>
-        protected internal void OnInit(int id, GameObject inst);
+        /// <param name="onReady">UI准备就绪事件</param>
+        protected internal void OnInit(int id, OnUIReady onReady);
 
         /// <summary>
         /// UI组改变生命周期
         /// </summary>
         /// <param name="newGroup"></param>
         protected internal void OnGroupChange(IUIGroup newGroup);
-
-        /// <summary>
-        /// UI更新生命周期
-        /// </summary>
-        protected internal void OnUpdate();
-
-        /// <summary>
-        /// UI销毁生命周期
-        /// </summary>
-        protected internal void OnDestroy();
 
         /// <summary>
         /// 设置层级，可选择是否刷新

@@ -3,40 +3,16 @@ using XFrame.Modules.Entities;
 
 namespace UnityXFrame.Core.Entities
 {
-    public class GameObjectCom : Com
+    public class GameObjectCom : EntityCom
     {
         private GameObject m_Inst;
 
         public Transform Tf => m_Inst.transform;
 
-        protected override void OnInit(EntityData data)
+        protected override void OnInit()
         {
+            base.OnInit();
             m_Inst = new GameObject();
-        }
-
-        protected override void OnUpdate(float elapseTime)
-        {
-
-        }
-
-        protected override void OnDestroy()
-        {
-
-        }
-
-        protected override void OnCreate()
-        {
-
-        }
-
-        protected override void OnRelease()
-        {
-
-        }
-
-        protected override void OnDestroyForever()
-        {
-
         }
     }
 }

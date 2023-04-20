@@ -43,9 +43,9 @@ namespace UnityXFrame.Core.UIs
             OnUIOpen(ui);
         }
 
-        void IUIGroupHelper.OnUIUpdate(IUI ui)
+        void IUIGroupHelper.OnUIUpdate(IUI ui, float elapseTime)
         {
-            OnUIUpdate(ui);
+            OnUIUpdate(ui, elapseTime);
         }
 
         protected virtual bool MatchType(Type type) { return true; }
@@ -66,9 +66,9 @@ namespace UnityXFrame.Core.UIs
             ui.Active = true;
             InnerOpenUI(ui);
         }
-        protected virtual void OnUIUpdate(IUI ui)
+        protected virtual void OnUIUpdate(IUI ui, float elapseTime)
         {
-            InnerUpdateUI(ui);
+            InnerUpdateUI(ui, elapseTime);
         }
 
         protected void InnerOpenUI(IUI ui)
@@ -81,9 +81,9 @@ namespace UnityXFrame.Core.UIs
             ui.OnClose();
         }
 
-        protected void InnerUpdateUI(IUI ui)
+        protected void InnerUpdateUI(IUI ui, float elapseTime)
         {
-            ui.OnUpdate();
+            ui.OnUpdate(elapseTime);
         }
 
         protected void InnerDestroyUI(IUI ui)

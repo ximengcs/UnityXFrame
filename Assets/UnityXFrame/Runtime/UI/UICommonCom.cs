@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace UnityXFrame.Core.UIs
 {
-    public class UICommonCom : Com
+    public class UICommonCom : ShareCom
     {
         private IUI m_Inst;
         private const string UI_TAG = "UIComponent";
@@ -15,7 +15,7 @@ namespace UnityXFrame.Core.UIs
         {
             base.OnInit();
             m_Coms = new Dictionary<string, UIBehaviour>();
-            m_Inst = (IUI)m_Owner;
+            m_Inst = (IUI)Master;
             InnerFindUIComponent(m_Inst.Root);
         }
 

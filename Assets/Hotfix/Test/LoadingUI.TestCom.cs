@@ -12,13 +12,13 @@ namespace Game.Test
             protected override void OnInit()
             {
                 base.OnInit();
-                m_Slider = Get<UICommonCom>().Get<Slider>("Progress");
+                m_Slider = GetCom<UICommonCom>().Get<Slider>("Progress");
             }
 
             protected override void OnOpen()
             {
                 base.OnOpen();
-                float pro = ShareData.GetData<float>();
+                float pro = Owner.GetData<float>();
                 m_Slider.value = pro;
             }
 

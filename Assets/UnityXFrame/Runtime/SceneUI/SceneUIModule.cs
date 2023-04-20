@@ -133,7 +133,7 @@ namespace UnityXFrame.Core.SceneUIs
         private RectTransform InnerGenCanvas(Type uiType, Entity entity)
         {
             Transform tf;
-            GameObjectCom com = entity.Get<GameObjectCom>();
+            GameObjectCom com = entity.GetCom<GameObjectCom>();
             if (TypeUtility.HasAttribute<NoneInteractiveAttribute>(uiType))
             {
                 tf = com.Tf.Find("NotInterActUI");

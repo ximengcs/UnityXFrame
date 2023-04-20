@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using XFrame.Collections;
+using XFrame.Modules.Pools;
 using XFrame.Modules.Containers;
 using XFrame.Modules.Diagnotics;
+using System.Collections.Generic;
 
 namespace UnityXFrame.Core.UIs
 {
     public abstract partial class MonoUI : MonoBehaviour, IUI
     {
-        private int m_Id;
         private IContainer m_Container;
 
         protected bool m_IsOpen;
@@ -38,11 +38,13 @@ namespace UnityXFrame.Core.UIs
 
         IUIGroup IUI.Group => m_Group;
 
-        public int Id => m_Id;
+        public int Id => m_Container.Id;
 
         public RectTransform Root => m_Transform;
 
         public string Name => m_Root.name;
+
+        public object Master => m_Container.Master;
 
         public void Open()
         {
@@ -76,35 +78,52 @@ namespace UnityXFrame.Core.UIs
             }
         }
 
-        public MonoUI()
-        {
-            m_Container = ContainerModule.Inst.New(this);
-        }
-
-        void IUI.OnDestroy()
-        {
-            ContainerModule.Inst.Remove(m_Container);
-            m_Container = null;
-            GameObject.Destroy(m_Root);
-        }
-
         void IUI.OnGroupChange(IUIGroup newGroup)
         {
             m_Group = newGroup as UIGroup;
         }
 
-        void IUI.OnInit(int id, GameObject inst)
+        void IUI.OnInit(int id, OnUIReady onReady)
         {
-            m_Id = id;
-            m_Transform = inst.GetComponent<RectTransform>();
-            m_Root = inst;
+            IContainer thisContainer = this;
+            thisContainer.OnInit(id, this, (c) =>
+            {
+                onReady?.Invoke(this);
+                m_Root = GetData<GameObject>();
+                m_Transform = m_Root.GetComponent<RectTransform>();
+            });
+        }
+
+        void IContainer.OnInit(int id, object master, OnContainerReady onReady)
+        {
+            m_Container = new Container();
+            m_Container.OnInit(id, master, null);
+            onReady?.Invoke(this);
             OnInit();
         }
 
-        void IUI.OnUpdate()
+        void IContainer.OnUpdate(float elapseTime)
         {
             if (m_IsOpen)
-                OnUpdate();
+            {
+                SetIt(XItType.Forward);
+                foreach (ICom com in this)
+                {
+                    if (com.Active)
+                        com.OnUpdate(elapseTime);
+                }
+                OnUpdate(elapseTime);
+            }
+        }
+
+        void IContainer.OnDestroy()
+        {
+            SetIt(XItType.Backward);
+            foreach (ICom com in this)
+                com.OnDestroy();
+            OnUIDestroy();
+            GameObject.Destroy(m_Root);
+            m_Root = null;
         }
 
         void IUI.OnOpen()
@@ -124,81 +143,103 @@ namespace UnityXFrame.Core.UIs
                 m_Group?.SetUILayer(this, Layer);
         }
 
+        void IPoolObject.OnCreate()
+        {
+            OnCreateFromPool();
+        }
+
+        void IPoolObject.OnRelease()
+        {
+            OnReleaseFromPool();
+        }
+
+        void IPoolObject.OnDelete()
+        {
+            OnDestroyFromPool();
+        }
+
         protected virtual void OnInit() { }
-        protected virtual void OnUpdate() { }
+        protected virtual void OnUpdate(float elapseTime) { }
+        protected virtual void OnUIDestroy() { }
         protected virtual void OnOpen() { }
         protected virtual void OnClose() { }
+        protected virtual void OnCreateFromPool() { }
+        protected virtual void OnDestroyFromPool() { }
+        protected virtual void OnReleaseFromPool() { }
 
-
-        #region Container Interface
-        public T Get<T>(int id = 0) where T : ICom
+        public T GetCom<T>(int id = 0) where T : ICom
         {
-            return m_Container.Get<T>(id);
+            return m_Container.GetCom<T>(id);
         }
 
-        public ICom Get(Type type, int id = 0)
+        public ICom GetCom(Type type, int id = 0)
         {
-            return m_Container.Get(type, id);
+            return m_Container.GetCom(type, id);
         }
 
-        public T Add<T>(Action<ICom> comInitComplete = null) where T : ICom
+        public T AddCom<T>(OnComReady onReady = null) where T : ICom
         {
-            return m_Container.Add<T>(comInitComplete);
+            return m_Container.AddCom<T>(onReady);
         }
 
-        public T Add<T>(int id, Action<ICom> comInitComplete = null) where T : ICom
+        public ICom AddCom(ICom com, int id = 0, OnComReady onReady = null)
         {
-            return m_Container.Add<T>(id, comInitComplete);
+            return m_Container.AddCom(com, id, onReady);
         }
 
-        public ICom Add(Type type, Action<ICom> comInitComplete = null)
+        public T AddCom<T>(int id, OnComReady onReady = null) where T : ICom
         {
-            return m_Container.Add(type, comInitComplete);
+            return m_Container.AddCom<T>(id, onReady);
         }
 
-        public ICom Add(Type type, int id = 0, Action<ICom> comInitComplete = null)
+        public ICom AddCom(Type type, OnComReady onReady = null)
         {
-            return m_Container.Add(type, id, comInitComplete);
+            return m_Container.AddCom(type, onReady);
         }
 
-        public T GetOrAdd<T>(Action<ICom> comInitComplete = null) where T : ICom
+        public ICom AddCom(Type type, int id = 0, OnComReady onReady = null)
         {
-            return m_Container.GetOrAdd<T>(comInitComplete);
+            return m_Container.AddCom(type, id, onReady);
         }
 
-        public T GetOrAdd<T>(int id = 0, Action<ICom> comInitComplete = null) where T : ICom
+        public T GetOrAddCom<T>(OnComReady onReady = null) where T : ICom
         {
-            return m_Container.GetOrAdd<T>(id, comInitComplete);
+            return m_Container.GetOrAddCom<T>(onReady);
         }
 
-        public ICom GetOrAdd(Type type, Action<ICom> comInitComplete = null)
+        public T GetOrAddCom<T>(int id = 0, OnComReady onReady = null) where T : ICom
         {
-            return m_Container.GetOrAdd(type, comInitComplete);
+            return m_Container.GetOrAddCom<T>(id, onReady);
         }
 
-        public ICom GetOrAdd(Type type, int id = 0, Action<ICom> comInitComplete = null)
+        public ICom GetOrAddCom(Type type, OnComReady onReady = null)
         {
-            return m_Container.GetOrAdd(type, id, comInitComplete);
+            return m_Container.GetOrAddCom(type, onReady);
         }
 
-        public void Remove<T>(int id = 0) where T : ICom
+        public ICom GetOrAddCom(Type type, int id = 0, OnComReady onReady = null)
         {
-            m_Container.Remove<T>(id);
+            return m_Container.GetOrAddCom(type, id, onReady);
         }
 
-        public void Remove(Type type, int id = 0)
+        public void RemoveCom<T>(int id = 0) where T : ICom
         {
-            m_Container.Remove(type, id);
+            m_Container.RemoveCom<T>(id);
         }
 
-        public void Clear()
+        public void RemoveCom(Type type, int id = 0)
         {
-            m_Container.Clear();
+            m_Container.RemoveCom(type, id);
         }
 
-        public void Dispatch(Action<ICom> handle)
+        public void ClearCom()
         {
-            m_Container.Dispatch(handle);
+            m_Container.ClearCom();
+        }
+
+        public void DispatchCom(OnComReady handle)
+        {
+            m_Container.DispatchCom(handle);
         }
 
         public void SetData<T>(T value)
@@ -213,7 +254,7 @@ namespace UnityXFrame.Core.UIs
 
         public void SetData<T>(string name, T value)
         {
-            m_Container.SetData<T>(name, value);
+            m_Container.SetData(name, value);
         }
 
         public T GetData<T>(string name)
@@ -223,8 +264,7 @@ namespace UnityXFrame.Core.UIs
 
         public void Dispose()
         {
-            ContainerModule.Inst.Remove(m_Container);
-            m_Container = null;
+            m_Container.Dispose();
         }
 
         public IEnumerator<ICom> GetEnumerator()
@@ -236,6 +276,5 @@ namespace UnityXFrame.Core.UIs
         {
             m_Container.SetIt(type);
         }
-        #endregion
     }
 }
