@@ -12,7 +12,7 @@ namespace Game.Test
             protected override void OnInit()
             {
                 base.OnInit();
-                m_Slider = GetCom<UICommonCom>().Get<Slider>("Progress");
+                m_Slider = GetCom<UICommonCom>().GetUI<Slider>("Progress");
             }
 
             protected override void OnOpen()

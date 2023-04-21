@@ -8,7 +8,7 @@ namespace Game.Test
         {
             base.OnInit();
             UICommonCom com = AddCom<UICommonCom>();
-            com.Add("Progress");
+            com.AddUI("Progress");
             AddCom<TestCom>();
         }
 
