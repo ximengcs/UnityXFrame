@@ -1,9 +1,8 @@
 {
-    "name": "Hotfix",
+    "name": "UnityXFrameLib",
     "rootNamespace": "",
     "references": [
-        "GUID:60c0d8d9b7a5d84469add73ca17a4e42",
-        "GUID:548c15f9609a92f46abd62b5d33e01f0"
+        "GUID:60c0d8d9b7a5d84469add73ca17a4e42"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,9 +10,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "HOTFIX_EDITOR"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
 }

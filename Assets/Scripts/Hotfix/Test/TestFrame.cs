@@ -8,6 +8,8 @@ using UnityXFrame.Core.Audios;
 using XFrame.Modules.Resource;
 using UnityXFrame.Core.Diagnotics;
 using XFrame.Modules.Containers;
+using UnityXFrame.Core.SceneUIs;
+using UnityXFrameLib.UI;
 
 namespace XHotfix.Test
 {
@@ -69,9 +71,20 @@ namespace XHotfix.Test
                 mainGroup.Layer = 0;
                 testGroup.Layer = 1;
                 test2Group.Layer = 1;
-                testGroup.AddHelper<TestUIGroupHelper>();
-                test2Group.AddHelper<TestOnlyOneUIGroupHelper>();
-                mainGroup.AddHelper<TestMainGroupHelper>();
+                testGroup.AddHelper<OnlyOneUIGroupHelper>((helper) =>
+                {
+                    helper.SetEffect(new ScaleEffect(Vector2.one), new ScaleEffect(Vector2.one, Vector2.zero));
+                });
+                test2Group.AddHelper<OnlyOneUIGroupHelper>((helper) =>
+                {
+                    helper.SetEffect(
+                        new MoveEffect(MoveEffect.Direct.FromLeft, true, false),
+                        new MoveEffect(MoveEffect.Direct.FromLeft, false, true));
+                });
+                mainGroup.AddHelper<OnlyOneUIGroupHelper>((helper) =>
+                {
+                    helper.SetEffect(new ScaleEffect(Vector2.one), new ScaleEffect(Vector2.one, Vector2.zero));
+                });
             }
             if (DebugGUI.Button("Open Dialog"))
                 UIModule.Inst.Open<DialogUI>("TestGroup", (data) =>
